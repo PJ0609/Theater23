@@ -12,7 +12,7 @@ public class JDBCUtil {
 
 	public static Connection getConnection() throws Exception {
 		Context initCtx = new InitialContext();
-		Context envCtx = (Context)initCtx.lookup("java:comp/env");// Context
+		Context envCtx = (Context)initCtx.lookup("java:comp/env");
 		DataSource ds = (DataSource)envCtx.lookup("jdbc/db03");// Context.xml에서 이름이 jdbc/db03인 항목을 찾아오기
 		return ds.getConnection();
 	}
