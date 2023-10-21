@@ -67,7 +67,7 @@ birthday date not null,
 address1 varchar(100) not null,
 address2 varchar(100) not null,
 seen_mov text not null,
-reg_date date default (current_date)
+reg_date date default now()
 );
 insert into visitor(id, pwd, gender, birthday, address1, address2, seen_mov) values('aaaa','1234', 'm', '2000-01-01','주소1','주소2','살인의 추억,라따뚜이');
 
@@ -90,13 +90,13 @@ director varchar(50) not null,
 mov_img varchar(30) default 'nothing.jpg',
 genre varchar(30) not null, 
 rating varchar(20),
-synopsys text,
+synopsis text,
 length int, 
 rel_date date not null, 
 trailer_link varchar(200),
 avgusr_rating float
 );
-insert into movie(mov_name, director, mov_img, genre, rating, synopsys, length, rel_date, trailer_link)
+insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('라따뚜이','브래드 버드','Ratatouille.png','어린이/코미디','xx세이상관람가', 
 '쉿! 요건 비밀인데... 저 요리해요!
 절대미각, 빠른 손놀림, 끓어 넘치는 열정의 소유자 ‘레미’. 프랑스 최고의 요리사를 꿈꾸는 그에게 단 한가지 약점이 있었으니, 바로 주방 퇴치대상 1호인 ‘생쥐’라는 것!
