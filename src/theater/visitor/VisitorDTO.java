@@ -9,7 +9,7 @@ public class VisitorDTO {
 	private char gender;
 	private String tel;
 	private String email;
-	private String birthday;//java.sql.Date 대신 String을 사용해야 useBean의 자동을 사용가능.
+	private String birthday;//java.sql.Date 대신 String을 사용해야 useBean의 자동입력을 사용가능.
 	private String address1;
 	private String address2;
 	private String seen_mov;

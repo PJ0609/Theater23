@@ -52,15 +52,15 @@ public class MovieDAO {
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(UPDATE_MOVIE);
 			pstmt.setString(1,movie.getMov_name());
-			pstmt.setString(1,movie.getDirector());
-			pstmt.setString(1,movie.getMov_img());
-			pstmt.setString(1,movie.getGenre());
-			pstmt.setString(1,movie.getRating());
-			pstmt.setString(1,movie.getSynopsis());
-			pstmt.setInt(1,movie.getLength());
-			pstmt.setDate(1,movie.getRel_date());
-			pstmt.setString(1,movie.getTrailer_link());
-			pstmt.setString(1,movie.getMov_id());
+			pstmt.setString(2,movie.getDirector());
+			pstmt.setString(3,movie.getMov_img());
+			pstmt.setString(4,movie.getGenre());
+			pstmt.setString(5,movie.getRating());
+			pstmt.setString(6,movie.getSynopsis());
+			pstmt.setInt(7,movie.getLength());
+			pstmt.setDate(8,movie.getRel_date());
+			pstmt.setString(9,movie.getTrailer_link());
+			pstmt.setString(10,movie.getMov_id());
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();

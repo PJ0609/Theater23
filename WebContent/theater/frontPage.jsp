@@ -12,7 +12,6 @@
 <body>
 <%
 String id = (String)session.getAttribute("id");
-
 %>
 <div id="container">
 	<!-- 상단 -->
