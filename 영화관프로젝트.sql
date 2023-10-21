@@ -21,7 +21,7 @@ resv_id, id, resv_type, theater, scr_time, seat
 < 영화 정보 >
 ㄴ mov_id: 영화 고유 id
 ㄴ 기본정보: 제목, 이미지, 장르, 등급, 상영시간, 개봉일
-ㄴ synopsys: 상세 설명
+ㄴ synopsis: 상세 설명
 ㄴ 영화별 댓글 게시판
 ㄴ 영화별 평점 매기기 정보
 ㄴ 트레일러 링크
@@ -62,14 +62,18 @@ mov_id, scn_id, scn_time, scn_type, end_time, remaining_seats, resv_seat
 create table visitor(
 id varchar(30) primary key ,
 pwd varchar(16) not null,
+name varchar(50) not null,
 gender char(1) not null, 
+tel varchar(20) not null,
+email varchar(50) not null,
 birthday date not null, 
 address1 varchar(100) not null,
 address2 varchar(100) not null,
-seen_mov text not null,
-reg_date date default now()
+seen_mov text,
+reg_date datetime default now()
 );
-insert into visitor(id, pwd, gender, birthday, address1, address2, seen_mov) values('aaaa','1234', 'm', '2000-01-01','주소1','주소2','살인의 추억,라따뚜이');
+drop table visitor;
+insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, address2, seen_mov) values('aaaa','1234', '길길동', 'm', '010-1234-2345','asdf@email.com', '2000-01-01','주소1','주소2','살인의 추억,라따뚜이');
 
 -- 예매 정보
 create table ticketing(

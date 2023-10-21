@@ -20,8 +20,8 @@ public class VisitorDAO {
 	
 	private final String LOGIN_CHK = "select * from visitor where id=? and pwd=?";
 	private final String ID_CHK = "select * from visitor where id=?";
-	private final String INSERT_VISITOR = "insert into visitor(id, pwd, gender, birthday, address1, address2) values(?,?,?,?,?,?)";
-	private final String UPDATE_VISITOR = "update visitor set pwd=?, gender=?, birthday=?, address1=?, address2=? where id=? and pwd=?";
+	private final String INSERT_VISITOR = "insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, address2) values(?,?,?,?,?,?,?,?,?)";
+	private final String UPDATE_VISITOR = "update visitor set pwd=?, name=?, gender=?, tel=?, email=?, birthday=?, address1=?, address2=? where id=? and pwd=?";
 	private final String DELETE_VISITOR = "delete from visitor where id=? and pwd=?";
 	
 	
@@ -70,10 +70,13 @@ public class VisitorDAO {
 			pstmt = conn.prepareStatement(INSERT_VISITOR);
 			pstmt.setString(1, visitor.getId());
 			pstmt.setString(2, visitor.getPwd());
-			pstmt.setString(3,  String.valueOf(visitor.getGender()));
-			pstmt.setDate(4, visitor.getBirthday());
-			pstmt.setString(5, visitor.getAddress1());
-			pstmt.setString(6, visitor.getAddress2());
+			pstmt.setString(3, visitor.getName());
+			pstmt.setString(4,  String.valueOf(visitor.getGender()));
+			pstmt.setString(5, visitor.getTel());
+			pstmt.setString(6, visitor.getEmail());
+			pstmt.setString(7, visitor.getBirthday());
+			pstmt.setString(8, visitor.getAddress1());
+			pstmt.setString(9, visitor.getAddress2());
 			chk = pstmt.executeUpdate();
 			
 		} catch(Exception e) {
@@ -90,11 +93,14 @@ public class VisitorDAO {
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(UPDATE_VISITOR);
 			pstmt.setString(1, visitor.getPwd());
-			pstmt.setString(2, String.valueOf(visitor.getGender()));
-			pstmt.setDate(3,  visitor.getBirthday());
-			pstmt.setString(4, visitor.getAddress1());
-			pstmt.setString(5, visitor.getAddress2());
-			pstmt.setString(6, visitor.getId());
+			pstmt.setString(2, visitor.getName());
+			pstmt.setString(3, String.valueOf(visitor.getGender()));
+			pstmt.setString(4, visitor.getTel());
+			pstmt.setString(5, visitor.getEmail());
+			pstmt.setString(6, visitor.getBirthday());
+			pstmt.setString(7, visitor.getAddress1());
+			pstmt.setString(8, visitor.getAddress2());
+			pstmt.setString(9, visitor.getId());
 			chk = pstmt.executeUpdate();
 			
 		} catch(Exception e) {

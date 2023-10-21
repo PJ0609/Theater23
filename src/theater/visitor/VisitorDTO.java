@@ -1,13 +1,15 @@
 package theater.visitor;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public class VisitorDTO {
 	private String id;
 	private String pwd;
+	private String name;
 	private char gender;
-	private Date birthday;
+	private String tel;
+	private String email;
+	private String birthday;//java.sql.Date 대신 String을 사용해야 useBean의 자동을 사용가능.
 	private String address1;
 	private String address2;
 	private String seen_mov;
@@ -21,11 +23,23 @@ public class VisitorDTO {
 		return pwd;
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	public char getGender() {
 		return gender;
 	}
 
-	public Date getBirthday() {
+	public String getTel() {
+		return tel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getBirthday() {
 		return birthday;
 	}
 
@@ -53,11 +67,23 @@ public class VisitorDTO {
 		this.pwd = pwd;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 
@@ -76,4 +102,5 @@ public class VisitorDTO {
 	public void setReg_date(Timestamp reg_date) {
 		this.reg_date = reg_date;
 	}
+
 }
