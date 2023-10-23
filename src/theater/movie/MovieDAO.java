@@ -72,7 +72,7 @@ public class MovieDAO {
 		return chk;
 	}
 	
-	// 영화 삭제 (복수)
+	// 영화 삭제 (단일)
 		public int deleteMovie(String mov_id) {
 			int chk = 0;
 			try {
