@@ -72,7 +72,6 @@ address2 varchar(100) not null,
 seen_mov text,
 reg_date datetime default now()
 );
-drop table visitor;
 insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, address2, seen_mov) values('aaaa','1234', '길길동', 'm', '010-1234-2345','asdf@email.com', '2000-01-01','주소1','주소2','살인의 추억,라따뚜이');
 
 -- 예매 정보
