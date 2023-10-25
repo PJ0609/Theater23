@@ -20,6 +20,7 @@ String id = (String)session.getAttribute("id");
 	</div>
 	<div class="main">
 		<h1>정문입니다. 로그인된 아이디: <%=id %></h1>
+		<h1> Branch1에서 추가된 부분입니다. </h1>
 		<a href="../visitor/logoutPro.jsp">로그아웃</a>
 	</div>
 	<!-- 하단 -->
