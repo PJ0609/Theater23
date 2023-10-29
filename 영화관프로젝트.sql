@@ -84,7 +84,6 @@ scr_time datetime not null,
 end_time datetime not null,
 seat text not null
 );
-drop table ticketing;
 insert into ticketing(resv_id, id, resv_type, theater, scr_time, end_time, seat) values('jr3r41243l','aaaa', '2,1', '1', '2023-10-21 12:00', '2023-10-21 13:20', 'B3,B4,C3');
 
 -- 영화 정보
@@ -101,8 +100,6 @@ rel_date date not null,
 trailer_link varchar(200),
 avgusr_rating float
 );
-select * from movie;
-drop table movie;
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('라따뚜이','브래드 버드','Ratatouille.png','어린이, 코미디','all', 
 '쉿! 요건 비밀인데... 저 요리해요!
