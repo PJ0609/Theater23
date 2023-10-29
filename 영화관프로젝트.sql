@@ -10,7 +10,7 @@ use db03;
 id, username, pwd, gender, birthday, address1, address2, seen_mov
 
 < 예매 정보 >
-ㄴ resv_id: 예매번호 
+ㄴ resv_id: 예매번호(랜덤생성)
 ㄴ id: 예매한 회원 id
 ㄴ resv_type: 예매 유형(성인석, 청소년석 순서로, '4,2'는 청소년 4명, 성인2명을 뜻한다)
 ㄴ theater: 예매한 상영관
@@ -76,14 +76,16 @@ insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, addre
 
 -- 예매 정보
 create table ticketing(
-resv_id bigint primary key auto_increment,
+resv_id varchar(20) primary key,
 id varchar(30) not null, 
 resv_type varchar(10) not null,
 theater int not null, 
 scr_time datetime not null,
+end_time datetime not null,
 seat text not null
 );
-insert into ticketing(id, resv_type, theater, scr_time, seat) values('aaaa', '2,1', '1', '2023-10-21 12:00', 'B3,B4,C3');
+drop table ticketing;
+insert into ticketing(resv_id, id, resv_type, theater, scr_time, end_time, seat) values('jr3r41243l','aaaa', '2,1', '1', '2023-10-21 12:00', '2023-10-21 13:20', 'B3,B4,C3');
 
 -- 영화 정보
 create table movie(
@@ -133,4 +135,4 @@ end_time datetime not null,
 remaining_seats int,
 resv_seat text
 );
-insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, '라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);

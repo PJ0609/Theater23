@@ -7,12 +7,12 @@ import java.util.List;
 
 import theater.common.JDBCUtil;
 
-public class screenDAO {
-	private screenDAO() {};
+public class ScreenDAO {
+	private ScreenDAO() {};
 	
-	private static screenDAO instance = new screenDAO();
+	private static ScreenDAO instance = new ScreenDAO();
 	
-	public static screenDAO getInstance() {
+	public static ScreenDAO getInstance() {
 		return instance;
 	}
 	private Connection conn = null;
@@ -24,7 +24,7 @@ public class screenDAO {
 	public final String DELETE_SCREEN = "delete from screening where scn_id=?";
 
 	// 상영 추가
-	public int insertScreen(screenDTO screen) {
+	public int insertScreen(ScreenDTO screen) {
 		int chk = 0;
 		try {
 			conn = JDBCUtil.getConnection();
@@ -47,7 +47,7 @@ public class screenDAO {
 	}
 	
 	// 상영 변경
-	public int updateScreen(screenDTO screen) {
+	public int updateScreen(ScreenDTO screen) {
 		int chk = 0;
 		try {
 			conn = JDBCUtil.getConnection();

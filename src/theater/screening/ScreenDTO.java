@@ -2,7 +2,7 @@ package theater.screening;
 
 import java.sql.Timestamp;
 
-public class screenDTO {
+public class ScreenDTO {
 	private int mov_id;
 	private String mov_name;
 	private int scn_id;
