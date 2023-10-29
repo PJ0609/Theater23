@@ -12,6 +12,7 @@
 a { text-decoration: none; color: black; }
 .days { display: inline-block; margin: 0px 10px; }
 .dayBlock { width: 70px; height: 50px;  border: 1px solid gray; border-radius: 10px; text-align: center; }
+.dayBlock:hover { background-color: #e6e8e8; }
 .bold { font-weight: bold; }
 .blue { color: blue; }
 .red { color: red; }
@@ -54,12 +55,12 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	<div class="days">
 		<%if(refDay.plusDays(i).getDayOfMonth() == 1 || i == -1) {%>
 		<div class="yrmonth"><%=refDay.plusDays(i).getYear()%>년 <%=refDay.plusDays(i).getMonthValue()%>월</div><%} %>
+		<a href="schedule.jsp?refDay=<%=refDay.plusDays(i)%>">
 		<div class="dayBlock <%if(i==0) {%>selected<%}%>">
-			<a href="schedule.jsp?refDay=<%=refDay.plusDays(i)%>">
 			<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
 			<span class="weekday <%if(refDay.plusDays(i).getDayOfWeek().getValue()==6) {%>blue<%} else if(refDay.plusDays(i).getDayOfWeek().getValue()==7){%>red<%}%>"><%=weekdayMap.get(refDay.plusDays(i).getDayOfWeek().getValue())%></span>
-			</a>
 		</div>
+		</a>
 	</div>
 	<%} %>
 	<div class="days"><a href="schedule.jsp?refDay=<%=refDay.plusDays(7)%>"><img src="../icons/square-right.png" width="35px"></a></div>
