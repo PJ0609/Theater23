@@ -10,7 +10,7 @@ use db03;
 id, username, pwd, gender, birthday, address1, address2, seen_mov
 
 < 예매 정보 >
-ㄴ resv_id: 예매번호 
+ㄴ resv_id: 예매번호(랜덤생성)
 ㄴ id: 예매한 회원 id
 ㄴ resv_type: 예매 유형(성인석, 청소년석 순서로, '4,2'는 청소년 4명, 성인2명을 뜻한다)
 ㄴ theater: 예매한 상영관
@@ -42,7 +42,7 @@ id, mov_name, reg_date, usr_rating, content
 ㄴ scn_time, end_time: 영화관 상영시간 정보
 ㄴ remaining_seats: 상영시간별 잔여좌석수
 ㄴ resv_seat: 예약된 좌석 (e.g. "A4,B3,B4"는 1행 4열, 2행3열, 2행4열 좌석이 찬 것을 의미)
-mov_id, scn_id, scn_time, scn_type, end_time, remaining_seats, resv_seat
+mov_id, mov_name, scn_id, scn_time, scn_type, end_time, remaining_seats, resv_seat
 
 # 관리자 기능
 - 상영 변경/추가
@@ -76,14 +76,16 @@ insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, addre
 
 -- 예매 정보
 create table ticketing(
-resv_id bigint primary key auto_increment,
+resv_id varchar(20) primary key,
 id varchar(30) not null, 
 resv_type varchar(10) not null,
 theater int not null, 
 scr_time datetime not null,
+end_time datetime not null,
 seat text not null
 );
-insert into ticketing(id, resv_type, theater, scr_time, seat) values('aaaa', '2,1', '1', '2023-10-21 12:00', 'B3,B4,C3');
+drop table ticketing;
+insert into ticketing(resv_id, id, resv_type, theater, scr_time, end_time, seat) values('jr3r41243l','aaaa', '2,1', '1', '2023-10-21 12:00', '2023-10-21 13:20', 'B3,B4,C3');
 
 -- 영화 정보
 create table movie(
@@ -125,6 +127,7 @@ insert into review(mov_id, mov_name, id, usr_rating, content) values(1, '라따�
 -- 상영 정보
 create table screening(
 mov_id bigint not null,
+mov_name varchar(50) default '제목없음',
 scn_id bigint primary key auto_increment, 
 scn_type varchar(20) not null,
 scn_time datetime not null, 
@@ -132,4 +135,4 @@ end_time datetime not null,
 remaining_seats int,
 resv_seat text
 );
-insert into screening(mov_id, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
