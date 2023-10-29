@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.time.LocalDate, java.time.format.DateTimeFormatter, theater.screening.*, theater.movie.*" %>
+<%@ page import="java.util.*, java.time.LocalDate, java.text.SimpleDateFormat, theater.screening.*, theater.movie.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,13 +24,16 @@ a { text-decoration: none; color: black; }
 .weekday {}
 .dateSelector { display: inline-block; border: 1px solid gray; border-radius: 10px; padding: 5px; }
 /* 상영 스케줄 뷰 */
+.schedules { padding: 15px; }
+.screenblock {  }
 .rating { width: 32px; position: relative; top: 3px; }
 .mov_title { font-size: 2em; font-weight: bold; }
-hr { color: #ff1100; }
+.scntype { margin: 5px; border: 1px solid gray; border-radius: 3px; }
+.screenblock { margin: 5px; display: inline-block; border: 1px solid gray; border-radius: 3px; text-align: center; }
+.scn_time { font-size: 1.7em; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {	
-	// refDay를 현재날짜로 설정
 	let refDay = document.getElementById("refDay");
 	refDay.addEventListener("change", function() {
 		location = "schedule.jsp?refDay=" + refDay.value;
@@ -87,7 +90,11 @@ System.out.println("지정일 조회된 영화: " + mov_ids);
 
 // 목록에 있는 영화 id마다 상영 조회
 MovieDAO MovPro = MovieDAO.getInstance();
-DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("yyyy년 M월 dd일");
+SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 M월 dd일");
+SimpleDateFormat sdf2 = new SimpleDateFormat("hh : mm");
+// java.time.LocalDate, java.time.format.DateTimeFormatter,
+//DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("yyyy년 M월 dd일");
+//DateTimeFormatter dtf2 =  DateTimeFormatter.ofPattern("hh : mm");
 for(int mov_id : mov_ids) {
 	ScreenDTO scndto = new ScreenDTO();
 	List<ScreenDTO> scnList = scnPro.getScnList(mov_id, refDay);
@@ -99,10 +106,9 @@ for(int mov_id : mov_ids) {
 			<img src="../icons/<%=movie.getRating()%>.png" class="rating">
 			<span class="mov_title"><%=movie.getMov_name()%> </span>
 			<span class="mov_length"><%=movie.getLength() %>분 / </span>
-			<span class="mov_Rel_date"><%=movie.getRel_date().toLocalDate().format(dtf) %> 개봉 /</span>
+			<span class="mov_Rel_date"><%=sdf1.format(movie.getRel_date())%> 개봉 /</span>
 			<span class="mov_genre"><%=movie.getGenre()%></span>
 		</div>
-		<img src="/imageFile/<%=movie.getMov_img()%>">
 		<div class="movieTime">
 		<%
 		int scn_id = 0; String scn_type = "";
@@ -112,14 +118,14 @@ for(int mov_id : mov_ids) {
 				scn_id = screen.getScn_id();
 				scn_type = screen.getScn_type();
 			%>
-			<div class="new_scntype">
+			<div class="scntype"><b>
 				<span class="scn_id">상영관: <%=scn_id%></span>
 				<span class="scn_type">상영 타입: <%=scn_type%></span>
-			</div>
+			</div></b>
 			<%} %>
 			<div class="screenblock">
-				<span class="scn_time">상영시간: <%=screen.getScn_time()%></span>
-				<span class="remaining_seats">잔여석: <%=screen.getRemaining_seats()%></span>
+				<span class="scn_time"><%=sdf2.format(screen.getScn_time())%></span><br>
+				<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
 			</div>
 		<%} %>
 		</div>

@@ -101,7 +101,7 @@ trailer_link varchar(200),
 avgusr_rating float
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
-values('라따뚜이','브래드 버드','Ratatouille.png','어린이, 코미디','all', 
+values('라따뚜이','브래드 버드','Ratatouille.jpg','어린이, 코미디','all', 
 '쉿! 요건 비밀인데... 저 요리해요!
 절대미각, 빠른 손놀림, 끓어 넘치는 열정의 소유자 ‘레미’. 프랑스 최고의 요리사를 꿈꾸는 그에게 단 한가지 약점이 있었으니, 바로 주방 퇴치대상 1호인 ‘생쥐’라는 것!
 그러던 어느 날, 하수구에서 길을 잃은 레미는 운명처럼 파리의 별 다섯개짜리
@@ -113,7 +113,7 @@ values('라따뚜이','브래드 버드','Ratatouille.png','어린이, 코미디
 'https://youtu.be/NgsQ8mVkN8w?si=dRnD-g3f6arpjTNE'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
-values('살인의 추억','봉준호','memoriesofmurder.png','범죄, 미스터리','15', 
+values('살인의 추억','봉준호','memoriesofmurder.jpg','범죄, 미스터리','15', 
 '1986년 경기도. 젊은 여인이 무참히 강간, 살해당한 시체로 발견된다. 2개월 후, 비슷한 수법의 강간살인사건이 연이어 발생하면서 사건은 세간의 주목을 받기 시작하고, 일대는 연쇄살인이라는 생소한 범죄의 공포에 휩싸인다. 사건 발생지역에 특별수사본부가 설치되고, 수사본부는 구희봉 반장(변희봉 분)을 필두로 지역토박이 형사 박두만(송강호 분)과 조용구(김뢰하 분), 그리고 서울 시경에서 자원해 온 서태윤(김상경 분)이 배치된다. 육감으로 대표되는 박두만은 동네 양아치들을 족치며 자백을 강요하고, 서태윤은 사건 서류를 꼼꼼히 검토하며 사건의 실마리를 찾아가지만, 스타일이 다른 두 사람은 처음부터 팽팽한 신경전을 벌인다.', 
 132,'2003-04-25',
 'https://youtu.be/0n_HQwQU8ls?si=sYgSfmt1OYaVeVpC'
