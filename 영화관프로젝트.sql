@@ -42,7 +42,7 @@ id, mov_name, reg_date, usr_rating, content
 ㄴ scn_time, end_time: 영화관 상영시간 정보
 ㄴ remaining_seats: 상영시간별 잔여좌석수
 ㄴ resv_seat: 예약된 좌석 (e.g. "A4,B3,B4"는 1행 4열, 2행3열, 2행4열 좌석이 찬 것을 의미)
-mov_id, scn_id, scn_time, scn_type, end_time, remaining_seats, resv_seat
+mov_id, mov_name, scn_id, scn_time, scn_type, end_time, remaining_seats, resv_seat
 
 # 관리자 기능
 - 상영 변경/추가
@@ -125,6 +125,7 @@ insert into review(mov_id, mov_name, id, usr_rating, content) values(1, '라따�
 -- 상영 정보
 create table screening(
 mov_id bigint not null,
+mov_name varchar(50) default '제목없음',
 scn_id bigint primary key auto_increment, 
 scn_type varchar(20) not null,
 scn_time datetime not null, 
@@ -132,4 +133,4 @@ end_time datetime not null,
 remaining_seats int,
 resv_seat text
 );
-insert into screening(mov_id, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, '라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
