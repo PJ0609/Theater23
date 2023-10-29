@@ -10,6 +10,8 @@
 <style>
 #container { width: 1000px; margin: 0px auto; }
 a { text-decoration: none; color: black; }
+/* 날짜 선택부 */
+.weekArr { position: relative; top: 10px; }
 .days { display: inline-block; margin: 0px 10px; }
 .dayBlock { width: 70px; height: 50px;  border: 1px solid gray; border-radius: 10px; text-align: center; }
 .dayBlock:hover { background-color: #e6e8e8; }
@@ -39,9 +41,10 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 %>
 <div id="container">
 <h1>상영시간표</h1>
+<!-- 날짜 선택부 -->
 날짜를 선택하세요: <input type="date" id="refDay" value="<%=refDay%>">
 <div class="dateSelector">
-	<div class="days"><a href="schedule.jsp?refDay=<%=refDay.plusDays(-7)%>"><img src="../icons/square-left.png" width="35px" ></a></div>
+	<div class="days weekArr"><a href="schedule.jsp?refDay=<%=refDay.plusDays(-7)%>"><img src="../icons/square-left.png" width="35px" ></a></div>
 	<%
 	HashMap<Integer, String> weekdayMap = new HashMap<Integer, String>();
 	weekdayMap.put(1,"월");
@@ -63,8 +66,9 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 		</a>
 	</div>
 	<%} %>
-	<div class="days"><a href="schedule.jsp?refDay=<%=refDay.plusDays(7)%>"><img src="../icons/square-right.png" width="35px"></a></div>
+	<div class="days weekArr"><a href="schedule.jsp?refDay=<%=refDay.plusDays(7)%>"><img src="../icons/square-right.png" width="35px"></a></div>
 </div>
+<!-- 상영 스케줄 뷰 -->
+
 </body>
-</div>
 </html>

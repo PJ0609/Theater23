@@ -88,7 +88,7 @@ public class MovieDAO {
 			return chk;
 		}
 	// 영화 삭제 (복수)
-	public int deleteMovie(String[] mov_id_array) {
+	public int deleteMovie(List<String> mov_id_array) {
 		int chk = 0;
 		String mov_ids = String.join(",", mov_id_array);
 		try {
