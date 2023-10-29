@@ -3,7 +3,7 @@ package theater.movie;
 import java.sql.Date;
 
 public class MovieDTO {
-	private String mov_id;
+	private int mov_id;
 	private String mov_name;
 	private String director;
 	private String mov_img;
@@ -15,7 +15,7 @@ public class MovieDTO {
 	private String trailer_link;
 	private double avgusr_rating;
 
-	public String getMov_id() {
+	public int getMov_id() {
 		return mov_id;
 	}
 
@@ -59,7 +59,7 @@ public class MovieDTO {
 		return avgusr_rating;
 	}
 
-	public void setMov_id(String mov_id) {
+	public void setMov_id(int mov_id) {
 		this.mov_id = mov_id;
 	}
 

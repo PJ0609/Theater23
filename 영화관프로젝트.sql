@@ -94,23 +94,32 @@ mov_name varchar(50) default '제목없음',
 director varchar(50) not null,
 mov_img varchar(30) default 'nothing.jpg',
 genre varchar(30) not null, 
-rating varchar(20),
+rating varchar(5),
 synopsis text,
 length int, 
 rel_date date not null, 
 trailer_link varchar(200),
 avgusr_rating float
 );
+select * from movie;
+drop table movie;
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
-values('라따뚜이','브래드 버드','Ratatouille.png','어린이/코미디','xx세이상관람가', 
+values('라따뚜이','브래드 버드','Ratatouille.png','어린이, 코미디','all', 
 '쉿! 요건 비밀인데... 저 요리해요!
 절대미각, 빠른 손놀림, 끓어 넘치는 열정의 소유자 ‘레미’. 프랑스 최고의 요리사를 꿈꾸는 그에게 단 한가지 약점이 있었으니, 바로 주방 퇴치대상 1호인 ‘생쥐’라는 것!
 그러던 어느 날, 하수구에서 길을 잃은 레미는 운명처럼 파리의 별 다섯개짜리
 최고급 레스토랑에 떨어진다. 그러나 생쥐의 신분으로 주방이란 그저 그림의 떡.
 보글거리는 수프, 뚝닥뚝닥 도마소리, 향긋한 허브 내음에 식욕이 아닌 ‘요리욕’이 북받친
 레미의 작은 심장은 콩닥콩닥 뛰고 마는데!
-쥐면 쥐답게 쓰레기나 먹고 살라는 가족들의 핀잔에도 굴하지 않고 끝내 주방으로 들어가는 레미. 깜깜한 어둠 속에서 요리에 열중하다 재능 없는 견습생 ‘링귀니’에게 ‘딱’ 걸리고 만다. 하지만 해고위기에 처해있던 링귀니는 레미의 재능을 한눈에 알아보고 의기투합을 제안하는데. 과연 궁지에 몰린 둘은 환상적인 요리 실력을 발휘할 수 있을 것인가? 레미와 링귀니의 좌충우돌 공생공사 프로젝트가 아름다운 파리를 배경으로 이제 곧 펼쳐진다!', 110,'2007-07-25',
+쥐면 쥐답게 쓰레기나 먹고 살라는 가족들의 핀잔에도 굴하지 않고 끝내 주방으로 들어가는 레미. 깜깜한 어둠 속에서 요리에 열중하다 재능 없는 견습생 ‘링귀니’에게 ‘딱’ 걸리고 만다. 하지만 해고위기에 처해있던 링귀니는 레미의 재능을 한눈에 알아보고 의기투합을 제안하는데. 과연 궁지에 몰린 둘은 환상적인 요리 실력을 발휘할 수 있을 것인가? 레미와 링귀니의 좌충우돌 공생공사 프로젝트가 아름다운 파리를 배경으로 이제 곧 펼쳐진다!',
+ 110,'2007-07-25',
 'https://youtu.be/NgsQ8mVkN8w?si=dRnD-g3f6arpjTNE'
+);
+insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
+values('살인의 추억','봉준호','memoriesofmurder.png','범죄, 미스터리','15', 
+'1986년 경기도. 젊은 여인이 무참히 강간, 살해당한 시체로 발견된다. 2개월 후, 비슷한 수법의 강간살인사건이 연이어 발생하면서 사건은 세간의 주목을 받기 시작하고, 일대는 연쇄살인이라는 생소한 범죄의 공포에 휩싸인다. 사건 발생지역에 특별수사본부가 설치되고, 수사본부는 구희봉 반장(변희봉 분)을 필두로 지역토박이 형사 박두만(송강호 분)과 조용구(김뢰하 분), 그리고 서울 시경에서 자원해 온 서태윤(김상경 분)이 배치된다. 육감으로 대표되는 박두만은 동네 양아치들을 족치며 자백을 강요하고, 서태윤은 사건 서류를 꼼꼼히 검토하며 사건의 실마리를 찾아가지만, 스타일이 다른 두 사람은 처음부터 팽팽한 신경전을 벌인다.', 
+132,'2003-04-25',
+'https://youtu.be/0n_HQwQU8ls?si=sYgSfmt1OYaVeVpC'
 );
 
 -- 영화후기 글 정보
@@ -135,4 +144,10 @@ end_time datetime not null,
 remaining_seats int,
 resv_seat text
 );
-insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1, 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+select * from screening;
+insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+insert into screening(mov_id, mov_name, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
+insert into screening(mov_id, mov_name, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', '2D', '2023-10-23 12:00', '2023-10-23 13:10', 81);
+
+select date(scn_time) from screening where mov_id=1;
+select mov_id from screening where date(scn_time)='2023-10-21';
