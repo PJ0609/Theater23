@@ -12,7 +12,7 @@ a { text-decoration: none; color: black; }
 /* 날짜 선택부 */
 .dateSelect { background-color: #f0f7ff; border: 1px solid gray; border-radius: 10px; padding: 8px 10px 10px 10px; }
 .weekArr { position: relative; top: 10px; }
-.days { display: inline-block; margin: 0px 8px; }
+.days { display: inline-block; margin: 0px 8px; background-color: white; }
 .dayBlock { box-sizing: border-box; width: 70px; height: 50px;  border: 1px solid gray; border-radius: 10px; text-align: center; }
 .dayBlock:hover { background-color: #e6e8e8; }
 .bold { font-weight: bold; }
