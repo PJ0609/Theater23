@@ -21,11 +21,9 @@ a { text-decoration: none; color: black; }
 .selected { background-color: #e6e8e8; border: 2.5px solid black; }
 .yrmonth { box-sizing: border-box; font-size: 0.7em; width: 70px; border: 1px solid gray; border-radius: 6px; text-align: center; }
 .day { font-size: 2em; }
-.weekday {}
-.dateSelector { display: inline-block; border: 1px solid gray; border-radius: 10px; padding: 5px; }
+.dateSelector { display: inline-block; background-color: white; border: 1px solid gray; border-radius: 10px; padding: 5px; }
 /* 상영 스케줄 뷰 */
 .schedules { padding: 15px; }
-.screenblock {  }
 .rating { width: 32px; position: relative; top: 3px; }
 .mov_title { font-size: 2em; font-weight: bold; }
 .scntype { background-color: #f0f7ff; margin: 5px; border: 1px solid gray; border-radius: 3px; }
@@ -115,23 +113,19 @@ for(int mov_id : mov_ids) {
 		int theater = -1; String scn_type = "";
 		for(ScreenDTO screen : scnList) {
 			// 상영관이나 상영타입이 달라질 경우에만 줄바꿈, 표시 
-			//System.out.println("새상영관: "+ screen.getTheater() +" 기존상영관: " + theater);
-			//System.out.println("새타입: "+ screen.getScn_type() +" 기존타입: " + scn_type);
 			if(theater != screen.getTheater() || !scn_type.equals(screen.getScn_type()) ){
-				System.out.println("실행");
 				theater = screen.getTheater();
 				scn_type = screen.getScn_type();%>
 				<div class="scntype"><b>
 					<span class="theater">상영관: <%=theater%></span>
 					<span class="scn_type">상영 타입: <%=scn_type%></span>
 				</b></div>
-			<%} %>
-			
-			<a href=""><div class="screenblock">
+			<%}%>
+			<a href="../ticketing/seats.jsp?scn_id=<%=screen.getScn_id()%>"><div class="screenblock">
 				<span class="scn_time"><%=sdf2.format(screen.getScn_time())%></span><br>
 				<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
 			</div></a>
-		<%} %>
+		<%}%>
 		</div>
 	</div>
 	<hr>

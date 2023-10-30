@@ -15,7 +15,7 @@ id, username, pwd, gender, birthday, address1, address2, seen_mov
 ㄴ resv_type: 예매 유형(성인석, 청소년석 순서로, '4,2'는 청소년 4명, 성인2명을 뜻한다)
 ㄴ theater: 예매한 상영관
 ㄴ scr_time: 상영 시간
-ㄴ seat: 예매한 좌석 좌표(e.g. "14 23 24"는 1행 4열, 2행3열, 2행4열 좌석이 찬 것을 의미)
+ㄴ seat: 예매한 좌석 좌표(e.g. "A4 B3 B4"는 1행 4열, 2행3열, 2행4열 좌석이 찬 것을 의미)
 resv_id, id, resv_type, theater, scr_time, seat
 
 < 영화 정보 >
@@ -143,12 +143,10 @@ remaining_seats int,
 resv_seat text
 );
 select * from screening;
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(1,'라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81, 'F3, A2, H12, D15');
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 14:00', '2023-10-23 13:10', 81);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '3D', '2023-10-21 16:00', '2023-10-21 17:10', 70);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D', '2023-10-21 14:00', '2023-10-21 15:10', 87);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D', '2023-10-21 18:00', '2023-10-21 19:10', 87);
 
-select date(scn_time) from screening where mov_id=1;
-select mov_id from screening where date(scn_time)='2023-10-21';
-drop table screening;

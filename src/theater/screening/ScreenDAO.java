@@ -27,6 +27,7 @@ public class ScreenDAO {
 	public final String GET_MOV_BY_DATE = "select mov_id from screening where date(scn_time)=?";
 	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=? ";
 	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
+	public final String GET_SCN = "select * from screening where scn_id=?";
 	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?)";
 	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, remaining_seats=?";
 	public final String DELETE_SCREEN = "delete from screening where scn_id=?";
@@ -101,6 +102,34 @@ public class ScreenDAO {
 			JDBCUtil.close(conn, pstmt, rs);
 		}
 		return screenList;
+	}
+	
+	// 상영 상세조회
+	public ScreenDTO getScreen(int scn_id) {
+		ScreenDTO screen = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(GET_SCN);
+			pstmt.setInt(1, scn_id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				screen = new ScreenDTO();
+				screen.setMov_id(rs.getInt("mov_id"));
+				screen.setMov_name(rs.getString("mov_name"));
+				screen.setScn_id(rs.getInt("scn_id"));
+				screen.setTheater(rs.getInt("theater"));
+				screen.setScn_type(rs.getString("scn_type"));
+				screen.setScn_time(rs.getTimestamp("scn_time"));
+				screen.setEnd_time(rs.getTimestamp("end_time"));
+				screen.setRemaining_seats(rs.getInt("remaining_seats"));
+				screen.setResv_seat(rs.getString("resv_seat"));
+			}	
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return screen;
 	}
 	
 	// 상영 추가
