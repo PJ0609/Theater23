@@ -135,6 +135,7 @@ create table screening(
 mov_id bigint not null,
 mov_name varchar(50) default '제목없음',
 scn_id bigint primary key auto_increment, 
+theater int not null,
 scn_type varchar(20) not null,
 scn_time datetime not null, 
 end_time datetime not null,
@@ -142,9 +143,12 @@ remaining_seats int,
 resv_seat text
 );
 select * from screening;
-insert into screening(mov_id, mov_name, scn_id, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
-insert into screening(mov_id, mov_name, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
-insert into screening(mov_id, mov_name, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', '2D', '2023-10-23 12:00', '2023-10-23 13:10', 81);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 14:00', '2023-10-23 13:10', 81);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '3D', '2023-10-21 16:00', '2023-10-21 17:10', 70);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D', '2023-10-21 14:00', '2023-10-21 15:10', 87);
 
 select date(scn_time) from screening where mov_id=1;
 select mov_id from screening where date(scn_time)='2023-10-21';
+drop table screening;

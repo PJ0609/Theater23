@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import theater.common.JDBCUtil;
 
@@ -24,15 +26,15 @@ public class ScreenDAO {
 
 	public final String GET_MOV_BY_DATE = "select mov_id from screening where date(scn_time)=?";
 	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=? ";
-	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by scn_id, scn_type, scn_time";
-	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(?,?,?,?,?,?,?)";
-	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, scn_type=?, scn_time=?, end_time=?, remaining_seats=?";
+	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
+	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?)";
+	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, remaining_seats=?";
 	public final String DELETE_SCREEN = "delete from screening where scn_id=?";
 	
 	
 	// 상영일별 영화 조회
-	public List<Integer> getMovByDate(LocalDate ldate) {
-		List<Integer> mov_ids = new ArrayList<Integer>();
+	public Set<Integer> getMovByDate(LocalDate ldate) {
+		Set<Integer> mov_ids = new HashSet<Integer>();
 		try {
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(GET_MOV_BY_DATE);
@@ -84,6 +86,7 @@ public class ScreenDAO {
 				screen = new ScreenDTO();
 				screen.setMov_id(rs.getInt("mov_id"));
 				screen.setMov_name(rs.getString("mov_name"));
+				screen.setTheater(rs.getInt("theater"));
 				screen.setScn_id(rs.getInt("scn_id"));
 				screen.setScn_type(rs.getString("scn_type"));
 				screen.setScn_time(rs.getTimestamp("scn_time"));
@@ -108,11 +111,12 @@ public class ScreenDAO {
 			pstmt = conn.prepareStatement(INSERT_SCREEN);
 			pstmt.setInt(1, screen.getMov_id());
 			pstmt.setString(2, screen.getMov_name());
-			pstmt.setString(3, screen.getScn_type());
-			pstmt.setTimestamp(4, screen.getScn_time());
-			pstmt.setTimestamp(5, screen.getEnd_time());
-			pstmt.setInt(6, screen.getRemaining_seats());
-			pstmt.setString(7, screen.getResv_seat());
+			pstmt.setInt(3, screen.getTheater());
+			pstmt.setString(4, screen.getScn_type());
+			pstmt.setTimestamp(5, screen.getScn_time());
+			pstmt.setTimestamp(6, screen.getEnd_time());
+			pstmt.setInt(7, screen.getRemaining_seats());
+			pstmt.setString(8, screen.getResv_seat());
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -131,11 +135,12 @@ public class ScreenDAO {
 			pstmt.setInt(1,screen.getMov_id());
 			pstmt.setString(2,screen.getMov_name());
 			pstmt.setInt(3,screen.getScn_id());
-			pstmt.setString(4,screen.getScn_type());
-			pstmt.setTimestamp(5,screen.getScn_time());
-			pstmt.setTimestamp(6,screen.getEnd_time());
-			pstmt.setInt(7,screen.getRemaining_seats());
-			pstmt.setString(8,screen.getResv_seat());
+			pstmt.setInt(4,screen.getTheater());
+			pstmt.setString(5,screen.getScn_type());
+			pstmt.setTimestamp(6,screen.getScn_time());
+			pstmt.setTimestamp(7,screen.getEnd_time());
+			pstmt.setInt(8,screen.getRemaining_seats());
+			pstmt.setString(9,screen.getResv_seat());
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();

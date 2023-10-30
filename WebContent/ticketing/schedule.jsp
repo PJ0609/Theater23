@@ -28,8 +28,9 @@ a { text-decoration: none; color: black; }
 .screenblock {  }
 .rating { width: 32px; position: relative; top: 3px; }
 .mov_title { font-size: 2em; font-weight: bold; }
-.scntype { margin: 5px; border: 1px solid gray; border-radius: 3px; }
-.screenblock { margin: 5px; display: inline-block; border: 1px solid gray; border-radius: 3px; text-align: center; }
+.scntype { background-color: #f0f7ff; margin: 5px; border: 1px solid gray; border-radius: 3px; }
+.screenblock {  margin: 0px 5px 5px 5px; display: inline-block; border: 1px solid gray; border-radius: 3px; text-align: center; padding: 5px;  }
+.screenblock:hover { background-color: #e6e8e8; }
 .scn_time { font-size: 1.7em; }
 </style>
 <script>
@@ -85,13 +86,13 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 <%
 //조회기준일로 영화 id목록 가져오기
 ScreenDAO scnPro = ScreenDAO.getInstance();
-List<Integer> mov_ids = scnPro.getMovByDate(refDay);
+Set<Integer> mov_ids = scnPro.getMovByDate(refDay);
 System.out.println("지정일 조회된 영화: " + mov_ids);
 
 // 목록에 있는 영화 id마다 상영 조회
 MovieDAO MovPro = MovieDAO.getInstance();
 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 M월 dd일");
-SimpleDateFormat sdf2 = new SimpleDateFormat("hh : mm");
+SimpleDateFormat sdf2 = new SimpleDateFormat("kk:mm");
 // java.time.LocalDate, java.time.format.DateTimeFormatter,
 //DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("yyyy년 M월 dd일");
 //DateTimeFormatter dtf2 =  DateTimeFormatter.ofPattern("hh : mm");
@@ -111,22 +112,25 @@ for(int mov_id : mov_ids) {
 		</div>
 		<div class="movieTime">
 		<%
-		int scn_id = 0; String scn_type = "";
+		int theater = -1; String scn_type = "";
 		for(ScreenDTO screen : scnList) {
-			// 상영관이나 상영타입이 달라질 경우에만 줄바꿈, 재표시 수행 
-			if(scn_id != screen.getScn_id() || scn_type != screen.getScn_type()){
-				scn_id = screen.getScn_id();
-				scn_type = screen.getScn_type();
-			%>
-			<div class="scntype"><b>
-				<span class="scn_id">상영관: <%=scn_id%></span>
-				<span class="scn_type">상영 타입: <%=scn_type%></span>
-			</div></b>
+			// 상영관이나 상영타입이 달라질 경우에만 줄바꿈, 표시 
+			//System.out.println("새상영관: "+ screen.getTheater() +" 기존상영관: " + theater);
+			//System.out.println("새타입: "+ screen.getScn_type() +" 기존타입: " + scn_type);
+			if(theater != screen.getTheater() || !scn_type.equals(screen.getScn_type()) ){
+				System.out.println("실행");
+				theater = screen.getTheater();
+				scn_type = screen.getScn_type();%>
+				<div class="scntype"><b>
+					<span class="theater">상영관: <%=theater%></span>
+					<span class="scn_type">상영 타입: <%=scn_type%></span>
+				</b></div>
 			<%} %>
-			<div class="screenblock">
+			
+			<a href=""><div class="screenblock">
 				<span class="scn_time"><%=sdf2.format(screen.getScn_time())%></span><br>
 				<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
-			</div>
+			</div></a>
 		<%} %>
 		</div>
 	</div>

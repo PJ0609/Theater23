@@ -6,6 +6,7 @@ public class ScreenDTO {
 	private int mov_id;
 	private String mov_name;
 	private int scn_id;
+	private int theater;
 	private String scn_type;
 	private Timestamp scn_time;
 	private Timestamp end_time;
@@ -22,6 +23,10 @@ public class ScreenDTO {
 
 	public int getScn_id() {
 		return scn_id;
+	}
+
+	public int getTheater() {
+		return theater;
 	}
 
 	public String getScn_type() {
@@ -54,6 +59,10 @@ public class ScreenDTO {
 
 	public void setScn_id(int scn_id) {
 		this.scn_id = scn_id;
+	}
+
+	public void setTheater(int theater) {
+		this.theater = theater;
 	}
 
 	public void setScn_type(String scn_type) {
