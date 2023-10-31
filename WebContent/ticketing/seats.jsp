@@ -14,12 +14,12 @@
 .infoViewer { position: relative; float: right; width: 29%; height: 500px; border: 2px solid gray; border-radius: 15px; margin: 10px 0 5px 2.5px; background-color: #f0f7ff; }
 .selectCntBox { width: 100%; }
 .cntConfirm { display: inline-block; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #86c8f7; text-align: center; 
-			 line-height: 33px; margin: 15px 10px 10px 30px; position: relative; top:2px;  }
+			 line-height: 33px; margin: 15px 10px 10px 30px; position: relative; top:2px; cursor: pointer; }
 .selected { background-color: #86c8f7; }
 .cntReset { display: inline-block; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #ebebeb; text-align: center;  
-			 line-height: 33px; margin: 15px;  position: relative; top:2px;  }
+			 line-height: 33px; margin: 15px;  position: relative; top:2px;  cursor: pointer; }
 .cntBtn { display: inline-block; width: 45px; height: 31px; border: 1px solid black; background-color: white; 
-		 border-radius: 10px; }
+		 border-radius: 10px;  cursor: pointer; }
 .cntBtn:hover { background-color: #96c4ff; }
 input[type="text"] { height: 25px; width: 50px; line-height: 25px; font-size: 1.3em; text-weight: bold; text-align: center; border: none; position: relative; top: 3px; background-color: #f0f7ff; }
 input[type="text"]:focus { outline: none; }
@@ -50,6 +50,7 @@ input[type="text"]:focus { outline: none; }
 .horizontal { width: 100%;  height: 2px; background-color: #213d6b; margin: 0; }
 #seatResult { width: 230px; display: inline-block; height: 30px;  background-color: transparent; font-family:'Malgun Gothic'; font-weight: bold;
 		      resize: none; overflow: hidden; color: #cccccc; border: none;}
+#seatResult:focus { outline: none; }
 .result { margin: 10px 20px; font-size: 0.7em;  }
 .cntResult { float: left; margin: 5px; line-height: 20px; }
 .calculate { float: right; margin: 5px; line-height: 20px; text-align: right; }
@@ -57,8 +58,8 @@ hr { clear: both; }
 .priceLabel { float: left; margin: 5px; font-weight: bold; font-size: 1.2em; position: relative; top: 3px; }
 #price { width: 100px; float: right; color: #b53c4c; font-weight: bold; font-size: 1.5em; text-align: right; }
 .btn { position: absolute; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #ebebeb; text-align: center;  
-			 line-height: 33px; margin: 15px; }
-.prev { bottom: 20px; left: 30px;  }
+	   line-height: 33px; margin: 15px;  cursor: pointer; }
+.prev { bottom: 20px; left: 30px; }
 .next { bottom: 20px; right: 30px;  }
 </style>
 <script>
@@ -188,7 +189,7 @@ MovieDTO movie = MovPro.getMovie(screen.getMov_id());
 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 M월 dd일");
 SimpleDateFormat sdf2 = new SimpleDateFormat("kk:mm");
 
-ArrayList<String> resv_seat = null;
+ArrayList<String> resv_seat = new ArrayList<String>();
 // 찬 좌석 리스트로 가져오기
 if(screen.getResv_seat() != null) {
 	resv_seat = new ArrayList<String>(Arrays.asList(screen.getResv_seat().split(", ")));
@@ -256,7 +257,7 @@ DecimalFormat df = new DecimalFormat("#,###");
 				<div class="scn_date Info"><%=sdf1.format(screen.getScn_time()) %></div>
 				<div class="scn_time"><%=sdf2.format(screen.getScn_time()) %> ~ <%=sdf2.format(screen.getEnd_time())%></div>
 				<div class="horizontal"></div>
-				<div class="Info">좌석번호: <textarea id="seatResult"></textarea></div>
+				<div class="Info">좌석번호: <textarea id="seatResult" readonly></textarea></div>
 			</div>
 			<div class="result">
 				<form action="" method="post" name="resultForm">
@@ -265,8 +266,8 @@ DecimalFormat df = new DecimalFormat("#,###");
 				<input type="hidden" name="scr_time" value="<%=screen.getScn_time()%>">
 				<input type="hidden" name="end_time" value="<%=screen.getEnd_time()%>">
 				<input type="hidden" name="seat" value="">
-				<div class="cntResult"><%=(adultCnt != 0) ? "성인: " + adultCnt + "명" : ""%><br><%=(teenCnt != 0) ? "청소년: " + teenCnt + "명" : ""%></div>
-				<div class="calculate"><%=(adultCnt != 0) ? df.format(adultPrice * adultCnt):""%><br><%=(teenCnt != 0) ? df.format(teenPrice * teenCnt) : ""%></div>
+				<div class="cntResult"><%=(adultCnt != 0) ? "성인: " + adultCnt + "명" : ""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? "청소년: " + teenCnt + "명" : ""%></div>
+				<div class="calculate"><%=(adultCnt != 0) ? df.format(adultPrice * adultCnt):""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? df.format(teenPrice * teenCnt) : ""%></div>
 				<hr>
 				<div class="priceLabel">결제금액:</div><input type="text" id="price"  value="<%=df.format(totalPrice) %> 원" readonly>
 				</form>
