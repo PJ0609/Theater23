@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="theater.screening.*, java.util.*" %>
+<%@ page import="theater.screening.*, theater.movie.*, java.util.*, java.text.SimpleDateFormat, java.text.DecimalFormat" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,7 @@
 .cntSelector { box-sizing: border-box; width: 100%; height: 70px; border: 2px solid gray; border-radius: 15px; text-align: center; background-color: #f0f7ff; }
 .seatSelector { position: relative; float: left; width: 69%; height: 500px; border: 2px solid gray; border-radius: 15px; 
 			   margin: 10px 2.5px 5px 0; text-align: center; }
-.infoViewer { float: right; width: 29%; height: 500px; border: 2px solid gray; border-radius: 15px; margin: 10px 0 5px 2.5px;}
+.infoViewer { position: relative; float: right; width: 29%; height: 500px; border: 2px solid gray; border-radius: 15px; margin: 10px 0 5px 2.5px; background-color: #f0f7ff; }
 .selectCntBox { width: 100%; }
 .cntConfirm { display: inline-block; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #86c8f7; text-align: center; 
 			 line-height: 33px; margin: 15px 10px 10px 30px; position: relative; top:2px;  }
@@ -22,6 +22,7 @@
 		 border-radius: 10px; }
 .cntBtn:hover { background-color: #96c4ff; }
 input[type="text"] { height: 25px; width: 50px; line-height: 25px; font-size: 1.3em; text-weight: bold; text-align: center; border: none; position: relative; top: 3px; background-color: #f0f7ff; }
+input[type="text"]:focus { outline: none; }
 
 /* 좌석 선택 */
 .cntAlert { position: absolute; top: 20px; left: 140px; width: 400px; height: 50px; line-height: 50px; font-size: 1.2em; 
@@ -37,7 +38,28 @@ input[type="text"] { height: 25px; width: 50px; line-height: 25px; font-size: 1.
 .seatChkBx { display: none; }
 
 /* 정보 확인 */
-#resultChk { width: 200px; }
+.barcodeImg { width: 100px; height: 30px; position: absolute; top: -4px; right: 25px; }
+.scnInfo { width: 97%; height: 280px; border: none; margin: 30px auto 0px auto; border-radius: 10px; padding: 5px; background-color:#05275e; }
+.rating { margin: 0 0 0 20px; width: 25px; position: relative; top:-28px; }
+.poster { width: 70px; height: 95px; float: right; position: relative; top: 5px; right: 18px;}
+.mov_name { display: inline-block; width: 200px; height: 42px;  background-color: transparent; font-family:'Malgun Gothic'; resize: none;
+		    overflow: hidden; border: none; margin: 10px; color: white; font-weight: bold; font-size: 16px; margin-top: 25px ; }
+.mov_name:focus { outline: none; }
+.Info { margin: 10px 10px 10px 20px; color: #cccccc; font-size: 0.7em; }
+.scn_time { margin: 10px 10px 10px 20px; color: white; font-size: 0.7em;  }
+.horizontal { width: 100%;  height: 2px; background-color: #213d6b; margin: 0; }
+#seatResult { width: 230px; display: inline-block; height: 30px;  background-color: transparent; font-family:'Malgun Gothic'; font-weight: bold;
+		      resize: none; overflow: hidden; color: #cccccc; border: none;}
+.result { margin: 10px 20px; font-size: 0.7em;  }
+.cntResult { float: left; margin: 5px; line-height: 20px; }
+.calculate { float: right; margin: 5px; line-height: 20px; text-align: right; }
+hr { clear: both; }
+.priceLabel { float: left; margin: 5px; font-weight: bold; font-size: 1.2em; position: relative; top: 3px; }
+#price { width: 100px; float: right; color: #b53c4c; font-weight: bold; font-size: 1.5em; text-align: right; }
+.btn { position: absolute; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #ebebeb; text-align: center;  
+			 line-height: 33px; margin: 15px; }
+.prev { bottom: 20px; left: 30px;  }
+.next { bottom: 20px; right: 30px;  }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {	
@@ -51,12 +73,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	let adultPlus = document.getElementById("adultPlus");
 	let teenMinus = document.getElementById("teenMinus");
 	let teenPlus = document.getElementById("teenPlus");
+	//출력 폼
+	let resultForm = document.resultForm;
+	
+	// 다음 버튼
+	let nextBtn = document.querySelector(".next");
+	nextBtn.style.backgroundColor = "gray";
 	
 	// 예매수 초과 확인
 	function plusChk(obj) {
 		let cnt = +adultCnt.value + +teenCnt.value;
-		if(cnt >= 10){
-			alert("총 10명 초과하여 예매할 수 없습니다.");
+		if(cnt >= 8){
+			alert("총 8명 초과하여 예매할 수 없습니다.");
 		} else if (cnt>= +remaining_seats.value) {
 			alert("잔여 좌석 수를 초과하여 예매할 수 없습니다.");
 		} else {
@@ -88,8 +116,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		// 암전
 		cntConfirm.style.backgroundColor = "#ebebeb";
 		seatSelector.style.backgroundColor = "#ebebeb";
+		nextBtn.style.backgroundColor = "gray";
 		// 좌석선택 방지
-		for( seat of seats ) {
+		for(seat of seats) {
 			seat.disabled = true;
 		}
 		
@@ -107,24 +136,33 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 	
 	// 좌석 선택
-	let resultChk = document.getElementById("resultChk");
-	bookList = new Array();
+	let seatResult = document.getElementById("seatResult");
+	locArr = new Array();	// sort를 사용하기 위해 seatCode가 아닌 i 값을 저장
 	for(let i in seats) {
 		seats[i].addEventListener("change", function(){
 			if (seats[i].checked) {
 				console.log(seats[i].value);
-				bookList.push(seats[i].value);
-				resultChk.value = bookList.sort().join(',');// 제대로 sort가 안됨!!(2자리수와 3자리수 계산 다른 특수성)
-				console.log(bookList);
-				if(bookList.length >= cnt) {
+				locArr.push(i);
+				locArr.sort();
+				seatResult.value = locArr.map((e) => seats[e].value).join(', ');
+				resultForm.seat.value = seatResult.value;
+				console.log(locArr);
+				if(locArr.length >= cnt) {
 					for(seat of seats) {
 						seat.disabled = true;
 						seatSelector.style.backgroundColor = "#ebebeb";
+						nextBtn.style.backgroundColor= "white";
+						nextBtn.style.border = "3px solid black";
+						nextBtn.addEventListener("click", function(){
+							resultForm.submit();
+						});
 					}
 				}
 			} else {
-				bookList.delete(seats[i].value);
-				resultChk.value = Array.from(bookList).join(',');
+				// 찾아서 제거
+				locArr.splice(locArr.indexOf(i), 1);
+				seatResult.value = locArr.map((e) => seats[e].value).join(', ');
+				resultForm.seat.value = seatResult.value;
 			}
 		});
 	}
@@ -141,34 +179,30 @@ int teenCnt = request.getParameter("teenCnt")==null ? 0 : Integer.parseInt(reque
 
 // 인원수 선택 전 확인
 boolean befCntSelect = adultCnt + teenCnt == 0;
-
+// 상영 정보 가져오기
 ScreenDAO ScnPro = ScreenDAO.getInstance();
 ScreenDTO screen = ScnPro.getScreen(scn_id);
+// 영화 정보 가져오기
+MovieDAO MovPro = MovieDAO.getInstance();
+MovieDTO movie = MovPro.getMovie(screen.getMov_id());
+SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 M월 dd일");
+SimpleDateFormat sdf2 = new SimpleDateFormat("kk:mm");
 
 ArrayList<String> resv_seat = null;
 // 찬 좌석 리스트로 가져오기
 if(screen.getResv_seat() != null) {
 	resv_seat = new ArrayList<String>(Arrays.asList(screen.getResv_seat().split(", ")));
-	// 찬 좌석 좌표값 리스트 저장
-	ArrayList<SeatLoc> seats = new ArrayList<SeatLoc>();
-	/*
-	for(String s : resv_seat) {
-		//s = s.replaceAll("[^\\w]", "");
-		System.out.println(s);
-		int x = (int)s.charAt(0)-64;
-		int y = Integer.parseInt(s.replaceAll("[^0-9]", ""));
-		seats.add(new SeatLoc(x, y));
-	}
-	//검증
-	for(SeatLoc seat: seats) {
-		System.out.println("x= " + seat.getX() + " y= " + seat.getY());
-	}
-	*/
 }
 // 좌석 행렬 수
 // B12 = 2행 12열 좌석
 int rows = 12;
 int cols = 20;
+
+// 영화표 가격
+int adultPrice = screen.getAdult_price();
+int teenPrice = screen.getTeen_price();
+int totalPrice = adultPrice * adultCnt + teenPrice * teenCnt;
+DecimalFormat df = new DecimalFormat("#,###");
 
 %>
 <div id="container">
@@ -182,7 +216,7 @@ int cols = 20;
 		<input type="button" class="cntConfirm" value="인원 결정">
 		<input type="button" class="cntReset" value="초기화">
 	</div>
-	<div class="seatSelector <%if(befCntSelect) {%>greyed<%}%>">
+	<div class="seatSelector">
 		<!-- 좌석선택 먼저 하라고 요청하는 창 -->
 		<%if(befCntSelect) {%>
 			<div class="cntAlert">인원을 먼저 선택해 주세요.</div>
@@ -211,7 +245,36 @@ int cols = 20;
 		<%} %>
 	</div>
 	<div class="infoViewer">
-		<input type="text" id="resultChk">
+			<img src="../icons/barcode.png" class="barcodeImg">
+			<div class="scnInfo">
+				<img src="../icons/<%=movie.getRating()%>.png" class="rating">
+				<textarea class="mov_name" ><%=screen.getMov_name() %></textarea>
+				<div class="horizontal"></div>
+				<img src="../images/<%=movie.getMov_img()%>" class="poster">
+				<div class="scn_type Info"><%=screen.getScn_type() %></div>
+				<div class="theater Info"><%=screen.getTheater() %> 상영관</div>
+				<div class="scn_date Info"><%=sdf1.format(screen.getScn_time()) %></div>
+				<div class="scn_time"><%=sdf2.format(screen.getScn_time()) %> ~ <%=sdf2.format(screen.getEnd_time())%></div>
+				<div class="horizontal"></div>
+				<div class="Info">좌석번호: <textarea id="seatResult"></textarea></div>
+			</div>
+			<div class="result">
+				<form action="" method="post" name="resultForm">
+				<input type="hidden" name="resv_type" value="<%=Integer.toString(adultCnt) + ", " + Integer.toString(teenCnt)%>">
+				<input type="hidden" name="theater" value="<%=screen.getTheater() %>">
+				<input type="hidden" name="scr_time" value="<%=screen.getScn_time()%>">
+				<input type="hidden" name="end_time" value="<%=screen.getEnd_time()%>">
+				<input type="hidden" name="seat" value="">
+				<div class="cntResult"><%=(adultCnt != 0) ? "성인: " + adultCnt + "명" : ""%><br><%=(teenCnt != 0) ? "청소년: " + teenCnt + "명" : ""%></div>
+				<div class="calculate"><%=(adultCnt != 0) ? df.format(adultPrice * adultCnt):""%><br><%=(teenCnt != 0) ? df.format(teenPrice * teenCnt) : ""%></div>
+				<hr>
+				<div class="priceLabel">결제금액:</div><input type="text" id="price"  value="<%=df.format(totalPrice) %> 원" readonly>
+				</form>
+			</div>
+			
+			<input type="button" value="이전" class="prev btn">
+			<input type="button" value="다음" class="next btn">
+	
 	</div>
 </div>
 </body>

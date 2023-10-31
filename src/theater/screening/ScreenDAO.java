@@ -28,8 +28,8 @@ public class ScreenDAO {
 	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=? ";
 	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
 	public final String GET_SCN = "select * from screening where scn_id=?";
-	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?)";
-	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, remaining_seats=?";
+	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, adult_price, teen_price, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?,?,?)";
+	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, adult_price=?, teen_price=?, remaining_seats=? resv_seat=?";
 	public final String DELETE_SCREEN = "delete from screening where scn_id=?";
 	
 	
@@ -92,6 +92,8 @@ public class ScreenDAO {
 				screen.setScn_type(rs.getString("scn_type"));
 				screen.setScn_time(rs.getTimestamp("scn_time"));
 				screen.setEnd_time(rs.getTimestamp("end_time"));
+				screen.setAdult_price(rs.getInt("adult_price"));
+				screen.setTeen_price(rs.getInt("teen_price"));
 				screen.setRemaining_seats(rs.getInt("remaining_seats"));
 				screen.setResv_seat(rs.getString("resv_seat"));
 				screenList.add(screen);
@@ -121,6 +123,8 @@ public class ScreenDAO {
 				screen.setScn_type(rs.getString("scn_type"));
 				screen.setScn_time(rs.getTimestamp("scn_time"));
 				screen.setEnd_time(rs.getTimestamp("end_time"));
+				screen.setAdult_price(rs.getInt("adult_price"));
+				screen.setTeen_price(rs.getInt("teen_price"));
 				screen.setRemaining_seats(rs.getInt("remaining_seats"));
 				screen.setResv_seat(rs.getString("resv_seat"));
 			}	
@@ -144,8 +148,10 @@ public class ScreenDAO {
 			pstmt.setString(4, screen.getScn_type());
 			pstmt.setTimestamp(5, screen.getScn_time());
 			pstmt.setTimestamp(6, screen.getEnd_time());
-			pstmt.setInt(7, screen.getRemaining_seats());
-			pstmt.setString(8, screen.getResv_seat());
+			pstmt.setInt(7, screen.getAdult_price());
+			pstmt.setInt(8, screen.getTeen_price());
+			pstmt.setInt(9, screen.getRemaining_seats());
+			pstmt.setString(10, screen.getResv_seat());
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -168,8 +174,10 @@ public class ScreenDAO {
 			pstmt.setString(5,screen.getScn_type());
 			pstmt.setTimestamp(6,screen.getScn_time());
 			pstmt.setTimestamp(7,screen.getEnd_time());
-			pstmt.setInt(8,screen.getRemaining_seats());
-			pstmt.setString(9,screen.getResv_seat());
+			pstmt.setInt(8, screen.getAdult_price());
+			pstmt.setInt(9, screen.getTeen_price());
+			pstmt.setInt(10,screen.getRemaining_seats());
+			pstmt.setString(11,screen.getResv_seat());
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();

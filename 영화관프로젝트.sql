@@ -139,14 +139,17 @@ theater int not null,
 scn_type varchar(20) not null,
 scn_time datetime not null, 
 end_time datetime not null,
+adult_price int default 13000,
+teen_price int default 10000,
 remaining_seats int,
 resv_seat text
 );
+drop table screening;
 select * from screening;
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(1,'라따뚜이', 1, '2D', '2023-10-21 12:00', '2023-10-21 13:10', 81, 'F3, A2, H12, D15');
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(1,'라따뚜이', 1, '2D(자막)', '2023-10-21 12:00', '2023-10-21 13:10', 81, 'F3, A2, H12, D15');
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D', '2023-10-21 14:00', '2023-10-23 13:10', 81);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '3D', '2023-10-21 16:00', '2023-10-21 17:10', 70);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D', '2023-10-21 14:00', '2023-10-21 15:10', 87);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D', '2023-10-21 18:00', '2023-10-21 19:10', 87);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D(자막)', '2023-10-21 14:00', '2023-10-23 13:10', 81);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '3D(자막)', '2023-10-21 16:00', '2023-10-21 17:10', 70);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 14:00', '2023-10-21 15:10', 87);
+insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 18:00', '2023-10-21 19:10', 87);
 drop table screening;

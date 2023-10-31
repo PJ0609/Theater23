@@ -10,6 +10,8 @@ public class ScreenDTO {
 	private String scn_type;
 	private Timestamp scn_time;
 	private Timestamp end_time;
+	private int adult_price;
+	private int teen_price;
 	private int remaining_seats;
 	private String resv_seat;
 
@@ -39,6 +41,14 @@ public class ScreenDTO {
 
 	public Timestamp getEnd_time() {
 		return end_time;
+	}
+
+	public int getAdult_price() {
+		return adult_price;
+	}
+
+	public int getTeen_price() {
+		return teen_price;
 	}
 
 	public int getRemaining_seats() {
@@ -75,6 +85,14 @@ public class ScreenDTO {
 
 	public void setEnd_time(Timestamp end_time) {
 		this.end_time = end_time;
+	}
+
+	public void setAdult_price(int adult_price) {
+		this.adult_price = adult_price;
+	}
+
+	public void setTeen_price(int teen_price) {
+		this.teen_price = teen_price;
 	}
 
 	public void setRemaining_seats(int remaining_seats) {
