@@ -144,7 +144,6 @@ teen_price int default 10000,
 remaining_seats int,
 resv_seat text
 );
-drop table screening;
 select * from screening;
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(1,'라따뚜이', 1, '2D(자막)', '2023-10-21 12:00', '2023-10-21 13:10', 81, 'F3, A2, H12, D15');
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
