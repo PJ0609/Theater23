@@ -1,4 +1,4 @@
-package theater.ticketing;
+package theater.ticket;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

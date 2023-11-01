@@ -1,4 +1,4 @@
-package theater.screening;
+package theater.screen;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -25,7 +25,7 @@ public class ScreenDAO {
 	private ResultSet rs = null;
 
 	public final String GET_MOV_BY_DATE = "select mov_id from screening where date(scn_time)=?";
-	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=? ";
+	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=?";
 	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
 	public final String GET_SCN = "select * from screening where scn_id=?";
 	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, adult_price, teen_price, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?,?,?)";

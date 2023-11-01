@@ -1,32 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="theater.screening.*, theater.movie.*, java.util.*, java.text.SimpleDateFormat, java.text.DecimalFormat" %>
+<%@ page import="theater.screen.*, theater.movie.*, java.util.*, java.text.SimpleDateFormat, java.text.DecimalFormat" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>좌석 선택 페이지</title>
 <style>
-#container { width: 1000px; margin: 0px auto; margin: 0px auto;}
-.cntSelector { box-sizing: border-box; width: 100%; height: 70px; border: 2px solid gray; border-radius: 15px; text-align: center; background-color: #f0f7ff; }
+#container { width: 1000px; margin: 0px auto; margin: 0px auto; }
+.cntSelector { width: 100%; height: 70px; border: 2px solid gray; border-radius: 15px; text-align: center; background-color: #f0f7ff; }
 .seatSelector { position: relative; float: left; width: 69%; height: 500px; border: 2px solid gray; border-radius: 15px; 
-			   margin: 10px 2.5px 5px 0; text-align: center; }
-.infoViewer { position: relative; float: right; width: 29%; height: 500px; border: 2px solid gray; border-radius: 15px; margin: 10px 0 5px 2.5px; background-color: #f0f7ff; }
+			   margin: 10px 2.5px 5px 0; text-align: center; transition: all 0.4s; }
+.infoViewer { position: relative; float: right; width: 29%; height: 500px; border: 2px solid gray; border-radius: 15px; margin: 10px 0 5px 2.5px;
+			  background-color: #f0f7ff; transition: all 0.4s; }
 .selectCntBox { width: 100%; }
-.cntConfirm { display: inline-block; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #86c8f7; text-align: center; 
-			 line-height: 33px; margin: 15px 10px 10px 30px; position: relative; top:2px; cursor: pointer; }
-.selected { background-color: #86c8f7; }
-.cntReset { display: inline-block; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #ebebeb; text-align: center;  
-			 line-height: 33px; margin: 15px;  position: relative; top:2px;  cursor: pointer; }
+.cntConfirm { display: inline-block; width: 90px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #86c8f7; text-align: center; 
+			 line-height: 33px; margin: 15px 10px 10px 30px; position: relative; top: 2.5px; cursor: pointer; }
+.cntReset { display: inline-block; width: 90px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #ebebeb; text-align: center;  
+			 line-height: 33px; margin: 15px;  position: relative; top: 2.5px;  cursor: pointer; }
 .cntBtn { display: inline-block; width: 45px; height: 31px; border: 1px solid black; background-color: white; 
-		 border-radius: 10px;  cursor: pointer; }
+		 border-radius: 10px;  cursor: pointer; font-weight: bold; }
 .cntBtn:hover { background-color: #96c4ff; }
 input[type="text"] { height: 25px; width: 50px; line-height: 25px; font-size: 1.3em; text-weight: bold; text-align: center; border: none; position: relative; top: 3px; background-color: #f0f7ff; }
 input[type="text"]:focus { outline: none; }
 
 /* 좌석 선택 */
-.cntAlert { position: absolute; top: 20px; left: 140px; width: 400px; height: 50px; line-height: 50px; font-size: 1.2em; 
-		   background-color: white; border: 4px solid black; border-radius: 10px; z-index:1000;}
+.cntAlert { display: block; position: absolute; top: 20px; left: 140px; width: 400px; height: 50px; line-height: 50px; font-size: 1.2em; 
+		   background-color: white; border: 4px solid black; border-radius: 10px; z-index:1000; }
 .screen { clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%); display: block; margin: 20px auto 40px auto; 
 		 width: 600px; height: 40px; background-color: #d9d9d9 ; text-align: center; line-height: 40px; font-weight: bold; }
 .seat { box-sizing: border-box; display: inline-block; width: 21px; height: 21px; font-size:10px; line-height:21px; text-align: center; 
@@ -41,7 +41,7 @@ input[type="text"]:focus { outline: none; }
 .barcodeImg { width: 100px; height: 30px; position: absolute; top: -4px; right: 25px; }
 .scnInfo { width: 97%; height: 280px; border: none; margin: 30px auto 0px auto; border-radius: 10px; padding: 5px; background-color:#05275e; }
 .rating { margin: 0 0 0 20px; width: 25px; position: relative; top:-28px; }
-.poster { width: 70px; height: 95px; float: right; position: relative; top: 5px; right: 18px;}
+.poster { width: 70px; height: 95px; float: right; position: relative; top: 7px; right: 18px;}
 .mov_name { display: inline-block; width: 200px; height: 42px;  background-color: transparent; font-family:'Malgun Gothic'; resize: none;
 		    overflow: hidden; border: none; margin: 10px; color: white; font-weight: bold; font-size: 16px; margin-top: 25px ; }
 .mov_name:focus { outline: none; }
@@ -58,9 +58,10 @@ hr { clear: both; }
 .priceLabel { float: left; margin: 5px; font-weight: bold; font-size: 1.2em; position: relative; top: 3px; }
 #price { width: 100px; float: right; color: #b53c4c; font-weight: bold; font-size: 1.5em; text-align: right; }
 .btn { position: absolute; width: 80px; height: 35px; border: 2px solid gray; border-radius: 10px; background-color: #ebebeb; text-align: center;  
-	   line-height: 33px; margin: 15px;  cursor: pointer; }
+	   line-height: 30px; margin: 15px;  cursor: pointer; font-weight: bold; }
 .prev { bottom: 20px; left: 30px; }
-.next { bottom: 20px; right: 30px;  }
+.next { bottom: 20px; right: 30px; }
+.next:hover { background-color: #86c8f7; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {	
@@ -94,6 +95,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 	
 	let cnt = +adultCnt.value + +teenCnt.value;
+	let cntAlert = document.querySelector(".cntAlert");
+	let cntSelector = document.querySelector(".cntSelector");
 	let cntConfirm = document.querySelector(".cntConfirm");
 	let seatSelector = document.querySelector(".seatSelector");
 	let seats = document.querySelectorAll(".seatChkBx");
@@ -116,13 +119,19 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 		// 암전
 		cntConfirm.style.backgroundColor = "#ebebeb";
+		cntSelector.style.border = "4px solid black";
 		seatSelector.style.backgroundColor = "#ebebeb";
 		nextBtn.style.backgroundColor = "gray";
 		// 좌석선택 방지
 		for(seat of seats) {
 			seat.disabled = true;
 		}
-		
+	} else {
+		// 인원선택 먼저 요청 안내창 숨김
+		cntAlert.style.display = "none";
+		seatSelector.style.border = "5px solid black";
+		// 좌석 재선택 버튼으로 이름 변경
+		cntConfirm.value = "좌석 재선택";
 	}
 	
 	// 인원수 결정 버튼
@@ -130,30 +139,32 @@ document.addEventListener("DOMContentLoaded", function() {
 		location = "seats.jsp?scn_id=" + scn_id.value + "&adultCnt=" + adultCnt.value + "&teenCnt=" + teenCnt.value;
 	});
 	
-	// 초기화 버튼
+	// 인원변경 버튼
 	let cntReset = document.querySelector(".cntReset");
 	cntReset.addEventListener("click", function(){
 		location = "seats.jsp?scn_id=" + scn_id.value;
 	});
 	
+	
 	// 좌석 선택
 	let seatResult = document.getElementById("seatResult");
+	let infoViewer = document.querySelector(".infoViewer");
 	locArr = new Array();	// sort를 사용하기 위해 seatCode가 아닌 i 값을 저장
-	for(let i in seats) {
+	for(let i=0; i < seats.length; i++) {
 		seats[i].addEventListener("change", function(){
 			if (seats[i].checked) {
-				console.log(seats[i].value);
 				locArr.push(i);
-				locArr.sort();
+				locArr.sort((a,b)=>a-b);	//숫자형 정렬로 변경(기본 문자열 정렬)
 				seatResult.value = locArr.map((e) => seats[e].value).join(', ');
 				resultForm.seat.value = seatResult.value;
-				console.log(locArr);
 				if(locArr.length >= cnt) {
 					for(seat of seats) {
 						seat.disabled = true;
 						seatSelector.style.backgroundColor = "#ebebeb";
-						nextBtn.style.backgroundColor= "white";
+						seatSelector.style.border = "2px solid gray";
+						nextBtn.style.backgroundColor= "#86c8f7";
 						nextBtn.style.border = "3px solid black";
+						infoViewer.style.border = "5px solid black";
 						nextBtn.addEventListener("click", function(){
 							resultForm.submit();
 						});
@@ -174,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <body>
 <%
 request.setCharacterEncoding("utf-8");
+// null일 때 테스트용 상영(1) 입력 
 int scn_id = request.getParameter("scn_id")==null ? 1 : Integer.parseInt(request.getParameter("scn_id"));
 int adultCnt = request.getParameter("adultCnt")==null ? 0 : Integer.parseInt(request.getParameter("adultCnt"));
 int teenCnt = request.getParameter("teenCnt")==null ? 0 : Integer.parseInt(request.getParameter("teenCnt"));
@@ -215,26 +227,25 @@ DecimalFormat df = new DecimalFormat("#,###");
 			&nbsp;&nbsp;&nbsp;
 			청소년: &nbsp;<input type="button"id="teenMinus" class="cntBtn" value="-"><input type="text" id="teenCnt"  value="<%=teenCnt%>" readonly><input type="button" id="teenPlus" class="cntBtn" value="+">
 		<input type="button" class="cntConfirm" value="인원 결정">
-		<input type="button" class="cntReset" value="초기화">
+		<input type="button" class="cntReset" value="인원 재선택">
 	</div>
 	<div class="seatSelector">
 		<!-- 좌석선택 먼저 하라고 요청하는 창 -->
-		<%if(befCntSelect) {%>
-			<div class="cntAlert">인원을 먼저 선택해 주세요.</div>
-		<%} %>
+		<div class="cntAlert">인원을 먼저 선택해 주세요.</div>
 		<div class="screen"> SCREEN </div>
 		<!-- 좌석 생성 -->
-		<%for(int i=1; i<rows+1; i++) {
+		<%int k=1;
+		for(int i=1; i<rows+1; i++) {
 			for(int j=1; j<cols+1; j++) {
 				String seatCode = String.valueOf((char)(i+64)).concat(String.valueOf(j));
 				boolean bookChk = resv_seat.contains(seatCode);
 				%>
-				<label for="<%=seatCode%>">
+				<label for="<%=k%>">
 					<%if(bookChk) {%>
-						<input type="checkbox" class="seatChkBx" id="<%=seatCode%>" disabled>
+						<input type="checkbox" class="seatChkBx" id="<%=k++%>" disabled>
 						<div class="seat booked" ><%=seatCode%></div>
 					<%} else {%>
-						<input type="checkbox" class="seatChkBx" id="<%=seatCode%>" value="<%=seatCode%>" >
+						<input type="checkbox" class="seatChkBx" id="<%=k++%>" value="<%=seatCode%>" >
 						<div class="seat" ><%=seatCode%></div>
 					<%} %>
 				</label>
@@ -272,10 +283,8 @@ DecimalFormat df = new DecimalFormat("#,###");
 				<div class="priceLabel">결제금액:</div><input type="text" id="price"  value="<%=df.format(totalPrice) %> 원" readonly>
 				</form>
 			</div>
-			
-			<input type="button" value="이전" class="prev btn">
-			<input type="button" value="다음" class="next btn">
-	
+			<input type="button" value="취소" class="btn prev">
+			<input type="button" value="다음" class="btn next">
 	</div>
 </div>
 </body>

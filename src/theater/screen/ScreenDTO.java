@@ -1,4 +1,4 @@
-package theater.screening;
+package theater.screen;
 
 import java.sql.Timestamp;
 
