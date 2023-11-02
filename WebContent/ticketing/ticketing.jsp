@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="theater.movie.*, theater.screen.*, java.util.List" %>
+<%@ page import="theater.movie.*, theater.screen.*, java.util.List, java.time.LocalDate" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +8,9 @@
 <title>예매 페이지</title>
 <style>
 #container { width: 1000px; margin: 0px auto; margin: 0px auto; }
-#selectTable { height: 60px; width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; }
-td { border: 1px solid black; }
+#selectTable { height: 60px; width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; background-color: #f0f7ff; }
+td { border: 1px solid black; border-radius: 10px; background-color: white; border: 3px solid gray; }
+td:last-child { background-color: #f0f7ff; border: none; }
 .movieSelector { height: 300px; overflow: auto; }
 .movie { overflow: hidden; text-overflow: ellipsis; width: 230px; white-space: nowrap; font-weight: bold;
 		 border-radius: 3px; height: 30px; line-height: 30px;}
@@ -28,7 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 		movRadio.addEventListener("click", function(e) {
 			if(e.currentTarget.checked) {
-				location = "ticketing.jsp?mov_id=" + e.currentTarget.value;
+				location = "ticketing.jsp?mov_id=" + e.currentTarget.value; 
+				//mov_id뿐 아니라 상영관, 날짜값 모두 가져가야 함.
 			}
 		});
 	}
@@ -40,7 +42,23 @@ document.addEventListener("DOMContentLoaded", function() {
 <div id="container">
 <%
 request.setCharacterEncoding("utf-8");
-int mov_id = request.getParameter("mov_id")==null ? -1 : Integer.parseInt(request.getParameter("mov_id"));
+String mov_id = request.getParameter("mov_id");
+String theater = request.getParameter("theater");
+LocalDate scnday = request.getParameter("scnday")==null? null : LocalDate.parse(request.getParameter("scnday"));
+
+// select (null값이 있는 컬럼) from screening where (null값이 아닌 컬럼) 실행을 null값 있는 갯수만큼 필요로 하게 됨.
+// 여기서 sql문을 조립해서 만들자.
+/*
+ex) 1상영관을 선택한 경우
+-> select mov_id from screening where theater=1 조회
+-> select date(scn_time)## from screening where theater=1 조회
+-> 쿼리결과를 배열로 가져오고 contains() 메소드를 사용해 각 요소가 존재하는지 판별
+-> 존재하지 않으면 선택불가하게 표시
+*/
+String selectsql = "";
+String wheresql = "";
+String sql = "select " + selectsql + "from screen where " + wheresql;
+
 MovieDAO movPro = MovieDAO.getInstance();
 ScreenDAO scnPro = ScreenDAO.getInstance();
 List<MovieDTO> movies = movPro.getMovList();
@@ -51,8 +69,8 @@ List<MovieDTO> movies = movPro.getMovList();
 	<tr>
 		<th width="30%">영화 선택</th>
 		<th width="15%">상영관 선택</th>
-		<th width="25%">날짜 선택</th>
-		<th width="30%">시간 선택</th>
+		<th width="20%">날짜 선택</th>
+		<th width="35%">시간 선택</th>
 	</tr>
 	<tr>
 		<td>

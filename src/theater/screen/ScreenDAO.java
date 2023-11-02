@@ -32,6 +32,7 @@ public class ScreenDAO {
 	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, adult_price=?, teen_price=?, remaining_seats=? resv_seat=?";
 	public final String DELETE_SCREEN = "delete from screening where scn_id=?";
 	
+
 	
 	// 상영일별 영화 조회
 	public Set<Integer> getMovByDate(LocalDate ldate) {
