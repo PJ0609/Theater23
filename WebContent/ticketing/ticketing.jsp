@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="theater.movie.*, theater.screen.*, java.util.List, java.time.LocalDate" %>
+<%@ page import="theater.movie.*, theater.screen.*, java.util.Set, java.util.HashSet, java.util.List, java.util.Arrays, java.time.LocalDate" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,24 +44,28 @@ document.addEventListener("DOMContentLoaded", function() {
 request.setCharacterEncoding("utf-8");
 String mov_id = request.getParameter("mov_id");
 String theater = request.getParameter("theater");
-LocalDate scnday = request.getParameter("scnday")==null? null : LocalDate.parse(request.getParameter("scnday"));
+String dates = request.getParameter("scnday");
+// String List로 선택된 요소들 가져오기
+List<String> s_mov_ids = mov_id == null ? null : Arrays.asList(mov_id.split(","));
+List<String> s_theaters = theater == null ? null : Arrays.asList(theater.split(","));
+List<String> s_dates = dates == null ? null : Arrays.asList(dates.split(","));
 
-// select (null값이 있는 컬럼) from screening where (null값이 아닌 컬럼) 실행을 null값 있는 갯수만큼 필요로 하게 됨.
-// 여기서 sql문을 조립해서 만들자.
-/*
-ex) 1상영관을 선택한 경우
--> select mov_id from screening where theater=1 조회
--> select date(scn_time)## from screening where theater=1 조회
--> 쿼리결과를 배열로 가져오고 contains() 메소드를 사용해 각 요소가 존재하는지 판별
--> 존재하지 않으면 선택불가하게 표시
-*/
-String selectsql = "";
-String wheresql = "";
-String sql = "select " + selectsql + "from screen where " + wheresql;
-
+// DAO 연결
 MovieDAO movPro = MovieDAO.getInstance();
 ScreenDAO scnPro = ScreenDAO.getInstance();
+
+// 영화선택란
+// 영화 목록 가져오기
 List<MovieDTO> movies = movPro.getMovList();
+Set<Integer> av_mov_ids = new HashSet<Integer>();	//available movie ids
+if(theater != null || dates != null) {
+	av_mov_ids = scnPro.getMovQry(s_theaters, s_mov_ids);
+}
+
+// 상영관 선택란
+
+// 날짜 선택란
+
 
 %>
 <input type="hidden" id="mov_id" value="<%=mov_id %>">
