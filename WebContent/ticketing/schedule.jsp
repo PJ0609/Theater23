@@ -67,12 +67,13 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	for(int i=-weekDiff; i<7-weekDiff; i++) { %>
 	<div class="days">
 		<%if(refDay.plusDays(i).getDayOfMonth() == 1 || i==-weekDiff) {%>
-		<div class="yrmonth"><%=refDay.plusDays(i).getYear()%>. <%=refDay.plusDays(i).getMonthValue()%></div><%} %>
+		<div class="yrmonth"><%=refDay.plusDays(i).getYear()%>. <%=refDay.plusDays(i).getMonthValue()%></div>
+		<%} %>
 		<a href="schedule.jsp?refDay=<%=refDay.plusDays(i)%>">
-		<div class="dayBlock <%if(i==0) {%>selected<%}%>">
-			<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
-			<span class="weekday <%if(refDay.plusDays(i).getDayOfWeek().getValue()==6) {%>blue<%} else if(refDay.plusDays(i).getDayOfWeek().getValue()==7){%>red<%}%>"><%=weekdayMap.get(refDay.plusDays(i).getDayOfWeek().getValue())%></span>
-		</div>
+			<div class="dayBlock <%if(i==0) {%>selected<%}%>">
+				<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
+				<span class="weekday <%if(refDay.plusDays(i).getDayOfWeek().getValue()==6) {%>blue<%} else if(refDay.plusDays(i).getDayOfWeek().getValue()==7){%>red<%}%>"><%=weekdayMap.get(refDay.plusDays(i).getDayOfWeek().getValue())%></span>
+			</div>
 		</a>
 	</div>
 	<%} %>
@@ -85,7 +86,7 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 //조회기준일로 영화 id목록 가져오기
 ScreenDAO scnPro = ScreenDAO.getInstance();
 List<String> srefDay = Arrays.asList(refDay.toString());
-Set<Integer> mov_ids = scnPro.getMovQry(null, srefDay);
+List<Integer> mov_ids = scnPro.getMovQry(null, srefDay);
 System.out.println("지정일 조회된 영화: " + mov_ids);
 
 // 목록에 있는 영화 id마다 상영 조회

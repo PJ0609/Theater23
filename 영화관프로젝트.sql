@@ -151,3 +151,5 @@ insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, r
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '3D(자막)', '2023-10-21 16:00', '2023-10-21 17:10', 70);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 14:00', '2023-10-21 15:10', 87);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 18:00', '2023-10-21 19:10', 87);
+
+select date_format(scn_time, '%Y-%m-%d') as fdate from screening group by fdate ;
