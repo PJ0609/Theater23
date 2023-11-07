@@ -152,8 +152,8 @@ insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, r
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 14:00', '2023-10-21 15:10', 87);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 18:00', '2023-10-21 19:10', 87);
 insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-22 14:00', '2023-10-22 15:50', 70);
-select date(scn_time) as fdate from screening where 
 
+select * from screening;
 select date_format(scn_time, '%Y-%m-%d') as fdate from screening group by fdate ;
 
 select date(scn_time) as fdate from screening where date(scn_time) between '2023-10-20' and '2023-11-10' and mov_id in (1) group by fdate ;

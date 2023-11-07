@@ -35,23 +35,22 @@ public class ScreenDAO {
 	
 	// 조회 메소드들 (~Qry)
 	// 영화조회
-	public List<Integer> getMovQry(List<String> theaters, List<String> dates) {
+	public List<Integer> getMovQry(List<String> theaters, List<String> dates, LocalDate refDay) {
 		List<Integer> mov_ids = new ArrayList<Integer>();
-		String whereSql = theaters != null || dates != null ? "where " : "";
+		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String groupSql = "group by mov_id ";
 		String theaterSql = "";
 		String dateSql = "";
-
 		if(theaters != null) {
-			theaterSql = "theater in (" + String.join(",", theaters) + ") ";
+			theaterSql = "and theater in (" + String.join(",", theaters) + ") ";
 		}
 		if(dates != null) {
 			List<String> sdates = new ArrayList();
 			dates.forEach( e->sdates.add("'" + e + "'") );
-			dateSql = "date(scn_time) in (" + String.join(",", sdates) + ") ";
+			dateSql = "and date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String andSql = theaters != null && dates != null ? "and " : "";
-		String sql = "select mov_id from screening " + whereSql + theaterSql + andSql + dateSql + groupSql;
+		String sql = "select mov_id from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' "  
+		 + theaterSql + dateSql + groupSql;
 		System.out.println(sql);
 		try {
 			conn = JDBCUtil.getConnection();
@@ -68,22 +67,22 @@ public class ScreenDAO {
 		return mov_ids;
 	}
 	// 영화관 조회
-	public List<Integer> getTheaterQry(List<String> mov_ids, List<String> dates) {
+	public List<Integer> getTheaterQry(List<String> mov_ids, List<String> dates, LocalDate refDay) {
 		List<Integer> theaters = new ArrayList<Integer>();
-		String whereSql = mov_ids != null || dates != null ? "where " : "";
+		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String groupSql = "group by theater ";
 		String movieSql = "";
 		String dateSql = "";
 		if(mov_ids != null) {
-			movieSql = "mov_id in (" + String.join(",", mov_ids) + ") ";
+			movieSql = "and mov_id in (" + String.join(",", mov_ids) + ") ";
 		}
 		if(dates != null) {
 			List<String> sdates = new ArrayList();
 			dates.forEach( e->sdates.add("'" + e + "'") );
-			dateSql = "date(scn_time) in (" + String.join(",", sdates) + ") ";
+			dateSql = "and date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String andSql = mov_ids != null && dates != null ? "and " : "";
-		String sql = "select theater from screening " + whereSql + movieSql + andSql + dateSql + groupSql;
+		String sql = "select theater from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' " 
+		+ movieSql + dateSql + groupSql;
 		System.out.println(sql);
 		try {
 			conn = JDBCUtil.getConnection();
@@ -101,6 +100,7 @@ public class ScreenDAO {
 		
 	}
 	// 상영일 조회 (refDay 필수)
+	// refDay로부터 10일간을 조회한다.
 	public List<LocalDate> getDateQry(List<String> mov_ids, List<String> theaters, LocalDate refDay) {
 		List<LocalDate> dates = new ArrayList<LocalDate>();
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -115,7 +115,7 @@ public class ScreenDAO {
 			theaterSql = "theater in (" + String.join(",", theaters) + ") ";
 		}
 		String groupSql = "group by fdate ";
-		String sql = "select date(scn_time) as fdate from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(21).format(dtf1) + "' " 
+		String sql = "select date(scn_time) as fdate from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' " 
 				+ and1Sql + movieSql + and2Sql + theaterSql + groupSql;
 		System.out.println(sql);
 		try {
@@ -152,7 +152,7 @@ public class ScreenDAO {
 			dates.forEach( e->sdates.add("'" + e + "'") );
 			dateSql = "date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String sql = "select * from screening where " + movieSql + "and " + theaterSql + "and " + dateSql;
+		String sql = "select * from screening where " + movieSql + "and " + theaterSql + "and " + dateSql + "order by theater, scn_type, scn_time";
 		System.out.println(sql);
 		try {
 			conn = JDBCUtil.getConnection();
@@ -184,8 +184,8 @@ public class ScreenDAO {
 	
 	//##############################################################
 	// 상영일별 영화 조회
-	public Set<Integer> getMovByDate(LocalDate ldate) {
-		Set<Integer> mov_ids = new HashSet<Integer>();
+	public List<Integer> getMovByDate(LocalDate ldate) {
+		List<Integer> mov_ids = new ArrayList<Integer>();
 		try {
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(GET_MOV_BY_DATE);

@@ -84,6 +84,39 @@ public class MovieDAO {
 		}
 		return movies;
 	}
+	// 영화 리스트 가져오기
+	public List<MovieDTO> getMovList(List<Integer> mov_ids) {
+		if( mov_ids == null || mov_ids.size() == 0 ) return null;
+		MovieDTO movie = null;
+		List<MovieDTO> movies = new ArrayList<MovieDTO>();
+		String smov_ids = mov_ids.toString().substring(1, mov_ids.toString().length()-1);
+		String sql = "select * from movie where mov_id in (" + smov_ids + ")";
+		System.out.println(sql);
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				movie = new MovieDTO();
+				movie.setMov_id(rs.getInt("mov_id"));
+				movie.setMov_name(rs.getString("mov_name"));
+				movie.setDirector(rs.getString("director"));
+				movie.setMov_img(rs.getString("mov_img"));
+				movie.setGenre(rs.getString("genre"));
+				movie.setRating(rs.getString("rating"));
+				movie.setSynopsis(rs.getString("synopsis"));
+				movie.setLength(rs.getInt("length"));
+				movie.setRel_date(rs.getDate("rel_date"));
+				movie.setTrailer_link(rs.getString("trailer_link"));
+				movies.add(movie);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return movies;
+	}
 	
 	// 영화 추가
 	public int insertMovie(MovieDTO movie) {

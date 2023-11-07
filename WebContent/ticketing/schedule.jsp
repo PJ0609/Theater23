@@ -88,8 +88,8 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	<%
 	//조회기준일로 영화 id목록 가져오기
 	ScreenDAO scnPro = ScreenDAO.getInstance();
-	List<String> srefDay = Arrays.asList(refDay.toString());
-	List<Integer> mov_ids = scnPro.getMovQry(null, srefDay);
+	//List<String> srefDay = Arrays.asList(refDay.toString());
+	List<Integer> mov_ids = scnPro.getMovByDate(refDay);
 	System.out.println("지정일 조회된 영화: " + mov_ids);
 	
 	// 목록에 있는 영화 id마다 상영 조회
@@ -100,7 +100,6 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	//DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("yyyy년 M월 dd일");
 	//DateTimeFormatter dtf2 =  DateTimeFormatter.ofPattern("hh : mm");
 	for(int mov_id : mov_ids) {
-		ScreenDTO scndto = new ScreenDTO();
 		List<ScreenDTO> scnList = scnPro.getScnList(mov_id, refDay);
 		MovieDTO movie = MovPro.getMovie(mov_id);
 	%>
