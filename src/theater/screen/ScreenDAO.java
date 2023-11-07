@@ -5,13 +5,13 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import theater.common.JDBCUtil;
-import theater.movie.MovieDTO;
 
 public class ScreenDAO {
 	private ScreenDAO() {};
@@ -49,12 +49,6 @@ public class ScreenDAO {
 			List<String> sdates = new ArrayList();
 			dates.forEach( e->sdates.add("'" + e + "'") );
 			dateSql = "date(scn_time) in (" + String.join(",", sdates) + ") ";
-			/* 대신 List<LocalDate>.toString()을 사용? -- 시분초까지 나와서 불가.
-			dates.toString().substring(1, dates.toString().length()-1);
-			dateSql = "date(scn_time) in ("
-					 + dates.toString().substring(1, dates.toString().length()-1) 
-					 +  ") ";
-			*/
 		}
 		String andSql = theaters != null && dates != null ? "and " : "";
 		String sql = "select mov_id from screening " + whereSql + theaterSql + andSql + dateSql + groupSql;
@@ -88,7 +82,7 @@ public class ScreenDAO {
 			dates.forEach( e->sdates.add("'" + e + "'") );
 			dateSql = "date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String andSql = theaters != null && dates != null ? "and " : "";
+		String andSql = mov_ids != null && dates != null ? "and " : "";
 		String sql = "select theater from screening " + whereSql + movieSql + andSql + dateSql + groupSql;
 		System.out.println(sql);
 		try {
@@ -106,24 +100,23 @@ public class ScreenDAO {
 		return theaters;
 		
 	}
-	// 상영일 조회
-	public List<LocalDate> getDateQry(List<String> mov_ids, List<String> theaters) {
+	// 상영일 조회 (refDay 필수)
+	public List<LocalDate> getDateQry(List<String> mov_ids, List<String> theaters, LocalDate refDay) {
 		List<LocalDate> dates = new ArrayList<LocalDate>();
-		String whereSql = "";
-		String groupSql = "group by fdate ";
-		if(mov_ids != null || theaters != null) {
-			whereSql = "where ";
-		}
+		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String and1Sql = (mov_ids != null || theaters != null) ? "and " : "";
 		String movieSql = "";
-		String theaterSql = "";
 		if(mov_ids != null) {
 			movieSql = "mov_id in (" + String.join(",", mov_ids) + ") ";
 		}
+		String and2Sql = mov_ids != null && theaters != null ? "and " : "";
+		String theaterSql = "";
 		if(theaters != null) {
 			theaterSql = "theater in (" + String.join(",", theaters) + ") ";
 		}
-		String andSql = mov_ids != null && theaters != null ? "and " : "";
-		String sql = "select date(scn_time) as fdate from screening " + whereSql + movieSql + andSql + theaterSql + groupSql;
+		String groupSql = "group by fdate ";
+		String sql = "select date(scn_time) as fdate from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(21).format(dtf1) + "' " 
+				+ and1Sql + movieSql + and2Sql + theaterSql + groupSql;
 		System.out.println(sql);
 		try {
 			conn = JDBCUtil.getConnection();

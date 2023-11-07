@@ -8,6 +8,7 @@
 </head>
 <body>
 <%
+//session.removeAttribute("id");
 session.removeAttribute("id");
 response.sendRedirect("../theater/frontPage.jsp");
 %>

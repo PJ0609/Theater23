@@ -21,8 +21,8 @@
 .cntBtn { display: inline-block; width: 45px; height: 31px; border: 1px solid black; background-color: white; 
 		 border-radius: 10px;  cursor: pointer; font-weight: bold; }
 .cntBtn:hover { background-color: #96c4ff; }
-input[type="text"] { height: 25px; width: 50px; line-height: 25px; font-size: 1.3em; text-weight: bold; text-align: center; border: none; position: relative; top: 3px; background-color: #f0f7ff; }
-input[type="text"]:focus { outline: none; }
+.outText { height: 25px; width: 50px; line-height: 25px; font-size: 1.3em; text-weight: bold; text-align: center; border: none; position: relative; top: 3px; background-color: #f0f7ff; }
+.outText:focus { outline: none; }
 
 /* 좌석 선택 */
 .cntAlert { display: block; position: absolute; top: 20px; left: 140px; width: 400px; height: 50px; line-height: 50px; font-size: 1.2em; 
@@ -218,14 +218,18 @@ int totalPrice = adultPrice * adultCnt + teenPrice * teenCnt;
 DecimalFormat df = new DecimalFormat("#,###");
 
 %>
+<!-- 상단 -->
+<div class="header">
+	<jsp:include page="../common/top.jsp"/>
+</div>
 <div id="container">
 	<h1>좌석 선택</h1>
 	<div class="cntSelector">
 		<input type="hidden" id="scn_id" value="<%=scn_id %>">
 		<input type="hidden" id="remaining_seats" value="<%=screen.getRemaining_seats()%>">
-			성인: &nbsp;<input type="button" id="adultMinus" class="cntBtn" value="-"><input type="text" id="adultCnt" value="<%=adultCnt%>"  readonly><input type="button" id="adultPlus" class="cntBtn" value="+">
+			성인: &nbsp;<input type="button" id="adultMinus" class="cntBtn" value="-"><input type="text"  class="outText" id="adultCnt" value="<%=adultCnt%>"  readonly><input type="button" id="adultPlus" class="cntBtn" value="+">
 			&nbsp;&nbsp;&nbsp;
-			청소년: &nbsp;<input type="button"id="teenMinus" class="cntBtn" value="-"><input type="text" id="teenCnt"  value="<%=teenCnt%>" readonly><input type="button" id="teenPlus" class="cntBtn" value="+">
+			청소년: &nbsp;<input type="button"id="teenMinus" class="cntBtn" value="-"><input type="text" class="outText" id="teenCnt"  value="<%=teenCnt%>" readonly><input type="button" id="teenPlus" class="cntBtn" value="+">
 		<input type="button" class="cntConfirm" value="인원 결정">
 		<input type="button" class="cntReset" value="인원 재선택">
 	</div>
@@ -280,7 +284,7 @@ DecimalFormat df = new DecimalFormat("#,###");
 				<div class="cntResult"><%=(adultCnt != 0) ? "성인: " + adultCnt + "명" : ""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? "청소년: " + teenCnt + "명" : ""%></div>
 				<div class="calculate"><%=(adultCnt != 0) ? df.format(adultPrice * adultCnt):""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? df.format(teenPrice * teenCnt) : ""%></div>
 				<hr>
-				<div class="priceLabel">결제금액:</div><input type="text" id="price"  value="<%=df.format(totalPrice) %> 원" readonly>
+				<div class="priceLabel">결제금액:</div><input type="text" class="outText" id="price" value="<%=df.format(totalPrice) %> 원" readonly>
 				</form>
 			</div>
 			<input type="button" value="취소" class="btn prev">

@@ -9,24 +9,44 @@
 <title>예매 페이지</title>
 <style>
 #container { width: 1000px; margin: 0px auto; margin: 0px auto; }
-#selectTable { height: 60px; width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; background-color: #f0f7ff; }
-td { border: 1px solid black; border-radius: 10px; background-color: white; border: 3px solid gray; vertical-align: top; }
-td:last-child { background-color: #f0f7ff; border: none; }
-.movieSelector { height: 300px; overflow: auto; }
-.movie { overflow: hidden; text-overflow: ellipsis; width: 230px; white-space: nowrap; font-weight: bold;
-		 border-radius: 3px; height: 30px; line-height: 30px;}
-.movChk:checked+.movie { background-color: #224070; color: white; }
-.movChk { display: none; }
+#selectTable { width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; background-color: #f0f7ff; }
+td { border: 1px solid black; border-radius: 10px; background-color: white; border: 3px solid gray; 
+	 vertical-align: top; }
+td:last-child { /*display: none;*/ }
+/* 개별 선택 요소 설정 */
+.chkT, .chkF { display: none; }
+.chkT+div, .chkF+div { overflow: hidden; text-overflow: ellipsis; width: 100%; white-space: nowrap; font-weight: bold;
+		 border-radius: 3px; height: 30px; line-height: 30px; }
+.chkT+div { background-color: #f0f7ff; }
+.chkT+div:hover { background-color: #96c7ff; }
+.chkT:checked+div { background-color: #224070; color: white; }
+.chkF+div { color: #545454; background-color: #c9c9c9; }
+.chkF+div:hover { background-color: lightgray; }
+/* 영화 선택 */
+.movieSelector { height: 350px; overflow: auto; }
 .movie:hover { background-color: #f0f7ff; }
 .rating { width: 20px; position: relative; top: 3px; left: 4px; }
+/* 상영관 선택 */
+.theaterSelector { height: 350px; overflow: auto; }
+/* 날짜 선택 */
+.dateSelector { height: 350px; overflow: auto; }
+.yrmonth { font-size: 1.1em; font-weight: bold; border: 1px solid gray; border-radius: 3px;  }
+.chkT:checked+div .weekday { color: white; }
+.blue { color: blue; }
+.red { color: red; }
+/* 시간 선택 */
+.timeSelector { height: 350px; overflow: auto; display: none; }
 
-
-.theaterSelector { height: 300px; overflow: auto; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {	
 	let movChks = document.querySelectorAll(".movChk");
+	let thChks = document.querySelectorAll(".thChk");
+	let dateChks = document.querySelectorAll(".dateChk");
 	let chkTs = document.querySelectorAll(".chkT");
+	let chkFs = document.querySelectorAll(".chkF");
+	let timeSelector = document.querySelector(".timeSelector");
+	
 	
 	// request에서 받아오기
 	let mov_id = document.querySelector("#mov_id");
@@ -35,48 +55,88 @@ document.addEventListener("DOMContentLoaded", function() {
 	let theaters = theater.value == "" || theater.value == "null" ? new Array() : theater.value.split(",") ;
 	let date = document.querySelector("#date");
 	let dates = date.value == "" || date.value == "null" ? new Array() : date.value.split(",") ;
-	
 	// 받아온 값에 따라 체크 표시
+	// 만일 체크된 값 중에 클래스가 chkF로 변경되었다면 ->배열에서 제거
 	for(movChk of movChks) {
 		if (mov_ids.indexOf(movChk.value) != -1 ) {
+			if(movChk.classList[1] =="chkF"){
+				mov_ids.splice(mov_ids.indexOf(movChk.value),1);
+				continue;
+			}
 			movChk.checked = true;
 		}
 	}
+	for(thChk of thChks) {
+		if (theaters.indexOf(thChk.value) != -1 ) {
+			if(thChk.classList[1] =="chkF"){
+				theaters.splice(theaters.indexOf(thChk.value),1);
+				continue;
+			}
+			thChk.checked = true;
+		}
+	}
+	for(dateChk of dateChks) {
+		if (dates.indexOf(dateChk.value) != -1 ) {
+			if(dateChk.classList[1] =="chkF"){
+				dates.splice(dates.indexOf(dateChk.value),1);
+				continue;
+			}
+			dateChk.checked = true;
+		}
+	}
+	// 3개 모두 선택된 경우 시간선택란 표시
+	if(mov_ids.length * theaters.length * dates.length != 0) {
+		timeSelector.style.display = "block";
+	}
+	
 	// 날짜 기준일 선택
 	let refDay = document.getElementById("refDay");
 	refDay.addEventListener("change", function() {
-		location = "ticketing.jsp?refDay=" + refDay.value;
+		location = "ticketing.jsp?mov_id=" + mov_ids.join(",") + "&theater=" + theaters.join(",") + "&refDay=" + refDay.value;
 	});
 	
-	// 쿼리값에 따라 요소 기능 설정
+	// 쿼리값에 따라 선택가능 요소 기능 설정
 	for(chkT of chkTs){
 		chkT.addEventListener("click", function(e) {
-			console.log("호출");
 			if(e.currentTarget.checked) {
-				if(mov_ids.length >= 3 ) { //추가필요
+				if(mov_ids.length >= 3 || theaters.length >=3 || dates >=3) {
 					alert("한 항목은 최대 3개까지 선택 가능합니다.");
 					return;
 				}
-				console.log(e.currentTarget.classList[0]);
+				// 클릭한 대상의 클래스명 중 첫번째 클래스명을 가져옴
+				// 해당 클래스명에 맞는 배열에 클릭한 대상의 값을 추가
 				switch(e.currentTarget.classList[0]) {
 					case "movChk":
 						mov_ids.push(e.currentTarget.value);
-						console.log(mov_ids);
 						break;
 					case "thChk":
+						theaters.push(e.currentTarget.value);
+						break;
+					case "dateChk":
+						dates.push(e.currentTarget.value);
 						break;
 				}
-				//location = "ticketing.jsp?mov_id=" + mov_ids.join(",");
-				//mov_id뿐 아니라 상영관, 날짜값 모두 가져가야 함.
 			} else {
 				switch(e.currentTarget.classList[0]) {
 					case "movChk":
 						mov_ids.splice(mov_ids.indexOf(e.currentTarget.value), 1 );
-						console.log(mov_ids);
+						break;
+					case "thChk":
+						theaters.splice(theaters.indexOf(e.currentTarget.value), 1 );
+						break;
+					case "dateChk":
+						dates.splice(dates.indexOf(e.currentTarget.value), 1 );
 						break;
 				}
-				//location = "ticketing.jsp?mov_id=" + mov_ids.join(","); 
 			}
+			location = "ticketing.jsp?mov_id=" + mov_ids.join(",") + "&theater=" + theaters.join(",") + "&date=" + dates.join(",") + "&refDay=" + refDay.value;
+		});
+	}
+	//쿼리값에 따라 선택 불가능 요소 기능 설정
+	for(chkF of chkFs){
+		chkF.addEventListener("click", function(e) {
+			alert("해당 조건의 상영이 존재하지 않습니다. 다른 조건으로 변경해 주세요.");
+			e.currentTarget.checked = false;
 		});
 	}
 	
@@ -84,12 +144,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </head>
 <body>
-<div id="container">
 <%
 request.setCharacterEncoding("utf-8");
 String mov_id = request.getParameter("mov_id");
 String theater = request.getParameter("theater");
-String date = request.getParameter("scnday");
+String date = request.getParameter("date");
 // String List로 선택된 요소들 가져오기
 List<String> s_mov_ids = mov_id == null || mov_id == "" ? null : Arrays.asList(mov_id.split(","));
 List<String> s_theaters = theater == null || theater == "" ? null : Arrays.asList(theater.split(","));
@@ -102,20 +161,24 @@ System.out.println("s_dates = " + s_dates);
 MovieDAO movPro = MovieDAO.getInstance();
 ScreenDAO scnPro = ScreenDAO.getInstance();
 
-// 영화선택란
+// < 영화선택란 >
 // 영화 목록 가져오기
 List<MovieDTO> movies = movPro.getMovList();
 // 나머지 2개 중 하나라도 선택된 것이 있는 경우 -> av_mov_ids에 요소 추가하고 검사
-// if movie id complementary info exists
+// 추가조건 선택되었는지 여부 검사
 Boolean mov_id_c = theater != null || date != null;
-List<Integer> av_mov_ids = scnPro.getMovQry(s_theaters, s_dates);	//available movie ids
+// 선택가능 영화목록 가져오기 (available movie IDs)
+List<Integer> av_mov_ids = scnPro.getMovQry(s_theaters, s_dates);
 
-// 상영관 선택란
+// < 상영관 선택란 >
+// 전체 영화 가져오기
 List<Integer> theaters = scnPro.getTheaterQry(null, null);
+// 추가조건 선택되었는지 여부 검사
 Boolean theater_c = mov_id != null || date != null;
+// 선택가능 영화 가져오기
 List<Integer> av_theaters = scnPro.getTheaterQry(s_mov_ids, s_dates);
 
-// 날짜 선택란
+// < 날짜 선택란 >
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 HashMap<Integer, String> weekdayMap = new HashMap<Integer, String>();
 weekdayMap.put(1,"월");
@@ -128,67 +191,91 @@ weekdayMap.put(7,"일");
 //조회기준일 가져오기
 String sRefDay = (String)request.getParameter("refDay");
 LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
-// 선택필터 날짜 리스트
+// 추가조건 선택되었는지 여부 검사
 Boolean date_c = mov_id != null || theater != null;
-List<LocalDate> av_dates = scnPro.getDateQry(s_mov_ids, s_theaters);
+// 선택가능 날짜 리스트
+List<LocalDate> av_dates = scnPro.getDateQry(s_mov_ids, s_theaters, refDay);// refDay로부터 21일간의 선택가능여부 조회
+
+// < 상영 선택란 >
+// 3가지 조건 모두 선택되었는지 검사
+boolean time_c = mov_id != null && theater != null && date != null;
+// 조건에 맞는 상영 가져오기
+if(mov_id != null && theater != null && date != null) {
+	
+}
+//scnPro.get
+
 %>
-<input type="hidden" id="mov_id" value="<%=mov_id %>">
-<input type="hidden" id="theater" value="<%=theater %>">
-<input type="hidden" id="date" value="<%=date %>">
-<table id="selectTable">
-	<tr>
-		<th width="30%">영화 선택</th>
-		<th width="15%">상영관 선택</th>
-		<th width="20%">날짜 선택</th>
-		<th width="35%">시간 선택</th>
-	</tr>
-	<tr>
-		<td class="movieSelector">
-			<%for(MovieDTO movie : movies) {%>
-				<label for="mov_<%=movie.getMov_id()%>">
-				<input type="checkbox" name="movChk" class="movChk <%if(!av_mov_ids.contains(movie.getMov_id()) && mov_id_c) {%>chkF<%} else {%>chkT<%}%>" id="mov_<%=movie.getMov_id()%>" value="<%=movie.getMov_id()%>">
-				<div class="movie">
-					<img src="../icons/<%=movie.getRating()%>.png" class="rating"> <%=movie.getMov_name()%>
-				</div>
-				</label>
-			<%}%>
-		</td>
-		<td>
-			<div class="theaterSelector">
-			<%for(int thtr : theaters) {%>
-				<label for="th_<%=thtr%>">
-				<input type="checkbox" name="movChk" class="thChk <%if(!av_theaters.contains(thtr) && theater_c) {%>chkF<%} else {%>chkT<%}%>" id="th_<%=thtr%>" value="<%=thtr%>">
-				<div class="theater">
-					<%=thtr%> 상영관
-				</div>
-				</label>
-			<%}%>
-			</div>
-		</td>
-		<td>
-			<div class="dateSelector">
-			<div class="dateSelect">기준일: <input type="date" id="refDay" value="<%=refDay%>"></div>
-			<%for(int i=0; i<20; i++) { 
-				String sDay = refDay.plusDays(i).format(formatter);
-				if(refDay.plusDays(i).getDayOfMonth() == 1 || i == 0) {%>
-				<div class="yrmonth"><%=refDay.plusDays(i).getYear()%>. <%=refDay.plusDays(i).getMonthValue()%></div>
-				<%} %>
-				<label for="day_<%=sDay%>">
-				<input type="checkbox" name="dateChk" class="dateChk <%if(!av_dates.contains(sDay) && date_c) {%>chkF<%} else {%>chkT<%}%>" id="day_<%=sDay%>" value="<%=sDay%>">
-					<div class="dayBlock <%if(i==0) {%>selected<%}%>">
-						<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
-						<span class="weekday <%if(refDay.plusDays(i).getDayOfWeek().getValue()==6) {%>blue<%} else if(refDay.plusDays(i).getDayOfWeek().getValue()==7){%>red<%}%>"><%=weekdayMap.get(refDay.plusDays(i).getDayOfWeek().getValue())%></span>
+<!-- 상단 -->
+<div class="header">
+	<jsp:include page="../common/top.jsp"/>
+</div>
+<div id="container">
+	<input type="hidden" id="mov_id" value="<%=mov_id %>">
+	<input type="hidden" id="theater" value="<%=theater %>">
+	<input type="hidden" id="date" value="<%=date %>">
+	<table id="selectTable">
+		<tr>
+			<th width="30%">영화 선택</th>
+			<th width="15%">상영관 선택</th>
+			<th width="20%">날짜 선택</th>
+			<th width="35%">시간 선택</th>
+		</tr>
+		<tr>
+			<td class="movieSelector">
+				<%for(MovieDTO movie : movies) {%>
+					<label for="mov_<%=movie.getMov_id()%>">
+					<input type="checkbox" name="movChk" class="movChk 
+					<%if(mov_id_c) {//다른 조건이 걸려 있는 경우
+						if(av_mov_ids.contains(movie.getMov_id()) ){%>chkT<%} else {%>chkF<%}%>
+					<%} else {%>chkT<%}%>"
+					 id="mov_<%=movie.getMov_id()%>" value="<%=movie.getMov_id()%>">
+					<div class="movie">
+						<img src="../icons/<%=movie.getRating()%>.png" class="rating"> <%=movie.getMov_name()%>
 					</div>
-				</label>
-			<%} %>
-		</td>
-		<td>
-			<div class="timeSelector">
-			
-			</div>
-		</td>
-	</tr>
-</table>
+					</label>
+				<%}%>
+			</td>
+			<td>
+				<div class="theaterSelector">
+				<%for(int thtr : theaters) {%>
+					<label for="th_<%=thtr%>">
+					<input type="checkbox" name="thChk" class="thChk 
+					<%if(theater_c) {
+						if(av_theaters.contains(thtr) ) {%>chkT <%} else {%>chkF<%}%>
+					<%} else {%>chkT<%}%>"
+					 id="th_<%=thtr%>" value="<%=thtr%>">
+					<div class="theater">
+						<%=thtr%> 상영관
+					</div>
+					</label>
+				<%}%>
+				</div>
+			</td>
+			<td>
+				<div class="dateSelector">
+				<div class="dateSelect">기준일: <input type="date" id="refDay" value="<%=refDay%>"></div>
+				<%for(int i=0; i<21; i++) { 
+					String sDay = refDay.plusDays(i).format(formatter);
+					if(refDay.plusDays(i).getDayOfMonth() == 1 || i == 0) {%>
+					<div class="yrmonth"><%=refDay.plusDays(i).getYear()%>. <%=refDay.plusDays(i).getMonthValue()%></div>
+					<%} %>
+					<label for="day_<%=sDay%>">
+					<input type="checkbox" name="dateChk" class="dateChk 
+					<%if(av_dates.contains(LocalDate.parse(sDay,formatter))) {%>chkT<%} else { %>chkF<%} %>" 
+					id="day_<%=sDay%>" value="<%=sDay%>">
+						<div class="dayBlock <%if(i==0) {%>selected<%}%>">
+							<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
+							<span class="weekday <%if(refDay.plusDays(i).getDayOfWeek().getValue()==6) {%>blue<%} else if(refDay.plusDays(i).getDayOfWeek().getValue()==7){%>red<%}%>"><%=weekdayMap.get(refDay.plusDays(i).getDayOfWeek().getValue())%></span>
+						</div>
+					</label>
+				<%} %>
+			</td>
+			<td class="timeSelector">
+				
+			</td>
+		</tr>
+	</table>
 </div>
 </body>
 </html>
