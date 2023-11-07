@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </head>
 <body>
+<!-- 상단 -->
+<div class="header">
+	<jsp:include page="../common/top.jsp"/>
+</div>
 <div id="container">
-	<!-- 상단 -->
-	<div class="header">
-		<jsp:include page="../common/top.jsp"/>
-	</div>
 	<!-- 본문 -->
 	<div class="main">
 		<form action="../visitor/loginChkPro.jsp" method="post" name="loginForm">
@@ -111,10 +111,10 @@ document.addEventListener("DOMContentLoaded", function() {
 		</div>
 		</form>
 	</div>
-	<!-- 하단 -->
-	<div class="footer">
-		<jsp:include page="../common/bottom.jsp"/>
-	</div>
+</div>
+<!-- 하단 -->
+<div class="footer">
+	<jsp:include page="../common/bottom.jsp"/>
 </div>
 </body>
 </html>

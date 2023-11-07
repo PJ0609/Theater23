@@ -134,6 +134,7 @@ public class ScreenDAO {
 	}
 	
 	// 모든 조건하 상영조회
+	// null이나 빈 문자열 비허용
 	public List<ScreenDTO> getScreen(List<String> mov_ids, List<String> theaters, List<String> dates){
 		List<ScreenDTO> screenList = new ArrayList<ScreenDTO>(); 
 		ScreenDTO screen = null;

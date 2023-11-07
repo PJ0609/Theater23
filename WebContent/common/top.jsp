@@ -9,7 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 body { margin: 0; }
 .wing { background-color: #97c1cf; width: 100%; margin:0; }
-.container { width: 1000px; margin: 0px auto; }
+.container { width: 1000px; margin: 0px auto; text-align: center;}
 a { text-decoration: none; color: black; }
 .headTitle { background-color: black; color: #86c8f7; border-radius: 10px; font-size: 35px; font-weight: bold; font-family: Oswald;
 			 padding: 0px 5px; margin: 0px 10px 0px 10px; display: inline-block; }
@@ -17,8 +17,8 @@ a { text-decoration: none; color: black; }
 /* 메뉴 */
 .menus { clear: both; }
 .mainmenu { text-align: center; background-color: white; display: inline-block; font-weight: bold; border: 2px solid black;
-			width: 100px; border-radius:10px; padding: 3px; margin: 10px; }
-.mainmenu:hover { background-color: }
+			width: 100px; border-radius:10px; padding: 3px; margin: 10px; transition:all 0.3s; }
+.mainmenu:hover { background-color: #86c8f7; }
 /* 검색 */
 .search { float: left; position: relative; top: 10px; }
 .search_drop { position: absolute; opacity: 0; visibility: hidden; transition:all 0.5s; left:40px; top: -2px; text-align: center; vertical-align: center;

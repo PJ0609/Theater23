@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="theater.movie.*, theater.screen.*, java.util.Set, java.util.HashSet, java.util.List, java.util.Arrays, 
-				 java.util.HashMap, java.time.LocalDate, java.time.format.DateTimeFormatter" %>
+				 java.util.HashMap, java.time.LocalDate, java.time.format.DateTimeFormatter, java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +12,6 @@
 #selectTable { width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; background-color: #f0f7ff; }
 td { border: 1px solid black; border-radius: 10px; background-color: white; border: 3px solid gray; 
 	 vertical-align: top; }
-td:last-child { /*display: none;*/ }
 /* 개별 선택 요소 설정 */
 .chkT, .chkF { display: none; }
 .chkT+div, .chkF+div { overflow: hidden; text-overflow: ellipsis; width: 100%; white-space: nowrap; font-weight: bold;
@@ -35,8 +34,7 @@ td:last-child { /*display: none;*/ }
 .blue { color: blue; }
 .red { color: red; }
 /* 시간 선택 */
-.timeSelector { height: 350px; overflow: auto; display: none; }
-
+.timeSelector { height: 350px; overflow: auto; display: none; border-color: black; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {	
@@ -46,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	let chkTs = document.querySelectorAll(".chkT");
 	let chkFs = document.querySelectorAll(".chkF");
 	let timeSelector = document.querySelector(".timeSelector");
-	
 	
 	// request에서 받아오기
 	let mov_id = document.querySelector("#mov_id");
@@ -99,8 +96,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	for(chkT of chkTs){
 		chkT.addEventListener("click", function(e) {
 			if(e.currentTarget.checked) {
-				if(mov_ids.length >= 3 || theaters.length >=3 || dates >=3) {
-					alert("한 항목은 최대 3개까지 선택 가능합니다.");
+				if(mov_ids.length >= 3 || theaters.length >=3 || dates.length >= 3) {
+					alert("영화와 상영관은 최대 3개까지 선택 가능합니다.");
 					return;
 				}
 				// 클릭한 대상의 클래스명 중 첫번째 클래스명을 가져옴
@@ -146,13 +143,14 @@ document.addEventListener("DOMContentLoaded", function() {
 <body>
 <%
 request.setCharacterEncoding("utf-8");
-String mov_id = request.getParameter("mov_id");
-String theater = request.getParameter("theater");
-String date = request.getParameter("date");
+// 빈 문자열 null로처리
+String mov_id = request.getParameter("mov_id") == "" ? null : request.getParameter("mov_id");
+String theater = request.getParameter("theater") == "" ? null : request.getParameter("theater");
+String date = request.getParameter("date")== "" ? null : request.getParameter("date");
 // String List로 선택된 요소들 가져오기
-List<String> s_mov_ids = mov_id == null || mov_id == "" ? null : Arrays.asList(mov_id.split(","));
-List<String> s_theaters = theater == null || theater == "" ? null : Arrays.asList(theater.split(","));
-List<String> s_dates = date == null || date == "" ? null : Arrays.asList(date.split(","));
+List<String> s_mov_ids = mov_id == null ? null : Arrays.asList(mov_id.split(","));
+List<String> s_theaters = theater == null ? null : Arrays.asList(theater.split(","));
+List<String> s_dates = date == null ? null : Arrays.asList(date.split(","));
 System.out.println("s_mov_ids = " + s_mov_ids);
 System.out.println("s_theaters = " + s_theaters);
 System.out.println("s_dates = " + s_dates);
@@ -179,7 +177,7 @@ Boolean theater_c = mov_id != null || date != null;
 List<Integer> av_theaters = scnPro.getTheaterQry(s_mov_ids, s_dates);
 
 // < 날짜 선택란 >
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 HashMap<Integer, String> weekdayMap = new HashMap<Integer, String>();
 weekdayMap.put(1,"월");
 weekdayMap.put(2,"화");
@@ -199,11 +197,14 @@ List<LocalDate> av_dates = scnPro.getDateQry(s_mov_ids, s_theaters, refDay);// r
 // < 상영 선택란 >
 // 3가지 조건 모두 선택되었는지 검사
 boolean time_c = mov_id != null && theater != null && date != null;
+System.out.println("mov_id=" + mov_id + " theater= " + theater + " date= " + date );
 // 조건에 맞는 상영 가져오기
-if(mov_id != null && theater != null && date != null) {
-	
+List<ScreenDTO> scnList = null;
+if(time_c) {
+	scnList = scnPro.getScreen(s_mov_ids, s_theaters, s_dates);
+	System.out.println("3항목 선택됨");
 }
-//scnPro.get
+SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 
 %>
 <!-- 상단 -->
@@ -256,13 +257,14 @@ if(mov_id != null && theater != null && date != null) {
 				<div class="dateSelector">
 				<div class="dateSelect">기준일: <input type="date" id="refDay" value="<%=refDay%>"></div>
 				<%for(int i=0; i<21; i++) { 
-					String sDay = refDay.plusDays(i).format(formatter);
+					String sDay = refDay.plusDays(i).format(formatter1);
 					if(refDay.plusDays(i).getDayOfMonth() == 1 || i == 0) {%>
 					<div class="yrmonth"><%=refDay.plusDays(i).getYear()%>. <%=refDay.plusDays(i).getMonthValue()%></div>
 					<%} %>
 					<label for="day_<%=sDay%>">
+					<!-- 체크박스를 라디오 버튼으로 바꿈(단일선택) -->
 					<input type="checkbox" name="dateChk" class="dateChk 
-					<%if(av_dates.contains(LocalDate.parse(sDay,formatter))) {%>chkT<%} else { %>chkF<%} %>" 
+					<%if(av_dates.contains(LocalDate.parse(sDay,formatter1))) {%>chkT<%} else { %>chkF<%} %>" 
 					id="day_<%=sDay%>" value="<%=sDay%>">
 						<div class="dayBlock <%if(i==0) {%>selected<%}%>">
 							<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
@@ -270,9 +272,27 @@ if(mov_id != null && theater != null && date != null) {
 						</div>
 					</label>
 				<%} %>
+				</div>
 			</td>
 			<td class="timeSelector">
-				
+				<%
+				if(time_c) {
+				int th = -1; String scn_type = "";
+				for(ScreenDTO screen : scnList) {
+					// 상영관이나 상영타입이 달라질 경우에만 줄바꿈, 표시 
+					if(th != screen.getTheater() || !scn_type.equals(screen.getScn_type()) ){
+						th = screen.getTheater();
+						scn_type = screen.getScn_type();%>
+						<div class="scntype"><b>
+							<span class="theater">상영관: <%=th%></span>
+							<span class="scn_type">상영 타입: <%=scn_type%></span>
+						</b></div>
+					<%}%>
+					<a href="../ticketing/seats.jsp?scn_id=<%=screen.getScn_id()%>"><div class="screenblock">
+						<span class="scn_time"><%=sdf1.format(screen.getScn_time())%></span><br>
+						<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
+					</div></a>
+				<%}}%>
 			</td>
 		</tr>
 	</table>

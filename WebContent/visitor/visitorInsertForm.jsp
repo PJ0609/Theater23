@@ -128,12 +128,11 @@ String id = request.getParameter("id");
 if (check==null) check = "-1";
 if (id==null) id = "";
 %>
-
+<!-- 상단 -->
+<div class="header">
+	<jsp:include page="../common/top.jsp"/>
+</div>
 <div id="container">
-	<!-- 상단 -->
-	<div class="header">
-		<jsp:include page="../common/top.jsp"/>
-	</div>
 	<!-- 본문 -->
 	<div class="main">
 	
@@ -202,10 +201,10 @@ if (id==null) id = "";
 		</div>
 	</form>
 	</div>
-	<!-- 하단 -->
-	<div class="footer">
-		<jsp:include page="../common/bottom.jsp"/>
-	</div>
+</div>
+<!-- 하단 -->
+<div class="footer">
+	<jsp:include page="../common/bottom.jsp"/>
 </div>
 </body>
 </html>
