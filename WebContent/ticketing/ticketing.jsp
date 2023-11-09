@@ -29,6 +29,7 @@ td { border: 1px solid black; border-radius: 10px; background-color: white; bord
 .theaterSelector { height: 380px; overflow: auto; }
 /* 날짜 선택 */
 .dateSelector { height: 380px; overflow: auto; }
+.dateSelect { margin-bottom: 3px; }
 .yrmonth { font-size: 1.1em; font-weight: bold; border: 1px solid gray; border-radius: 3px;  }
 .chkT:checked+div .weekday { color: white; }
 .blue { color: blue; }
@@ -38,6 +39,7 @@ td { border: 1px solid black; border-radius: 10px; background-color: white; bord
 .scntype { font-size: 1.1em; font-weight: bold; border: 1px solid gray; border-radius: 3px; padding:0px 5px; margin-top: 5px; }
 .screenblock { display: inline-block; width: 65px; height: 45px; text-align: center; border-radius: 3px; background-color: #f0f7ff;
 			   border: 2px solid black; padding-top: 3px; font-weight: bold; margin: 3px; }
+.screenblock:hover { background-color: #96c7ff; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {	
@@ -92,7 +94,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	// 날짜 기준일 선택
 	let refDay = document.getElementById("refDay");
 	refDay.addEventListener("change", function() {
-		location = "ticketing.jsp?mov_id=" + mov_ids.join(",") + "&theater=" + theaters.join(",") + "&refDay=" + refDay.value;
+		//location = "ticketing.jsp?mov_id=" + mov_ids.join(",") + "&theater=" + theaters.join(",") + "&refDay=" + refDay.value;
+		location = "ticketing.jsp?refDay=" + refDay.value;
 	});
 	
 	// 쿼리값에 따라 선택가능 요소 기능 설정
@@ -272,9 +275,10 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 					<input type="radio" name="dateChk" class="dateChk 
 					<%if(av_dates.contains(LocalDate.parse(sDay,formatter1))) {%>chkT<%} else { %>chkF<%} %>" 
 					id="day_<%=sDay%>" value="<%=sDay%>">
-						<div class="dayBlock <%if(i==0) {%>selected<%}%>">
+						<div class="dayBlock">
 							<span class="day"><%=refDay.plusDays(i).getDayOfMonth()%></span>
 							<span class="weekday <%if(refDay.plusDays(i).getDayOfWeek().getValue()==6) {%>blue<%} else if(refDay.plusDays(i).getDayOfWeek().getValue()==7){%>red<%}%>"><%=weekdayMap.get(refDay.plusDays(i).getDayOfWeek().getValue())%></span>
+							<%if(sDay.equals(LocalDate.now().format(formatter1))) {%><span class="today">(오늘)</span><%}%>
 						</div>
 					</label>
 				<%} %>

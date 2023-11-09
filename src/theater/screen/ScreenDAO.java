@@ -25,7 +25,7 @@ public class ScreenDAO {
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 
-	public final String GET_MOV_BY_DATE = "select mov_id from screening where date(scn_time)=?";
+	public final String GET_MOV_BY_DATE = "select mov_id from screening where date(scn_time)=? group by mov_id";
 	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=?";
 	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
 	public final String GET_SCN_BY_ID = "select * from screening where scn_id=?";

@@ -12,7 +12,7 @@ body { margin: 0; }
 .container { width: 1000px; margin: 0px auto; text-align: center;}
 a { text-decoration: none; color: black; }
 .headTitle { background-color: black; color: #86c8f7; border-radius: 10px; font-size: 35px; font-weight: bold; font-family: Oswald;
-			 padding: 0px 5px; margin: 0px 10px 0px 10px; display: inline-block; }
+			 padding: 0px 8px; margin: 0px 10px 0px 10px; display: inline-block; }
 .usrInfo { float: right; margin-top: 10px;  }
 /* 메뉴 */
 .menus { clear: both; }

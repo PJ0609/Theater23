@@ -121,7 +121,7 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 					theater = screen.getTheater();
 					scn_type = screen.getScn_type();%>
 					<div class="scntype"><b>
-						<span class="theater">상영관: <%=theater%></span>
+						<span class="theater">&nbsp;상영관: <%=theater%></span>
 						<span class="scn_type">상영 타입: <%=scn_type%></span>
 					</b></div>
 				<%}%>

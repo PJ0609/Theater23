@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="theater.screen.*, theater.movie.*, java.util.*, java.text.SimpleDateFormat, java.text.DecimalFormat" %>
+<%@ page import="theater.screen.*, theater.movie.*, java.util.*, java.text.SimpleDateFormat, java.text.DecimalFormat, java.time.LocalDate" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,6 +82,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	let nextBtn = document.querySelector(".next");
 	nextBtn.style.backgroundColor = "gray";
 	
+	// 이전 버튼
+	let prevBtn = document.querySelector(".prev");
+	prevBtn.addEventListener("click", function() {
+		location = "../ticketing/ticketing.jsp?mov_id=" + resultForm.mov_id.value + "&theater=" + resultForm.theater.value + "&date=" + resultForm.scr_time.value.substring(0,10) + "&refDay=" + resultForm.scr_time_minus.value.substring(0,10);
+	});
+	console.log(resultForm.scr_time);
 	// 예매수 초과 확인
 	function plusChk(obj) {
 		let cnt = +adultCnt.value + +teenCnt.value;
@@ -276,9 +282,11 @@ DecimalFormat df = new DecimalFormat("#,###");
 			</div>
 			<div class="result">
 				<form action="" method="post" name="resultForm">
+				<input type="hidden" name="mov_id" value="<%=screen.getMov_id()%>">
 				<input type="hidden" name="resv_type" value="<%=Integer.toString(adultCnt) + ", " + Integer.toString(teenCnt)%>">
 				<input type="hidden" name="theater" value="<%=screen.getTheater() %>">
 				<input type="hidden" name="scr_time" value="<%=screen.getScn_time()%>">
+				<input type="hidden" name="scr_time_minus" value="<%=screen.getScn_time().toLocalDateTime().toLocalDate().plusDays(-2).toString().substring(0,10)%>">
 				<input type="hidden" name="end_time" value="<%=screen.getEnd_time()%>">
 				<input type="hidden" name="seat" value="">
 				<div class="cntResult"><%=(adultCnt != 0) ? "성인: " + adultCnt + "명" : ""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? "청소년: " + teenCnt + "명" : ""%></div>
@@ -287,7 +295,7 @@ DecimalFormat df = new DecimalFormat("#,###");
 				<div class="priceLabel">결제금액:</div><input type="text" class="outText" id="price" value="<%=df.format(totalPrice) %> 원" readonly>
 				</form>
 			</div>
-			<input type="button" value="취소" class="btn prev">
+			<input type="button" value="이전" class="btn prev">
 			<input type="button" value="다음" class="btn next">
 	</div>
 </div>

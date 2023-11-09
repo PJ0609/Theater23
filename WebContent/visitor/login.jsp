@@ -7,7 +7,7 @@
 <title>로그인 폼</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
-.main { width: 400px; margin: 0px auto; }
+.main { width: 400px; margin: 0px auto; text-align: center; }
 .title_row { height: 40px; font-family: "monoton"; font-size: 30px; }
 
 table { width: 100%; border: none; border-collapse: collapse; text-align: center;}
@@ -105,8 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			</tr>
 		</table>
 		<div class="etc">
-			<input type="checkbox" id="id_save"><label for="id_save">아이디 저장</label>
-			<a href="">비밀번호 찾기</a>
+			<input type="checkbox" id="id_save"><label for="id_save">아이디 저장 &nbsp;&nbsp; </label>
 			<a href="visitorInsertForm.jsp">회원가입</a>
 		</div>
 		</form>

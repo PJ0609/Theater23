@@ -12,23 +12,23 @@
 /* 본문 */
 .main { width: 1000px; margin: 0 auto; }
 h2 { text-align: center; }
-table { width: 70%; border: 1px solid black; border-collapse: collapse; margin: 0px auto; }
+table { width: 70%; border: 3px solid black; border-radius: 10px; border-collapse: collapse; margin: 0px auto; }
 tr { height: 50px; }
-th, td { border: 1px solid black;}
+th, td { border: 1px solid gray;}
 th { background: #f8f9fa;}
 td { padding-left: 25px; }
-input[type="text"] { width: 300px; }
+.txtInput { width: 300px; }
 .first_row #btnCheck { width: 110px; height: 27px; background: #9942f; border: none; border-radius: 5px; font-weight: bold; margin-left: 10px;
 font-size: 0.8em;}
 .first_row span {font-size: 0.8em;}
 .blue { color: blue; }
 .red { color: red; }
 .end_row { height: 100px; }
-.end_row>td {margin: 4px 0; }
+.end_row>td { margin: 4px 0; }
 .end_row #btnAddress { width: 80px; height: 27px; background: #1e94be; color: #fff; font-weight: bold; 
 border: #1e94be; border-radius:5px;}
 .btns { text-align: center; }
-.btns>input { width: 100px; height: 35px; margin: 20px; background:#000; color: white; font-size: 16px; font-weight: bold;}
+.btn { width: 100px; height: 35px; margin: 20px; background:#000; color: white; font-size: 16px; font-weight: bold; border-radius:5px;}
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
@@ -143,7 +143,7 @@ if (id==null) id = "";
 			<tr class="first_row">
 				<th width="20%" height="75px">아이디</th>
 				<td width="80%">
-					<input type="text" name="id" placeholder="아이디 중복 체크를 누르세요." value=<%=id %>>
+					<input type="text" name="id" class="txtInput" placeholder="아이디 중복 체크를 누르세요." value=<%=id %>>
 					<input type="button" id="btnCheck" value="아이디 중복체크"><br>
 					<%if (check.equals("-1")) {%>
 						<span>중복 아이디를 체크하세요.</span>
@@ -156,23 +156,23 @@ if (id==null) id = "";
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><input type="password" name="pwd"></td>
+				<td><input type="password" name="pwd" class="txtInput"></td>
 			</tr>
 			<tr>
 				<th>비밀번호 확인</th>
-				<td><input type="password" name="pwd2"></td>
+				<td><input type="password" name="pwd2" class="txtInput"></td>
 			</tr>
 			<tr>
 				<th>이름</th>
-				<td><input type="text" name="name"></td>
+				<td><input type="text" name="name" class="txtInput"></td>
 			</tr>
 			<tr>
 				<th>생년월일</th>
-				<td><input type="date" name="birthday"></td>
+				<td><input type="date" name="birthday" class="txtInput"></td>
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td><input type="email" name="email"></td>
+				<td><input type="email" name="email" class="txtInput"></td>
 			</tr>
 			<tr>
 				<th>성별</th>
@@ -189,14 +189,14 @@ if (id==null) id = "";
 				<th>주소</th>
 				<td>
 					<input type="button" value="주소 찾기" id="btnAddress"><br>
-					<input type="text" name="address1" placeholder="기본주소 입력"><br>
-					<input type="text" name="address2" placeholder="상세주소 입력"><br>
+					<input type="text" name="address1" class="txtInput" placeholder="기본주소 입력"><br>
+					<input type="text" name="address2" class="txtInput" placeholder="상세주소 입력"><br>
 				</td>
 			</tr>
 		</table>
 		<div class="btns">
-			<input type="button" id="btnInsert" value="회원가입">
-			<input type="button" id="btnCancel" value="취소">
+			<input type="button" id="btnInsert" class="btn" value="회원가입">
+			<input type="button" id="btnCancel" class="btn" value="취소">
 			
 		</div>
 	</form>
