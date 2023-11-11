@@ -12,6 +12,7 @@
 #selectTable { width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; background-color: #f0f7ff; }
 td { border: 1px solid black; border-radius: 10px; background-color: white; border: 3px solid gray; 
 	 vertical-align: top; }
+td>div { height: 350px; height: 380px; overflow: auto; }
 /* 개별 선택 요소 설정 */
 .chkT, .chkF { display: none; }
 .chkT+div, .chkF+div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold;
@@ -22,11 +23,9 @@ td { border: 1px solid black; border-radius: 10px; background-color: white; bord
 .chkF+div { color: #545454; background-color: #c9c9c9; }
 .chkF+div:hover { background-color: lightgray; }
 /* 영화 선택 */
-.movieSelector { height: 380px; overflow: auto; }
 .movie:hover { background-color: #f0f7ff; }
 .rating { width: 20px; position: relative; top: 3px; left: 4px; }
 /* 상영관 선택 */
-.theaterSelector { height: 380px; overflow: auto; }
 /* 날짜 선택 */
 .dateSelector { height: 380px; overflow: auto; }
 .dateSelect { margin-bottom: 3px; }
@@ -35,7 +34,7 @@ td { border: 1px solid black; border-radius: 10px; background-color: white; bord
 .blue { color: blue; }
 .red { color: red; }
 /* 시간 선택 */
-.timeSelector { height: 380px; overflow: auto; display: none; border-color: black; }
+.timeSelector { display: none; border-color: black; }
 .scntype { font-size: 1.1em; font-weight: bold; border: 1px solid gray; border-radius: 3px; padding:0px 5px; margin-top: 5px; }
 .screenblock { display: inline-block; width: 65px; height: 45px; text-align: center; border-radius: 3px; background-color: #f0f7ff;
 			   border: 2px solid black; padding-top: 3px; font-weight: bold; margin: 3px; }
@@ -102,17 +101,23 @@ document.addEventListener("DOMContentLoaded", function() {
 	for(chkT of chkTs){
 		chkT.addEventListener("click", function(e) {
 			if(e.currentTarget.checked) {
-				if(mov_ids.length >= 3 || theaters.length >=3) {
-					alert("영화와 상영관은 최대 3개까지 선택 가능합니다.");
-					return;
-				}
 				// 클릭한 대상의 클래스명 중 첫번째 클래스명을 가져옴
 				// 해당 클래스명에 맞는 배열에 클릭한 대상의 값을 추가
 				switch(e.currentTarget.classList[0]) {
 					case "movChk":
+						if(mov_ids.length >= 3) {
+							alert("영화는 최대 3개까지 선택 가능합니다.");
+							e.currentTarget.checked = false;
+							return;
+						}
 						mov_ids.push(e.currentTarget.value);
 						break;
 					case "thChk":
+						if(theaters.length >=3) {
+							alert("영화와 상영관은 최대 3개까지 선택 가능합니다.");
+							e.currentTarget.checked = false;
+							return;
+						}
 						theaters.push(e.currentTarget.value);
 						break;
 					case "dateChk":
@@ -228,7 +233,8 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 			<th width="35%">시간 선택</th>
 		</tr>
 		<tr>
-			<td class="movieSelector">
+			<td>
+				<div class="movieSelector">
 				<%if(movies != null) {
 					for(MovieDTO movie : movies) {%>
 						<label for="mov_<%=movie.getMov_id()%>">
@@ -243,6 +249,7 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 						</label>
 					<%}
 				}%>
+				</div>
 			</td>
 			<td>
 				<div class="theaterSelector">
