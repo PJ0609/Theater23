@@ -291,7 +291,8 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 				<%} %>
 				</div>
 			</td>
-			<td class="timeSelector">
+			<td>
+				<div class="timeSelector">
 				<%
 				if(time_c) {
 				int th = -1; String scn_type = "";
@@ -313,6 +314,7 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 					</div>
 					</a>
 				<%}}%>
+				</div>
 			</td>
 		</tr>
 	</table>
