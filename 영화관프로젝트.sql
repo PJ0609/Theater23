@@ -78,6 +78,7 @@ insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, addre
 create table ticket(
 resv_id varchar(20) primary key,
 scn_id bigint not null,
+mov_id bigint not null,
 id varchar(30) not null, 
 resv_type varchar(10) not null,
 theater int not null, 
@@ -85,6 +86,8 @@ scn_time datetime not null,
 end_time datetime not null,
 seat text not null
 );
+drop table ticket;
+select * from ticket;
 -- 영화 정보
 create table movie(
 mov_id bigint primary key auto_increment,
