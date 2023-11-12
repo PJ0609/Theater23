@@ -80,7 +80,7 @@ String id = (String)session.getAttribute("id");
 		<%}%>
 	</div>
 	<div class="menus">
-		<a href=""><div class="mainmenu m1">영화</div></a>
+		<a href="../theater/movieList.jsp"><div class="mainmenu m1">영화</div></a>
 		<a href="../ticketing/ticketing.jsp"><div class="mainmenu m2">예매</div></a>
 		<a href="../ticketing/schedule.jsp"><div class="mainmenu m3">상영시간표</div></a>
 		<a href="../theater/frontPage.jsp"><div class="headTitle">MOVIPLAY</div></a>

@@ -22,7 +22,7 @@ public class MovieDAO {
 	private ResultSet rs = null;
 	
 	private final String GET_MOVIE = "select * from movie where mov_id=?";
-	private final String GET_MOVLIST = "select * from movie";
+	private final String GET_MOVLIST = "select * from movie limit ?,?";
 	private final String INSERT_MOVIE = "insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link) values(?,?,?,?,?,?,?,?,?)";
 	private final String UPDATE_MOVIE = "update movie set mov_name=?, director=?, mov_img=?, genre=?, rating=?, synopsis=?, length=?, rel_date=?, trailer_link=? where mov_id=?";
 	private final String DELETE_MOVIE = "delete movie where mov_id=?"; 
@@ -56,12 +56,14 @@ public class MovieDAO {
 	}
 	
 	// 영화 리스트 가져오기
-	public List<MovieDTO> getMovList() {
+	public List<MovieDTO> getMovList(int start, int cnt) {
 		MovieDTO movie = null;
 		List<MovieDTO> movies = new ArrayList<MovieDTO>();
 		try {
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(GET_MOVLIST);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, cnt);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				movie = new MovieDTO();
@@ -84,7 +86,7 @@ public class MovieDAO {
 		}
 		return movies;
 	}
-	// 영화 리스트 가져오기
+	// 영화 리스트 mov_id 리스트로 가져오기
 	public List<MovieDTO> getMovList(List<Integer> mov_ids) {
 		if( mov_ids == null || mov_ids.size() == 0 ) return null;
 		MovieDTO movie = null;
