@@ -9,6 +9,11 @@
 <title>예매 페이지</title>
 <style>
 #container { width: 1000px; margin: 0px auto; margin: 0px auto; }
+.subTitle { float: left; }
+.reload { width: 100px; height: 28px; background-color: white; float: right; border: 2px solid black; border-radius: 7px; text-align: center;
+		  position: relative; top: 28px; font-weight: bold; line-height: 28px; cursor: pointer; transition: all 0.3s;  }
+.reload:hover { background-color: lightgray; }
+.reloadImg { width: 18px; position: relative; top: 3px; margin-right: 5px; }
 #selectTable { width: 100%; overflow: auto; border: 2px solid gray; border-radius: 10px; background-color: #f0f7ff; }
 td { border: 1px solid black; border-radius: 10px; background-color: white; border: 3px solid gray; 
 	 vertical-align: top; }
@@ -16,7 +21,7 @@ td>div { height: 350px; height: 380px; overflow: auto; }
 /* 개별 선택 요소 설정 */
 .chkT, .chkF { display: none; }
 .chkT+div, .chkF+div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold;
-		 			   border-radius: 3px; height: 30px; line-height: 30px; padding: 0px 5px;}
+		 			   border-radius: 3px; height: 30px; line-height: 30px; padding: 0px 5px; transition: all 0.15s; }
 .chkT+div { background-color: #f0f7ff; }
 .chkT+div:hover { background-color: #96c7ff; }
 .chkT:checked+div { background-color: #224070; color: white; }
@@ -37,7 +42,7 @@ td>div { height: 350px; height: 380px; overflow: auto; }
 .timeSelector { display: none; border-color: black; }
 .scntype { font-size: 1.1em; font-weight: bold; border: 1px solid gray; border-radius: 3px; padding:0px 5px; margin-top: 5px; }
 .screenblock { display: inline-block; width: 65px; height: 45px; text-align: center; border-radius: 3px; background-color: #f0f7ff;
-			   border: 2px solid black; padding-top: 3px; font-weight: bold; margin: 3px; }
+			   border: 2px solid black; padding-top: 3px; font-weight: bold; margin: 3px; transition: all 0.2s; cursor: pointer; }
 .screenblock:hover { background-color: #96c7ff; }
 </style>
 <script>
@@ -56,6 +61,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	let theaters = theater.value == "" || theater.value == "null" ? new Array() : theater.value.split(",") ;
 	let date = document.querySelector("#date");
 	let dates = date.value == "null" ? "" : date.value ;
+	
+	// 초기화 버튼
+	let reloadBtn = document.querySelector(".reload");
+	reloadBtn.addEventListener("click", function() {
+		location = "ticketing.jsp?refDay=" + refDay.value;
+	})
+	
 	// 받아온 값에 따라 체크 표시
 	// 만일 체크된 값 중에 클래스가 chkF로 변경되었다면 ->배열에서 제거
 	for(movChk of movChks) {
@@ -85,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			dateChk.checked = true;
 		}
 	}
+	
 	// 3개 모두 선택된 경우 시간선택란 표시
 	if(mov_ids.length * theaters.length * dates.length != 0) {
 		timeSelector.style.display = "block";
@@ -93,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	// 날짜 기준일 선택
 	let refDay = document.getElementById("refDay");
 	refDay.addEventListener("change", function() {
-		//location = "ticketing.jsp?mov_id=" + mov_ids.join(",") + "&theater=" + theaters.join(",") + "&refDay=" + refDay.value;
 		location = "ticketing.jsp?refDay=" + refDay.value;
 	});
 	
@@ -145,12 +157,28 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	}
 	
+	// 좌석 선택 전 로그인 여부 확인
+	let screenblock = document.querySelectorAll(".screenblock");
+	let scn_id = document.querySelectorAll(".scn_id");
+	let id = document.querySelector("#id");
+	for(let i=0; i<screenblock.length; i++) {
+		screenblock[i].addEventListener("click", function() {
+			if ( id.value == "null" ) {
+				alert("예매하기 위해서 로그인해 주세요.");
+				location = "../visitor/login.jsp?scn_id=" + scn_id[i].value;
+			} else {
+				location = "../ticketing/seats.jsp?scn_id=" + scn_id[i].value;
+			}
+		})
+	}
+	
 });
 </script>
 </head>
 <body>
 <%
 request.setCharacterEncoding("utf-8");
+String id = (String)session.getAttribute("id");
 // 빈 문자열 null로처리
 String mov_id = request.getParameter("mov_id") == "" ? null : request.getParameter("mov_id");
 String theater = request.getParameter("theater") == "" ? null : request.getParameter("theater");
@@ -221,10 +249,15 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 	<jsp:include page="../common/top.jsp"/>
 </div>
 <div id="container">
-	<h3>예매하기</h3>
+	<h3 class="subTitle">예매하기</h3>
 	<input type="hidden" id="mov_id" value="<%=mov_id %>">
 	<input type="hidden" id="theater" value="<%=theater %>">
 	<input type="hidden" id="date" value="<%=date %>">
+	<input type="hidden" id="id" value="<%=id %>">
+	<div class="reload">
+		<img src="../icons/reload.png" class="reloadImg">
+		<span>초기화</span>
+	</div>
 	<table id="selectTable">
 		<tr>
 			<th width="30%">영화 선택</th>
@@ -271,7 +304,7 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 			</td>
 			<td>
 				<div class="dateSelector">
-				<div class="dateSelect">기준일자: <input type="date" id="refDay" value="<%=refDay%>"></div>
+				<div class="dateSelect">기준일: <input type="date" id="refDay" value="<%=refDay%>"></div>
 				<%for(int i=0; i<10; i++) { 
 					String sDay = refDay.plusDays(i).format(formatter1);
 					if(refDay.plusDays(i).getDayOfMonth() == 1 || i == 0) {%>
@@ -291,8 +324,8 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 				<%} %>
 				</div>
 			</td>
-			<td>
-				<div class="timeSelector">
+			<td class="timeSelector">
+				<div>
 				<%
 				if(time_c) {
 				int th = -1; String scn_type = "";
@@ -307,12 +340,11 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 							<span class="scn_type"> <%=scn_type%></span>
 						</b></div>
 					<%}%>
-					<a href="../ticketing/seats.jsp?scn_id=<%=screen.getScn_id()%>">
 					<div class="screenblock">
+						<input type="hidden" class="scn_id" value="<%=screen.getScn_id()%>">
 						<span class="scn_time"><%=sdf1.format(screen.getScn_time())%></span><br>
 						<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
 					</div>
-					</a>
 				<%}}%>
 				</div>
 			</td>

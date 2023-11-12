@@ -75,17 +75,16 @@ reg_date datetime default now()
 insert into visitor(id, pwd, name, gender, tel, email, birthday, address1, address2, seen_mov) values('aaaa','1234', '길길동', 'm', '010-1234-2345','asdf@email.com', '2000-01-01','주소1','주소2','살인의 추억,라따뚜이');
 
 -- 예매 정보
-create table ticketing(
+create table ticket(
 resv_id varchar(20) primary key,
+scn_id bigint not null,
 id varchar(30) not null, 
 resv_type varchar(10) not null,
 theater int not null, 
-scr_time datetime not null,
+scn_time datetime not null,
 end_time datetime not null,
 seat text not null
 );
-insert into ticketing(resv_id, id, resv_type, theater, scr_time, end_time, seat) values('jr3r41243l','aaaa', '2,1', '1', '2023-10-21 12:00', '2023-10-21 13:20', 'B3,B4,C3');
-
 -- 영화 정보
 create table movie(
 mov_id bigint primary key auto_increment,
@@ -112,7 +111,7 @@ post_date datetime default now()
 insert into review(mov_id, mov_name, id, usr_rating, content) values(1, '라따뚜이', 'aaaa', '5', '집에 레미 한마리 키우고 싶어요');
 
 -- 상영 정보
-create table screening(
+create table screen(
 mov_id bigint not null,
 mov_name varchar(50) default '제목없음',
 scn_id bigint primary key auto_increment, 
@@ -125,16 +124,5 @@ teen_price int default 10000,
 remaining_seats int,
 resv_seat text
 );
-select * from screening;
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats, resv_seat) values(1,'라따뚜이', 1, '2D(자막)', '2023-10-21 12:00', '2023-10-21 13:10', 81, 'F3, A2, H12, D15');
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-21 14:00', '2023-10-21 15:50', 70);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 1, '2D(자막)', '2023-10-21 14:00', '2023-10-23 13:10', 81);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '3D(자막)', '2023-10-21 16:00', '2023-10-21 17:10', 70);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 14:00', '2023-10-21 15:10', 87);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(1,'라따뚜이', 2, '2D(자막)', '2023-10-21 18:00', '2023-10-21 19:10', 87);
-insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, remaining_seats) values(2, '살인의 추억', 1, '2D', '2023-10-22 14:00', '2023-10-22 15:50', 70);
-
-select * from screening;
-select date_format(scn_time, '%Y-%m-%d') as fdate from screening group by fdate ;
-
-select date(scn_time) as fdate from screening where date(scn_time) between '2023-10-20' and '2023-11-10' and mov_id in (1) group by fdate ;
+select * from ticket;
+select * from screen;

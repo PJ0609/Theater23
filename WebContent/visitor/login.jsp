@@ -18,7 +18,7 @@ th { border: 1px solid black; text-align: center; }
 .loginhr {height: 1px; margin: 0}
 
 .end_row>td { text-align: center; }
-.end_row input { width: 340px; height: 50px; background-color: black; color: white; cursor:pointer; border: none; border-radius:5px; margin: 10px 20px;}
+.end_row input { width: 340px; height: 50px; background-color: #224070; color: white; cursor:pointer; border: none; border-radius:5px; margin: 10px 20px;}
 </style>
 
 <script>
@@ -42,12 +42,21 @@ document.addEventListener("DOMContentLoaded", function() {
 		form.submit();
 	});
 	
+	// 패스워드 엔터키
+	form.pwd.addEventListener("keyup", function(e) {
+		if(e.code === 'Enter') {
+			e.preventDefault();
+			form.submit();
+		}
+	})
+	
 	//쿠키 사용
 	let id_save = document.getElementById("id_save");
 	id_save.addEventListener("click", function() {
 		let now = new Date();
 		let name = "cookieId";
 		let value = form.id.value; 
+		console.log("cookie");
 		
 		if(form.id_save.checked == true) {
 			now.setDate(now.getDate() + 7);//쿠키 유지시간 설정, 7일
@@ -75,6 +84,10 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </head>
 <body>
+<%
+request.setCharacterEncoding("utf-8");
+String scn_id = request.getParameter("scn_id");
+%>
 <!-- 상단 -->
 <div class="header">
 	<jsp:include page="../common/top.jsp"/>
@@ -83,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	<!-- 본문 -->
 	<div class="main">
 		<form action="../visitor/loginChkPro.jsp" method="post" name="loginForm">
+		<input type="hidden" name="scn_id" value="<%=scn_id%>">
 		<table>
 			<tr class="title_row">
 				<td><a href="../theater/frontPage.jsp"></a></td>

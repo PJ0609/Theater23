@@ -24,10 +24,11 @@ a { text-decoration: none; color: black; }
 .dateSelector { display: inline-block; background-color: white; border: 1px solid gray; border-radius: 10px; padding: 5px; }
 /* 상영 스케줄 뷰 */
 .schedules { padding: 15px; }
-.rating { width: 32px; position: relative; top: 3px; }
-.mov_title { font-size: 2em; font-weight: bold; }
+.rating { width: 25px; position: relative; top: 3px; }
+.mov_title { font-size: 1.5em; font-weight: bold; }
 .scntype { background-color: #f0f7ff; margin: 5px; border: 1px solid gray; border-radius: 3px; }
-.screenblock {  margin: 0px 5px 5px 5px; display: inline-block; border: 1px solid gray; border-radius: 3px; text-align: center; padding: 5px;  }
+.screenblock {  margin: 0px 5px 5px 5px; display: inline-block; border: 1px solid gray; border-radius: 3px; text-align: center; padding: 5px; 
+				cursor: pointer; }
 .screenblock:hover { background-color: #e6e8e8; }
 .scn_time { font-size: 1.7em; }
 </style>
@@ -37,13 +38,27 @@ document.addEventListener("DOMContentLoaded", function() {
 	refDay.addEventListener("change", function() {
 		location = "schedule.jsp?refDay=" + refDay.value;
 	});
+	// 좌석 선택 전 로그인 여부 확인
+	let screenblock = document.querySelectorAll(".screenblock");
+	let scn_id = document.querySelectorAll(".scn_id");
+	let id = document.querySelector("#id");
+	for(let i=0; i<screenblock.length; i++) {
+		screenblock[i].addEventListener("click", function() {
+			if ( id.value == "null" ) {
+				alert("예매하기 위해서 로그인해 주세요.");
+				location = "../visitor/login.jsp?scn_id=" + scn_id[i].value;
+			} else {
+				location = "../ticketing/seats.jsp?scn_id=" + scn_id[i].value;
+			}
+		})
+	}
 });
 </script>
 </head>
 <body>
 <%
 request.setCharacterEncoding("utf-8");
-
+String id = (String)session.getAttribute("id");
 // 조회기준일 설정
 String sRefDay = (String)request.getParameter("refDay");
 LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
@@ -55,6 +70,7 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 </div>
 <div id="container">
 	<h3>상영시간표</h3>
+	<input type="hidden" id="id" value="<%=id %>">
 	<div class="dateSelect">
 		<div class="days weekArr"><a href="schedule.jsp?refDay=<%=refDay.plusDays(-1)%>"><img src="../icons/square-left.png" width="35px" ></a></div>
 		<%
@@ -88,7 +104,6 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	<%
 	//조회기준일로 영화 id목록 가져오기
 	ScreenDAO scnPro = ScreenDAO.getInstance();
-	//List<String> srefDay = Arrays.asList(refDay.toString());
 	List<Integer> mov_ids = scnPro.getMovByDate(refDay);
 	System.out.println("지정일 조회된 영화: " + mov_ids);
 	
@@ -96,9 +111,6 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	MovieDAO MovPro = MovieDAO.getInstance();
 	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 M월 dd일");
 	SimpleDateFormat sdf2 = new SimpleDateFormat("kk:mm");
-	// java.time.LocalDate, java.time.format.DateTimeFormatter,
-	//DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("yyyy년 M월 dd일");
-	//DateTimeFormatter dtf2 =  DateTimeFormatter.ofPattern("hh : mm");
 	for(int mov_id : mov_ids) {
 		List<ScreenDTO> scnList = scnPro.getScnList(mov_id, refDay);
 		MovieDTO movie = MovPro.getMovie(mov_id);
@@ -125,10 +137,11 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 						<span class="scn_type">상영 타입: <%=scn_type%></span>
 					</b></div>
 				<%}%>
-				<a href="../ticketing/seats.jsp?scn_id=<%=screen.getScn_id()%>"><div class="screenblock">
-					<span class="scn_time"><%=sdf2.format(screen.getScn_time())%></span><br>
-					<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
-				</div></a>
+					<div class="screenblock">
+						<input type="hidden" class="scn_id" value="<%=screen.getScn_id()%>">
+						<span class="scn_time"><%=sdf2.format(screen.getScn_time())%></span><br>
+						<span class="remaining_seats"><%=screen.getRemaining_seats()%>석</span>
+					</div>
 			<%}%>
 			</div>
 		</div>

@@ -48,7 +48,7 @@ values('서울의 봄','김성수','서울의봄_메인포스터_이마노출버
 'https://youtu.be/-AZ7cnwn2YI?si=VGPmMgToEo9j4mId'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
-values('더 마블스','니아 다코스타','[더 마블스] 메인 포스터_절찬상영중.jpg','SF, 액션','12', 
+values('더 마블스','니아 다코스타','더 마블스_메인 포스터_절찬상영중.jpg','SF, 액션','12', 
 '강력한 힘으로 은하계를 수호하는 최강 히어로 캡틴 마블 ‘캐럴 댄버스’
 캡틴 마블의 오랜 친구의 딸이자, 빛의 파장을 조작하는 히어로 ‘모니카 램보’
 최애 히어로 캡틴 마블의 열렬한 팬인 미즈 마블 ‘카말라 칸’
@@ -279,7 +279,7 @@ values('조커',' 토드 필립스','조커_포스터.jpg','드라마, 스릴러
 'https://youtu.be/c8_EJWCK76Q?si=rYRJ8Yni_flk0jBU'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
-values('엘리멘탈',' 피터 손','[엘리멘탈] 메인 포스터.jpg',' 애니메이션','all', 
+values('엘리멘탈',' 피터 손','엘리멘탈_메인 포스터.jpg',' 애니메이션','all', 
 '디즈니·픽사의 놀라운 상상력!
 
 올여름, 세상이 살아 숨 쉰다

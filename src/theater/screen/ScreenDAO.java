@@ -25,13 +25,13 @@ public class ScreenDAO {
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 
-	public final String GET_MOV_BY_DATE = "select mov_id from screening where date(scn_time)=? group by mov_id";
-	public final String GET_DATE_BY_MOV = "select date(scn_time) from screening where mov_id=?";
-	public final String GET_SCNLIST = "select * from screening where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
-	public final String GET_SCN_BY_ID = "select * from screening where scn_id=?";
-	public final String INSERT_SCREEN = "insert into screening(mov_id, mov_name, theater, scn_type, scn_time, end_time, adult_price, teen_price, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?,?,?)";
-	public final String UPDATE_SCREEN = "update screening set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, adult_price=?, teen_price=?, remaining_seats=? resv_seat=?";
-	public final String DELETE_SCREEN = "delete from screening where scn_id=?";
+	public final String GET_MOV_BY_DATE = "select mov_id from screen where date(scn_time)=? group by mov_id";
+	//public final String GET_DATE_BY_MOV = "select date(scn_time) from screen where mov_id=?";
+	public final String GET_SCNLIST = "select * from screen where mov_id=? and date(scn_time)=? order by theater, scn_type, scn_time";
+	public final String GET_SCN_BY_ID = "select * from screen where scn_id=?";
+	public final String INSERT_SCREEN = "insert into screen(mov_id, mov_name, theater, scn_type, scn_time, end_time, adult_price, teen_price, remaining_seats, resv_seat) values(?,?,?,?,?,?,?,?,?,?)";
+	public final String UPDATE_SCREEN = "update screen set mov_id=?, mov_name=?, scn_id=?, theater=?, scn_type=?, scn_time=?, end_time=?, adult_price=?, teen_price=?, remaining_seats=? resv_seat=?";
+	public final String DELETE_SCREEN = "delete from screen where scn_id=?";
 	
 	// 조회 메소드들 (~Qry)
 	// 영화조회
@@ -49,7 +49,7 @@ public class ScreenDAO {
 			dates.forEach( e->sdates.add("'" + e + "'") );
 			dateSql = "and date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String sql = "select mov_id from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' "  
+		String sql = "select mov_id from screen where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' "  
 		 + theaterSql + dateSql + groupSql;
 		System.out.println(sql);
 		try {
@@ -81,7 +81,7 @@ public class ScreenDAO {
 			dates.forEach( e->sdates.add("'" + e + "'") );
 			dateSql = "and date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String sql = "select theater from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' " 
+		String sql = "select theater from screen where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' " 
 		+ movieSql + dateSql + groupSql;
 		System.out.println(sql);
 		try {
@@ -115,7 +115,7 @@ public class ScreenDAO {
 			theaterSql = "theater in (" + String.join(",", theaters) + ") ";
 		}
 		String groupSql = "group by fdate ";
-		String sql = "select date(scn_time) as fdate from screening where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' " 
+		String sql = "select date(scn_time) as fdate from screen where date(scn_time) between '"+ refDay.format(dtf1)+ "' and '" + refDay.plusDays(10).format(dtf1) + "' " 
 				+ and1Sql + movieSql + and2Sql + theaterSql + groupSql;
 		System.out.println(sql);
 		try {
@@ -152,7 +152,7 @@ public class ScreenDAO {
 			dates.forEach( e->sdates.add("'" + e + "'") );
 			dateSql = "date(scn_time) in (" + String.join(",", sdates) + ") ";
 		}
-		String sql = "select * from screening where " + movieSql + "and " + theaterSql + "and " + dateSql + "order by theater, scn_type, scn_time";
+		String sql = "select * from screen where " + movieSql + "and " + theaterSql + "and " + dateSql + "order by theater, scn_type, scn_time";
 		System.out.println(sql);
 		try {
 			conn = JDBCUtil.getConnection();
@@ -201,7 +201,7 @@ public class ScreenDAO {
 		}
 		return mov_ids;
 	}
-	
+	/*
 	// 영화별 상영일 조회
 	public List<LocalDate> getDateByMov(int mov_id){
 		List<LocalDate> dates = new ArrayList<LocalDate>();
@@ -220,7 +220,7 @@ public class ScreenDAO {
 		}
 		return dates;
 	}
-	
+	*/
 	
 	
 	// 영화별, 날짜별 상영 조회
@@ -255,6 +255,41 @@ public class ScreenDAO {
 		}
 		return screenList;
 	}
+	/*
+	// 복수의 id로 screen 리스트 반환
+	public List<ScreenDTO> getScnList(List<String> scn_ids) {
+		String sql = "";
+		if(scn_ids != null) {
+			sql = "select * from screen where scn_id in (" + String.join(", ", scn_ids) + ")";
+		}
+		List<ScreenDTO> screens = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			ScreenDTO screen = null;
+			while(rs.next()) {
+				screen = new ScreenDTO();
+				screen.setMov_id(rs.getInt("mov_id"));
+				screen.setMov_name(rs.getString("mov_name"));
+				screen.setScn_id(rs.getInt("scn_id"));
+				screen.setTheater(rs.getInt("theater"));
+				screen.setScn_type(rs.getString("scn_type"));
+				screen.setScn_time(rs.getTimestamp("scn_time"));
+				screen.setEnd_time(rs.getTimestamp("end_time"));
+				screen.setAdult_price(rs.getInt("adult_price"));
+				screen.setTeen_price(rs.getInt("teen_price"));
+				screen.setRemaining_seats(rs.getInt("remaining_seats"));
+				screen.setResv_seat(rs.getString("resv_seat"));
+				screens.add(screen);
+			}	
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return screens;
+	}*/
 	
 	// 상영 상세조회
 	public ScreenDTO getScreen(int scn_id) {
@@ -285,6 +320,7 @@ public class ScreenDAO {
 		}
 		return screen;
 	}
+	
 	
 	// 상영 추가
 	public int insertScreen(ScreenDTO screen) {
@@ -338,27 +374,27 @@ public class ScreenDAO {
 	}
 	
 	// 상영 삭제 (단일)
-		public int deleteScreen(int scn_id) {
-			int chk = 0;
-			try {
-				conn = JDBCUtil.getConnection();
-				pstmt = conn.prepareStatement(DELETE_SCREEN);
-				pstmt.setInt(1, scn_id);
-				chk = pstmt.executeUpdate();
-			} catch(Exception e) {
-				e.printStackTrace();
-			} finally {
-				JDBCUtil.close(conn, pstmt);
-			}
-			return chk;
+	public int deleteScreen(int scn_id) {
+		int chk = 0;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(DELETE_SCREEN);
+			pstmt.setInt(1, scn_id);
+			chk = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt);
 		}
+		return chk;
+	}
 	// 상영 삭제 (복수)
 	public int deleteScreens(String scn_ids) {
 		int chk = 0;
 		//String scn_ids = String.join(",", scn_id_array);
 		try {
 			conn = JDBCUtil.getConnection();
-			pstmt = conn.prepareStatement("delete from screening where scn_id in (" + scn_ids +")");
+			pstmt = conn.prepareStatement("delete from screen where scn_id in (" + scn_ids +")");
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();

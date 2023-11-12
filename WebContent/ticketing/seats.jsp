@@ -85,9 +85,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	// 이전 버튼
 	let prevBtn = document.querySelector(".prev");
 	prevBtn.addEventListener("click", function() {
-		location = "../ticketing/ticketing.jsp?mov_id=" + resultForm.mov_id.value + "&theater=" + resultForm.theater.value + "&date=" + resultForm.scr_time.value.substring(0,10) + "&refDay=" + resultForm.scr_time_minus.value.substring(0,10);
+		location = "../ticketing/ticketing.jsp?mov_id=" + resultForm.mov_id.value + "&theater=" + resultForm.theater.value + "&date=" + resultForm.scn_time.value.substring(0,10) + "&refDay=" + resultForm.scn_time_minus.value.substring(0,10);
 	});
-	console.log(resultForm.scr_time);
 	// 예매수 초과 확인
 	function plusChk(obj) {
 		let cnt = +adultCnt.value + +teenCnt.value;
@@ -205,11 +204,15 @@ MovieDAO MovPro = MovieDAO.getInstance();
 MovieDTO movie = MovPro.getMovie(screen.getMov_id());
 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 M월 dd일");
 SimpleDateFormat sdf2 = new SimpleDateFormat("kk:mm");
+SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 ArrayList<String> resv_seat = new ArrayList<String>();
 // 찬 좌석 리스트로 가져오기
 if(screen.getResv_seat() != null) {
-	resv_seat = new ArrayList<String>(Arrays.asList(screen.getResv_seat().split(", ")));
+	ArrayList<String> resv_seat_raw = new ArrayList<String>();
+	resv_seat_raw = new ArrayList<String>(Arrays.asList(screen.getResv_seat().split(",")));
+	// 공백 제거하기
+	resv_seat_raw.forEach(e -> resv_seat.add(e.trim()));
 }
 // 좌석 행렬 수
 // B12 = 2행 12열 좌석
@@ -280,13 +283,14 @@ DecimalFormat df = new DecimalFormat("#,###");
 				<div class="Info">좌석번호: <textarea id="seatResult" readonly></textarea></div>
 			</div>
 			<div class="result">
-				<form action="" method="post" name="resultForm">
+				<form action="../ticketing/ticketingPro.jsp" method="get" name="resultForm">
 				<input type="hidden" name="mov_id" value="<%=screen.getMov_id()%>">
+				<input type="hidden" name="scn_id" value="<%=screen.getScn_id()%>">
 				<input type="hidden" name="resv_type" value="<%=Integer.toString(adultCnt) + ", " + Integer.toString(teenCnt)%>">
 				<input type="hidden" name="theater" value="<%=screen.getTheater() %>">
-				<input type="hidden" name="scr_time" value="<%=screen.getScn_time()%>">
-				<input type="hidden" name="scr_time_minus" value="<%=screen.getScn_time().toLocalDateTime().toLocalDate().plusDays(-2).toString().substring(0,10)%>">
-				<input type="hidden" name="end_time" value="<%=screen.getEnd_time()%>">
+				<input type="hidden" name="scn_time" value="<%=sdf3.format(screen.getScn_time())%>">
+				<input type="hidden" name="scn_time_minus" value="<%=screen.getScn_time().toLocalDateTime().toLocalDate().plusDays(-2).toString().substring(0,10)%>">
+				<input type="hidden" name="end_time" value="<%=sdf3.format(screen.getEnd_time())%>">
 				<input type="hidden" name="seat" value="">
 				<div class="cntResult"><%=(adultCnt != 0) ? "성인: " + adultCnt + "명" : ""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? "청소년: " + teenCnt + "명" : ""%></div>
 				<div class="calculate"><%=(adultCnt != 0) ? df.format(adultPrice * adultCnt):""%><%if(adultCnt!=0 && teenCnt!=0){ %><br><%}%><%=(teenCnt != 0) ? df.format(teenPrice * teenCnt) : ""%></div>

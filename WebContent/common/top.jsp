@@ -8,21 +8,24 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 body { margin: 0; }
-.wing { background-color: #97c1cf; width: 100%; margin:0; }
+.wing { background-color: #97c1cf; width: 100%; margin:0; box-shadow: 0px 0px 15px 0px gray; blur-radius: 3px;  }
 .container { width: 1000px; margin: 0px auto; text-align: center;}
 a { text-decoration: none; color: black; }
+#loginBtn { background-color: #224070; color: white; font-weignt: bold;  border-radius: 4px; }
+#logoutBtn { background-color: #224070; color: white; font-weignt: bold; border-radius: 4px; }
+#visitorID { font-weight: 800; color: #192f52; }
 .headTitle { background-color: black; color: #86c8f7; border-radius: 10px; font-size: 35px; font-weight: bold; font-family: Oswald;
 			 padding: 0px 8px; margin: 0px 10px 0px 10px; display: inline-block; }
 .usrInfo { float: right; margin-top: 10px;  }
 /* 메뉴 */
 .menus { clear: both; }
-.mainmenu { text-align: center; background-color: white; display: inline-block; font-weight: bold; border: 2px solid black;
+.mainmenu { text-align: center; background-color: #c5e5f0; display: inline-block; font-weight: bold; cursor: pointer; 
 			width: 100px; border-radius:10px; padding: 3px; margin: 10px; transition:all 0.3s; }
-.mainmenu:hover { background-color: #86c8f7; }
+.mainmenu:hover { background-color: black;  color: #86c8f7; }
 /* 검색 */
 .search { float: left; position: relative; top: 10px; }
-.search_drop { position: absolute; opacity: 0; visibility: hidden; transition:all 0.5s; left:40px; top: -2px; text-align: center; vertical-align: center;
-			   width: 300px; height: 35px; background-color:lightblue; border: 2px solid gray; border-radius: 10px; }
+.search_drop { position: absolute; opacity: 0; visibility: hidden; transition:all 0.5s; left:40px; top: -2px; text-align: center;
+			   vertical-align: center; width: 300px; height: 35px; background-color:lightblue; border: 2px solid gray; border-radius: 10px; }
 #searchshowchk { display: none; }
 .closeImg { display: none; width: 25px; cursor: pointer; }
 .searchImg { display: inline-block; width: 25px; cursor: pointer; }
@@ -32,14 +35,28 @@ label:has(#searchshowchk:checked) +.search_drop { opacity: 1; visibility: visibl
 .search_drop .searchImg { position: relative; top: 5px; }
 .searchBox { width: 200px; line-height:18px; font-size: 18px; background-color: transparent; font-weight: bold;
 			 position: relative; outline: none; border: none; }
-
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	let m6 = document.querySelector(".m6");
+	let id = document.querySelector("#id");
+	m6.addEventListener("click", function() {
+		if(id.value == "null"){
+			alert("로그인이 필요한 메뉴입니다.");
+			location.href = "../visitor/login.jsp";
+		} else {
+			location.href = "../visitor/visitorTicket.jsp";
+		}
+	});
+});
+</script>
 </head>
 <body>
 <%
 request.setCharacterEncoding("utf-8");
 String id = (String)session.getAttribute("id");
 %>
+<input type="hidden" id="id" value="<%=id %>">
 <div class="wing">
 <div class="container">
 	<div class="search">
@@ -56,10 +73,10 @@ String id = (String)session.getAttribute("id");
 	<div class="usrInfo">
 		<%if(session.getAttribute("id") != null) {%>
 		<span id="visitorID"><%=id %></span> 방문자님 환영합니다.
-		<a href="../visitor/logoutPro.jsp"><input type="button" value="로그아웃"></a>
+		<a href="../visitor/logoutPro.jsp"><input type="button" id="logoutBtn" value="로그아웃"></a>
 		<img src="" id="usrPic">
 		<%} else {%>
-		<a href="../visitor/login.jsp"><input type="button" value="로그인"></a>
+		<a href="../visitor/login.jsp"><input type="button" id="loginBtn" value="로그인"></a>
 		<%}%>
 	</div>
 	<div class="menus">
@@ -69,9 +86,8 @@ String id = (String)session.getAttribute("id");
 		<a href="../theater/frontPage.jsp"><div class="headTitle">MOVIPLAY</div></a>
 		<a href=""><div class="mainmenu m4">영화관 소개</div></a>
 		<a href=""><div class="mainmenu m5">공지사항</div></a>
-		<a href=""><div class="mainmenu m6">예매내역</div></a>
+		<div class="mainmenu m6">예매내역</div>
 	</div>
-	<hr>
 </div>
 </div>
 </body>
