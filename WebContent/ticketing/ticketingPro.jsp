@@ -15,7 +15,7 @@ request.setCharacterEncoding("utf-8");
 LocalDateTime now = LocalDateTime.now();
 String str1 = String.valueOf(now.getYear()) + String.valueOf(now.getMonthValue()) + String.valueOf(now.getDayOfMonth());
 UUID uuid = UUID.randomUUID();
-String str2 = uuid.toString().replace("-","").substring(0,10);
+String str2 = uuid.toString().replace("-","").substring(0,12);
 String resv_id = str1 + str2;
 System.out.println(resv_id);
 
