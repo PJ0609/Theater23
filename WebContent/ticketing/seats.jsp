@@ -231,7 +231,7 @@ DecimalFormat df = new DecimalFormat("#,###");
 	<jsp:include page="../common/top.jsp"/>
 </div>
 <div id="container">
-	<h3>좌석 선택</h3>
+	<h2><img src="../icons/right.png" width="20px"> 좌석 선택</h2>
 	<div class="cntSelector">
 		<input type="hidden" id="scn_id" value="<%=scn_id %>">
 		<input type="hidden" id="remaining_seats" value="<%=screen.getRemaining_seats()%>">

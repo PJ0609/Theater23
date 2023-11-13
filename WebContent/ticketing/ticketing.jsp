@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>예매 페이지</title>
 <style>
-#container { width: 1000px; margin: 0px auto; margin: 0px auto; }
+#container { width: 1000px; margin: 0px auto; }
 .subTitle { float: left; }
 .reload { width: 100px; height: 28px; background-color: white; float: right; border: 2px solid black; border-radius: 7px; text-align: center;
 		  position: relative; top: 28px; font-weight: bold; line-height: 28px; cursor: pointer; transition: all 0.3s;  }
@@ -192,7 +192,7 @@ System.out.println("s_theaters = " + s_theaters);
 System.out.println("s_dates = " + s_dates);
 //조회기준일 가져오기
 String sRefDay = (String)request.getParameter("refDay");
-LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
+LocalDate refDay = sRefDay==null ? LocalDate.of(2023,12,11) : LocalDate.parse(sRefDay); //원래 LocalDate.now()
 
 // DAO 연결
 MovieDAO movPro = MovieDAO.getInstance();
@@ -249,7 +249,7 @@ SimpleDateFormat sdf1 = new SimpleDateFormat("kk:mm");
 	<jsp:include page="../common/top.jsp"/>
 </div>
 <div id="container">
-	<h3 class="subTitle">예매하기</h3>
+	<h2 class="subTitle"><img src="../icons/right.png" width="20px"> 예매하기</h2>
 	<input type="hidden" id="mov_id" value="<%=mov_id %>">
 	<input type="hidden" id="theater" value="<%=theater %>">
 	<input type="hidden" id="date" value="<%=date %>">

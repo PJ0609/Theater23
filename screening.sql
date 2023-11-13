@@ -1,5 +1,6 @@
 -- 상영 정보
-drop table screen;
+use db03;
+-- drop table screen;
 create table screen(
 mov_id bigint not null,
 mov_name varchar(50) default '제목없음',

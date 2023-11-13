@@ -61,7 +61,7 @@ request.setCharacterEncoding("utf-8");
 String id = (String)session.getAttribute("id");
 // 조회기준일 설정
 String sRefDay = (String)request.getParameter("refDay");
-LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
+LocalDate refDay = sRefDay==null ?  LocalDate.of(2023,12,11) : LocalDate.parse(sRefDay);//원래 LocalDate.now()
 
 %>
 <!-- 상단 -->
@@ -69,7 +69,7 @@ LocalDate refDay = sRefDay==null ? LocalDate.now() : LocalDate.parse(sRefDay);
 	<jsp:include page="../common/top.jsp"/>
 </div>
 <div id="container">
-	<h3>상영시간표</h3>
+	<h2><img src="../icons/right.png" width="20px"> 상영시간표</h2>
 	<input type="hidden" id="id" value="<%=id %>">
 	<div class="dateSelect">
 		<div class="days weekArr"><a href="schedule.jsp?refDay=<%=refDay.plusDays(-1)%>"><img src="../icons/square-left.png" width="35px" ></a></div>

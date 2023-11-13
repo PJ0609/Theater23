@@ -23,13 +23,13 @@ values('라따뚜이','브래드 버드','Ratatouille.jpg','어린이, 코미디
 레미의 작은 심장은 콩닥콩닥 뛰고 마는데!
 쥐면 쥐답게 쓰레기나 먹고 살라는 가족들의 핀잔에도 굴하지 않고 끝내 주방으로 들어가는 레미. 깜깜한 어둠 속에서 요리에 열중하다 재능 없는 견습생 ‘링귀니’에게 ‘딱’ 걸리고 만다. 하지만 해고위기에 처해있던 링귀니는 레미의 재능을 한눈에 알아보고 의기투합을 제안하는데. 과연 궁지에 몰린 둘은 환상적인 요리 실력을 발휘할 수 있을 것인가? 레미와 링귀니의 좌충우돌 공생공사 프로젝트가 아름다운 파리를 배경으로 이제 곧 펼쳐진다!',
 110,'2007-07-25',
-'https://youtu.be/NgsQ8mVkN8w?si=dRnD-g3f6arpjTNE'
+'https://www.youtube.com/embed/NgsQ8mVkN8w?si=btdOA1zCPkF0Sksh'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('살인의 추억','봉준호','memoriesofmurder.jpg','범죄, 미스터리','15', 
 '1986년 경기도. 젊은 여인이 무참히 강간, 살해당한 시체로 발견된다. 2개월 후, 비슷한 수법의 강간살인사건이 연이어 발생하면서 사건은 세간의 주목을 받기 시작하고, 일대는 연쇄살인이라는 생소한 범죄의 공포에 휩싸인다. 사건 발생지역에 특별수사본부가 설치되고, 수사본부는 구희봉 반장(변희봉 분)을 필두로 지역토박이 형사 박두만(송강호 분)과 조용구(김뢰하 분), 그리고 서울 시경에서 자원해 온 서태윤(김상경 분)이 배치된다. 육감으로 대표되는 박두만은 동네 양아치들을 족치며 자백을 강요하고, 서태윤은 사건 서류를 꼼꼼히 검토하며 사건의 실마리를 찾아가지만, 스타일이 다른 두 사람은 처음부터 팽팽한 신경전을 벌인다.', 
 132,'2003-04-25',
-'https://youtu.be/0n_HQwQU8ls?si=sYgSfmt1OYaVeVpC'
+'https://www.youtube.com/embed/0n_HQwQU8ls?si=8ZbSaS9oJthsHMlH'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('서울의 봄','김성수','서울의봄_메인포스터_이마노출버전.jpg','드라마','12', 
@@ -45,7 +45,7 @@ values('서울의 봄','김성수','서울의봄_메인포스터_이마노출버
 목숨을 건 두 세력의 팽팽한 대립
 오늘 밤, 대한민국 수도에서 가장 치열한 전쟁이 펼쳐진다!', 
 141,'2023-11-22',
-'https://youtu.be/-AZ7cnwn2YI?si=VGPmMgToEo9j4mId'
+'https://www.youtube.com/embed/-AZ7cnwn2YI?si=vJS1310hKzuF9wdL'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('더 마블스','니아 다코스타','더 마블스_메인 포스터_절찬상영중.jpg','SF, 액션','12', 
@@ -64,7 +64,7 @@ values('더 마블스','니아 다코스타','더 마블스_메인 포스터_절
 함께, 더 높이! 더 멀리! 더 빨리!
 역대급 파장을 일으킬 마블의 NEW 팀업이 시작된다!', 
 105,'2023-11-08',
-'https://youtu.be/xC-ITzh98Vo?si=hw2EEEoPeCUJUlsS'
+'https://www.youtube.com/embed/xC-ITzh98Vo?si=z0MuQV1EcqR36qsF'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('여귀교- 저주를 부르는 게임','해악륭','(메인) 여귀교_메인포스터_최종.jpg',' 공포(호러)','15', 
@@ -79,7 +79,7 @@ values('여귀교- 저주를 부르는 게임','해악륭','(메인) 여귀교_�
 퀘스트가 계속될수록,
 현실과 게임의 경계가 무너지고 예상치 못한 기묘한 일들이 벌어지는데...!', 
 102,'2023-11-15',
-'https://youtu.be/t8dTzfVjgU0?si=5jTBPh-29bGQdQl_'
+'https://www.youtube.com/embed/t8dTzfVjgU0?si=D2RSkhRF8AtmSiFX'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('다크 나이트','크리스토퍼 놀란','6월1일대개봉다크나이트재개봉포스터Os.jpg','슈퍼히어로, 범죄','15', 
@@ -91,7 +91,7 @@ values('다크 나이트','크리스토퍼 놀란','6월1일대개봉다크나�
 
 밤의 기사, 그 전설의 서막이 열린다! 조커를 막기 위해 직접 나서 영원히 존재를 감춘 밤의 기사가 될 것인가. 하비 덴트에게 모든 걸 맡기고 이제 가면을 벗고 이중 생활의 막을 내릴 것인가. 갈림길에 선 그는 행동에 나서야만 하는데… 사상 최강, 운명을 건 대결은 이제부터 시작이다!', 
 132,'2023-11-15',
-'https://youtu.be/0n_HQwQU8ls?si=sYgSfmt1OYaVeVpC'
+'https://www.youtube.com/embed/UXmBT9JtuLo?si=XOSwmstBtttPaS0_&amp;controls=0'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('헝거게임: 노래하는 새와 뱀의 발라드','프란시스 로렌스','헝거게임_메인포스터(개봉일).jpg','SF, 스릴러, 액션, 어드벤처','15', 
@@ -106,7 +106,7 @@ values('헝거게임: 노래하는 새와 뱀의 발라드','프란시스 로렌
 
 2023년 11월, 게임을 지배하라!', 
 157 ,'2023-11-15',
-'https://youtu.be/fxKTLR-L8o4?si=duhe-YaKSyuorsh_'
+'https://www.youtube.com/embed/fxKTLR-L8o4?si=P3i5R7CMf7UqEKzC'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('그대들은 어떻게 살 것인가','미야자키 하야오','그어살_메인 포스터_절찬상영중.jpg','애니메이션','all', 
@@ -116,13 +116,13 @@ values('그대들은 어떻게 살 것인가','미야자키 하야오','그어�
 그러던 어느 날, ‘마히토’는 사라져버린 새엄마 ‘나츠코’를 찾기 위해 탑으로 들어가고,
 왜가리가 안내하는 대로 이세계(異世界)의 문을 통과하는데…!', 
 123,'2023-10-25',
-'https://youtu.be/RURusloLi-s?si=J4K0aQv_HtPbozZa'
+'https://www.youtube.com/embed/RURusloLi-s?si=eJmFOiuMZM-RYpnx'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('뉴 노멀','정범식','뉴 노멀_1차 포스터(화이트ver).jpg','스릴러','15', 
 '새로운 시대가 열렸다. 오늘, 당신의 공포는 일상이 된다.', 
 112,'2023-11-08',
-'https://youtu.be/OiKLv-NnJ1A?si=4gZR2IzWZRSQ1UPE'
+'https://www.youtube.com/embed/OiKLv-NnJ1A?si=qwwGNXs_IchVLZhS'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('싱글 인 서울','박범수','싱글 인 서울 메인포스터-개봉일.jpg','코미디','12', 
@@ -141,7 +141,7 @@ values('싱글 인 서울','박범수','싱글 인 서울 메인포스터-개봉
 서울, 혼자가 좋지만 연애는 하고 싶은
 두 남녀의 싱글 라이프가 시작된다!', 
 102,'2023-11-29',
-'https://youtu.be/OquYKZLUJmY?si=TgI7bu8VWZR2Wt1s'
+'https://www.youtube.com/embed/OquYKZLUJmY?si=9cmgtuA11egGrMfQ'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('톡 투 미','대니 필리푸, 마이클 필리푸','TTM_Sposter.jpg','공포','15', 
@@ -162,7 +162,7 @@ SNS에서 핫한 빙의 챌린지에 중독된 \'미아\'와 친구들.
 
 죽음보다 끔찍하게, 당신을 무자비하게 뒤흔들 공포가 시작된다!', 
 95,'2023-11-01',
-'https://youtu.be/gk9urSdhbzg?si=WDceRwJaKtLMjz0s'
+'https://www.youtube.com/embed/gk9urSdhbzg?si=mpI6I3hpBz74_qr6'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('소년들','정지영','소년들 3차 포스터 절찬상영중.jpg','드라마, 범죄','15', 
@@ -180,7 +180,7 @@ values('소년들','정지영','소년들 3차 포스터 절찬상영중.jpg','�
 그로부터 16년 후,
 \'황반장\' 앞에 사건의 유일한 목격자였던 \'윤미숙\'(진경)과 소년들이 다시 찾아오는데…', 
 123,'2023-11-01',
-'https://youtu.be/cR8WLXejdmE?si=jILNBtPkhEAZqAAo'
+'https://www.youtube.com/embed/cR8WLXejdmE?si=FCiA8Ir7qytGU3_W'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('30일','남대중','30일_메인 포스터.jpg','코미디','12', 
@@ -201,7 +201,7 @@ values('30일','남대중','30일_메인 포스터.jpg','코미디','12',
 제대로 터지는 코미디가 온다!
 ', 
 119,'2023-10-03',
-'https://youtu.be/6WFEc44dxfY?si=O9VISx2ZbUIUI3xk'
+'https://www.youtube.com/embed/6WFEc44dxfY?si=7r43haUGNNGE5GWR'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('탑건-매버릭','조셉 코신스키','Topgun.jpg','액션','12', 
@@ -214,7 +214,7 @@ values('탑건-매버릭','조셉 코신스키','Topgun.jpg','액션','12',
 매버릭의 지휘아래 견고한 팀워크를 쌓아가던 팀원들에게 국경을 뛰어넘는 위험한 임무가 주어지자
 매버릭은 자신이 가르친 동료들과 함께 마지막이 될 지 모를 하늘 위 비행에 나서는데… ', 
 130,'2023-11-15',
-'https://youtu.be/Mrj9XACVJ8U?si=OxKMyYCUmMZt2dU7'
+'https://www.youtube.com/embed/Mrj9XACVJ8U?si=9YizzHEA8hdiuwoX'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('블루 자이언트','타치카와 유즈루','블루 자이언트_메인 포스터.jpg','애니메이션','12', 
@@ -248,7 +248,7 @@ values('블루 자이언트','타치카와 유즈루','블루 자이언트_메�
 
 JASS 재스의 격렬하고 치열한 연주가 지금, 바로, 여기서 시작된다!', 
 120 ,'2023-10-18',
-'https://youtu.be/JXD2v-GeZuc?si=XqHR5Xy0BoB1fkzQ'
+'https://www.youtube.com/embed/JXD2v-GeZuc?si=oh30FlDomzB8qc8O'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('오펜하이머','크리스토퍼 놀란','오펜하이머.jpg','드라마, 스릴러','15', 
@@ -256,7 +256,7 @@ values('오펜하이머','크리스토퍼 놀란','오펜하이머.jpg','드라�
 
 세상을 구하기 위해 세상을 파괴할 지도 모르는 선택을 해야 하는 천재 과학자의 핵개발 프로젝트.', 
 180,'2023-08-15',
-'https://youtu.be/qAWEb0h43lU?si=7e2JNeMfguTDMI4C'
+'https://www.youtube.com/embed/qAWEb0h43lU?si=IpSC1dMq3GaJQSpD'
 );
 
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
@@ -266,7 +266,7 @@ values('바빌론',' 데이미언 셔젤','바빌.jpg','드라마','18',
 황홀하면서도 위태로운 고대 도시, \'바빌론\'에 비유되던 할리우드.
 \'꿈\' 하나만을 위해 모인 사람들이 이를 쟁취하기 위해 벌이는 강렬하면서도 매혹적인 이야기', 
 188,'2023-02-01',
-'https://youtu.be/kYkNIkymny8?si=ohxuxcfZCezeM6_J'
+'https://www.youtube.com/embed/kYkNIkymny8?si=uQCw8d5s5hYd0F2Q'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('조커',' 토드 필립스','조커_포스터.jpg','드라마, 스릴러, 액션','15', 
@@ -276,7 +276,7 @@ values('조커',' 토드 필립스','조커_포스터.jpg','드라마, 스릴러
 맨 정신으로는 그가 설 자리가 없음을 깨닫게 되는데…
 이제껏 본 적 없는 진짜 ‘조커’를 만나라!', 
 123,'2019-10-02',
-'https://youtu.be/c8_EJWCK76Q?si=rYRJ8Yni_flk0jBU'
+'https://www.youtube.com/embed/c8_EJWCK76Q?si=q6xVVVABap8pWd4J'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('엘리멘탈',' 피터 손','엘리멘탈_메인 포스터.jpg',' 애니메이션','all', 
@@ -285,7 +285,7 @@ values('엘리멘탈',' 피터 손','엘리멘탈_메인 포스터.jpg',' 애니
 올여름, 세상이 살아 숨 쉰다
 불, 물, 공기, 흙 4개의 원소들이 살고 있는 ‘엘리멘트 시티’', 
 109,'2023-06-14',
-'https://youtu.be/BOqFRHCrN-k?si=KhYEt71-3V0AV5-K'
+'https://www.youtube.com/embed/BOqFRHCrN-k?si=W-IFpnfMinpR7Sde'
 );
 insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link)
 values('플라워 킬링 문','마틴 스코세이지','플라워 킬링 문_국내 포스터(Hero Scene).jpg','드라마, 범죄','18', 
@@ -296,6 +296,6 @@ values('플라워 킬링 문','마틴 스코세이지','플라워 킬링 문_국
 아카데미를 수상한 거장 마틴 스코세이지 감독이 연출과 각본을 맡았으며,
 에릭 로스가 각본에 함께 참여했다.', 
 206,'2023-10-19',
-'https://youtu.be/0FQmdSSYPiI?si=u05KARLMR4bstSy3'
+'https://www.youtube.com/embed/0FQmdSSYPiI?si=qtwewNdCyjRvuwy9'
 );
 select * from movie;

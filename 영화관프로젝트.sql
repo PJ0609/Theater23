@@ -86,7 +86,6 @@ scn_time datetime not null,
 end_time datetime not null,
 seat text not null
 );
-drop table ticket;
 select * from ticket;
 -- 영화 정보
 create table movie(
@@ -104,15 +103,18 @@ avgusr_rating float
 );
 -- 영화후기 글 정보
 create table review(
+review_id bigint auto_increment primary key,
 mov_id bigint not null,
 mov_name varchar(100) not null,
 id varchar(30) not null,
 usr_rating int not null,
 content text not null,
-post_date datetime default now()
+post_time datetime default now(),
+spoiler boolean default 0
 );
-insert into review(mov_id, mov_name, id, usr_rating, content) values(1, '라따뚜이', 'aaaa', '5', '집에 레미 한마리 키우고 싶어요');
-
+drop table review;
+insert into review(mov_id, mov_name, id, usr_rating, content, spoiler) values(1, '라따뚜이', 'aaaa', '5', '집에 레미 한마리 키우고 싶어요', 0);
+select * from review;
 -- 상영 정보
 create table screen(
 mov_id bigint not null,

@@ -8,7 +8,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 body { margin: 0; }
-.wing { background-color: #97c1cf; width: 100%; margin:0; box-shadow: 0px 0px 15px 0px gray; blur-radius: 3px;  }
+.wing { background: linear-gradient(to bottom, #7fa6b3,#97c1cf); width: 100%; margin:0; box-shadow: 0px 0px 15px 0px gray; blur-radius: 3px;  }
 .container { width: 1000px; margin: 0px auto; text-align: center;}
 a { text-decoration: none; color: black; }
 #loginBtn { background-color: #224070; color: white; font-weignt: bold;  border-radius: 4px; }
@@ -23,18 +23,18 @@ a { text-decoration: none; color: black; }
 			width: 100px; border-radius:10px; padding: 3px; margin: 10px; transition:all 0.3s; }
 .mainmenu:hover { background-color: black;  color: #86c8f7; }
 /* 검색 */
-.search { float: left; position: relative; top: 10px; }
-.search_drop { position: absolute; opacity: 0; visibility: hidden; transition:all 0.5s; left:40px; top: -2px; text-align: center;
-			   vertical-align: center; width: 300px; height: 35px; background-color:lightblue; border: 2px solid gray; border-radius: 10px; }
+.search { float: left; position: relative; top: 16px; }
+.search_drop { position: absolute; opacity: 0; visibility: hidden; transition:all 0.5s; left: 40px; top: -5px; text-align: center;
+			   vertical-align: center; width: 200px; height: 30px; background-color:lightblue; border-radius: 10px; padding: 0px 3px; }
 #searchshowchk { display: none; }
-.closeImg { display: none; width: 25px; cursor: pointer; }
-.searchImg { display: inline-block; width: 25px; cursor: pointer; }
+.closeImg { display: none; width: 18px; cursor: pointer; }
+.searchImg { display: inline-block; width: 20px; cursor: pointer; }
 label:has(#searchshowchk:checked) +.search_drop { opacity: 1; visibility: visible; }
 #searchshowchk:checked ~.closeImg { display: block; }
 #searchshowchk:checked ~.searchImg { display: none; }
-.search_drop .searchImg { position: relative; top: 5px; }
-.searchBox { width: 200px; line-height:18px; font-size: 18px; background-color: transparent; font-weight: bold;
-			 position: relative; outline: none; border: none; }
+.search_drop .searchImg { position: relative; top: 5px; width: 15px;}
+.searchBox { width: 150px; line-height:15px; font-size: 15px; background-color: transparent; font-weight: bold;
+			 position: relative; top:3px; outline: none; border: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {

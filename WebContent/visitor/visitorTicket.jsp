@@ -40,7 +40,7 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY년 MM월");
 	<jsp:include page="../common/top.jsp"/>
 </div>
 <div id="container">
-	<h3>예매내역 확인</h3>
+	<h2><img src="../icons/right.png" width="20px"> 예매내역 확인</h2>
 	<div class="selector">조회범위 선택
 	<select>
 		<option><%=now.plusMonths(3).format(formatter) %></option>
