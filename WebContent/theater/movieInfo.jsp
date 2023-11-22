@@ -36,25 +36,30 @@
 .stars fieldset legend{ text-align: left; }
 .stars input[type=radio]{ display: none; }
 .stars .rateLbl{ font-size: 1.2em; color: transparent; text-shadow: 0 0 0 #f0f0f0; }
-.stars .rateLbl:hover{text-shadow: 0 0 0 #fadf11; }
-.stars .rateLbl:hover ~ label{text-shadow: 0 0 0 #fadf11; /* 마우스 호버 뒤에오는 이모지들 */}
+.stars .rateLbl:hover{ text-shadow: 0 0 0 #fadf11; }
+.stars .rateLbl:hover ~ label{ text-shadow: 0 0 0 #fadf11; /* 마우스 호버 뒤에오는 이모지들 */}
 .stars input[type=radio]:checked ~ .rateLbl{text-shadow: 0 0 0 #fadf11; }
 /* 리뷰 영역 */
-.reviewBox { margin: 5px auto; padding: 15px 10px 5px 10px; width: 100% ; height: 105px;  background-color: #f2fcff; border-radius: 10px; border: 1px solid lightgray; }
+.reviewBox { clear: both; margin: 5px auto; padding: 10px 10px 5px 15px; width: 100% ; background-color: #f2fcff; border-radius: 10px; 
+			 border: 1px solid lightgray; }
+.clearfix::after { content:""; clear: both; display: block; }
 .new_rev_title { margin: 5px; }
 .stars { float:left; }
 .usr_rating_score { font-weight: bold; font-size: 1.2em;}
 
 .spoilerLabel { font-weight: bold; color: black; }
-.rev_content { width: 790px; margin-left: 10px; height: 60px; border-radius: 6px; resize: none; font-family: Malgun-Gothic; }
+.rev_content { float: right; width: 790px; margin-left: 10px; height: 60px; border-radius: 6px; resize: none; font-family: Malgun-Gothic; padding: 3px; }
 .submitOption { float: right; }
-.rev_submit { width: 90px; height: 25px;background-color: #0250cc; color: white; border-radius: 10px; 
-			  font-weight: bold; border:none;  margin: 4px; }
+.rev_btns { width: 90px; height: 25px; line-height: 25px; background-color: #0250cc; color: white; border-radius: 10px; 
+			  font-weight: bold; border:none;  margin: 4px; cursor: pointer; }
 /* 평가 읽기 */
 .rev_change { float: right; }
 #star_view { border: none; float: left; }
-#view_content { background-color: transparent; width: 750px; height:70px; display:inline-block; vertical-align: middle; font-family: Malgun-Gothic; }
-.rev_info { float:left; position: relative; height: 25px; width: 229px; line-heignt: 30px; top: -30px; left: 2px; padding-top: 3px; text-align: center; background-color: #transparent; border: 1px solid lightgray; border-radius: 6px;  }
+.view_content { background-color: transparent; width: 743px; height:70px; display:inline-block; vertical-align: middle; font-family: Malgun-Gothic; }
+.rev_info { float:left; position: relative; height: 25px; width: 229px; line-heignt: 30px; margin-top: 5px; left: 2px; padding-top: 3px; text-align: center; background-color: #transparent; border: 1px solid lightgray; border-radius: 6px;  }
+.mod_chkBox { display: none; }
+.review_modBox { display: none; }
+div:has(.mod_chkBox:checked)+.review_modBox { display: block; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -138,9 +143,10 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 	<!-- 리뷰 영역 -->
 	<div class="review" id="review">
 		<%if(id != null) { %>
+			<!-- 리뷰 작성 영역 -->
 			<div class="new_rev_title"><%=id%>님의 감상평을 작성해보세요.</div>
-			<div class="new_rev reviewBox">
-			<form action="../theater/reviewInsertPro.jsp" method="post" name="reviewForm" id="reviewForm" class="reviewForm">
+			<div class="reviewBox clearfix">
+			<form action="../review/reviewInsertPro.jsp" method="post" name="reviewForm" id="reviewForm" class="reviewForm">
 				<input type="hidden" name="id" value="<%=id%>" >
 				<input type="hidden" name="mov_id" value="<%=movie.getMov_id()%>" >
 				<input type="hidden" name="mov_name" value="<%=movie.getMov_name()%>" >
@@ -158,61 +164,67 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 				<div class="submitOption">
 				    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_new">
 				    <label for="spoiler_new" class="spoilerLabel">스포일러 포함</label>
-					<input type="submit" class="rev_submit" value="리뷰 작성">
+					<input type="submit" class="rev_btns" value="감상평 작성">
 				</div>
 			</form>
 			</div>
-		<%} %>
-		<%for(ReviewDTO review : reviews) { %>
-		<div class="reviewBox">
+		<%}
+		for(ReviewDTO review : reviews) { 
+		int rev_id = review.getReview_id(); %>
+		<!-- 리뷰 보기 영역 -->
+		<div class="reviewBox clearfix">
 			<div class="stars" id="star_view">
 			    <fieldset>
 					<%int usr_rating = review.getUsr_rating(); %>
-			        <input type="radio" name="usr_rating" value="5" id="rate6" <%if(usr_rating == 5) {%>checked<%}%>><label for="rate6" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating" value="4" id="rate7" <%if(usr_rating == 4) {%>checked<%}%>><label for="rate7" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating" value="3" id="rate8" <%if(usr_rating == 3) {%>checked<%}%>><label for="rate8" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating" value="2" id="rate9" <%if(usr_rating == 2) {%>checked<%}%>><label for="rate9" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating" value="1" id="rate10" <%if(usr_rating == 1) {%>checked<%}%>><label for="rate10" class="rateLbl" onclick="return(false);">⭐</label>
-			    	<span class="usr_rating_score"><%=usr_rating %> / 5</span>
+			        <input type="radio" name="usr_rating_<%=rev_id%>" value="5" id="rate6<%=rev_id%>" <%if(usr_rating == 5) {%>checked<%}%>><label for="rate6<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+			        <input type="radio" name="usr_rating_<%=rev_id%>" value="4" id="rate7<%=rev_id%>" <%if(usr_rating == 4) {%>checked<%}%>><label for="rate7<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+			        <input type="radio" name="usr_rating_<%=rev_id%>" value="3" id="rate8<%=rev_id%>" <%if(usr_rating == 3) {%>checked<%}%>><label for="rate8<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+			        <input type="radio" name="usr_rating_<%=rev_id%>" value="2" id="rate9<%=rev_id%>" <%if(usr_rating == 2) {%>checked<%}%>><label for="rate9<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+			        <input type="radio" name="usr_rating_<%=rev_id%>" value="1" id="rate10<%=rev_id%>" <%if(usr_rating == 1) {%>checked<%}%>><label for="rate10<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+			    	<span class="usr_rating_score">5 / <%=usr_rating %></span>
 			    </fieldset>
 		    </div>
-			<textarea name="content" class="rev_content" id="view_content" placeholder="관람평을 입력해주세요." readonly><%=review.getContent() %></textarea>
+			<textarea name="content" class="rev_content view_content" placeholder="관람평을 입력해주세요." readonly><%=review.getContent() %></textarea>
 			<div class="rev_info">
 				<span><%=review.getId() %></span> | 
 				<span><%=sdf2.format(review.getPost_time()) %></span>
 			</div>
 			<%if(review.getId().equals(id)) {%>
 				<div class="rev_change">
-					<input type="button" value="관람평 수정" class="btnReviewUpdate">
-					<input type="button" value="관람평 삭제" class="btnReviewDelete">
-					<input type="hidden" value="<%=review.getReview_id() %>" class="rev_id">
+					<label for="mod_toggle_<%=rev_id%>">
+					<div class="rev_btns" class="btnReviewUpdate" style="font-size: 0.8em; display: inline-block; text-align: center;">관람평 수정</div></label>
+					<a href="../review/reviewDeletePro.jsp?mov_id=<%=mov_id%>&review_id=<%=rev_id%>"><input type="button" class="rev_btns" value="관람평 삭제" class="btnReviewDelete"></a>
+					<input type="hidden" value="<%=rev_id %>" class="rev_id">
 				</div>
+				<input type="checkbox" id="mod_toggle_<%=rev_id%>" class="mod_chkBox">
 			<%} %>
-			<div class="rev_options">
-				<input type="checkbox" class="mod_show" id="mod_show<%=review.getReview_id()%>">
-			</div>
-			<div class="mod_rev reviewBox">
-				<form action="../review/reviewUpdatePro.jsp" method="post" name="reviewForm" class="reviewForm">
-				<input type="hidden" name="review_id" value="<%=review.getReview_id()%>">
-				<input type="hidden" name="id" value="<%=id%>">
-				<input type="hidden" name="mov_id" value="<%=movie.getMov_id()%>">
-				<input type="hidden" name="mov_name" value="<%=movie.getMov_name()%>">
+		</div>
+		<!-- 리뷰 수정 영역 -->
+		<div class="reviewBox clearfix review_modBox">
+		<form action="../review/reviewUpdatePro.jsp" method="post" name="reviewModForm" class="reviewModForm">
+		<input type="hidden" name="review_id" value="<%=rev_id%>">
+		<input type="hidden" name="id" value="<%=id%>">
+		<input type="hidden" name="mov_id" value="<%=movie.getMov_id()%>">
+		<input type="hidden" name="mov_name" value="<%=movie.getMov_name()%>">
+			<div class="stars">
 				<fieldset>
-			        <input type="radio" name="usr_rating" value="5" id="rate6" <%if(usr_rating == 5) {%>checked<%}%>><label for="rate6" class="rateLbl">⭐</label>
-			        <input type="radio" name="usr_rating" value="4" id="rate7" <%if(usr_rating == 4) {%>checked<%}%>><label for="rate7" class="rateLbl">⭐</label>
-			        <input type="radio" name="usr_rating" value="3" id="rate8" <%if(usr_rating == 3) {%>checked<%}%>><label for="rate8" class="rateLbl">⭐</label>
-			        <input type="radio" name="usr_rating" value="2" id="rate9" <%if(usr_rating == 2) {%>checked<%}%>><label for="rate9" class="rateLbl">⭐</label>
-			        <input type="radio" name="usr_rating" value="1" id="rate10" <%if(usr_rating == 1) {%>checked<%}%>><label for="rate10" class="rateLbl">⭐</label>
-			        <%=usr_rating %> / 5
+			        <input type="radio" name="usr_rating" value="5" id="rate11<%=rev_id%>" <%if(usr_rating == 5) {%>checked<%}%>><label for="rate11<%=rev_id%>" class="rateLbl">⭐</label>
+			        <input type="radio" name="usr_rating" value="4" id="rate12<%=rev_id%>" <%if(usr_rating == 4) {%>checked<%}%>><label for="rate12<%=rev_id%>" class="rateLbl">⭐</label>
+			        <input type="radio" name="usr_rating" value="3" id="rate13<%=rev_id%>" <%if(usr_rating == 3) {%>checked<%}%>><label for="rate13<%=rev_id%>" class="rateLbl">⭐</label>
+			        <input type="radio" name="usr_rating" value="2" id="rate14<%=rev_id%>" <%if(usr_rating == 2) {%>checked<%}%>><label for="rate14<%=rev_id%>" class="rateLbl">⭐</label>
+			        <input type="radio" name="usr_rating" value="1" id="rate15<%=rev_id%>" <%if(usr_rating == 1) {%>checked<%}%>><label for="rate15<%=rev_id%>" class="rateLbl">⭐</label>
 			    </fieldset>
-			    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_<%=review.getReview_id()%>">
-			    <label for="spoiler_<%=review.getReview_id()%>" id="spoilerLabel">스포일러 포함</label>
-				<input type="text" id="newrev_content" value="<%=review.getContent()%>" name="content">
-				<input type="submit" id="rev_submit" value="글 수정">
-			</form>
+		    </div>
+			<textarea name="content" class="rev_content" placeholder="관람평을 입력해주세요."><%=review.getContent() %></textarea>
+			<div class="submitOption">
+			    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_<%=rev_id%>">
+			    <label for="spoiler_<%=rev_id%>" id="spoilerLabel">스포일러 포함</label>
+				<input type="submit" class="rev_btns" value="글 수정">
 			</div>
+		</form>
 		</div>
 		<%} %>
+	</div>
 	</div>
 </div>
 </body>

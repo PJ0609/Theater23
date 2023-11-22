@@ -21,6 +21,9 @@ public class ReviewDAO {
 	private ResultSet rs = null;
 	
 	private final String INSERT_REVIEW = "insert into review(mov_id, mov_name, id, usr_rating, content, spoiler) values(?,?,?,?,?,?)";
+	private final String UPDATE_REVIEW = "update review set usr_rating=?, content=?, spoiler=? where review_id=?";
+	private final String DELETE_REVIEW = "delete from review where review_id=?";
+	
 	private final String GET_REVIEW = "select * from review where mov_id=?";
 	public int insertReview(ReviewDTO review) {
 		int chk = 0;
@@ -36,11 +39,48 @@ public class ReviewDAO {
 			chk = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
+			System.out.println("insertReview() 에러 발생");
 		} finally {
 			JDBCUtil.close(conn, pstmt);
 		}
 		return chk;
 	}
+	
+	public int updateReview(ReviewDTO review) {
+		int chk = 0;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(UPDATE_REVIEW);
+			pstmt.setInt(1, review.getUsr_rating());
+			pstmt.setString(2, review.getContent());
+			pstmt.setInt(3, review.getSpoiler());
+			pstmt.setInt(4, review.getReview_id());
+			chk = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("updateReview() 에러 발생");
+		} finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+		return chk;
+	}
+	
+	public int deleteReview(int review_id) {
+		int chk = 0;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(DELETE_REVIEW);
+			pstmt.setInt(1, review_id);
+			chk = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("deleteReview() 에러 발생");
+		} finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+		return chk;
+	}
+	
 	public List<ReviewDTO> getRvwList(int mov_id) {
 		List<ReviewDTO> reviews = new ArrayList<ReviewDTO>();
 		try {
@@ -63,6 +103,7 @@ public class ReviewDAO {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			System.out.println("getRvwList() 에러 발생");
 		} finally {
 			JDBCUtil.close(conn, pstmt);
 		}
