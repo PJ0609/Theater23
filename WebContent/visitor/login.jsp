@@ -20,7 +20,6 @@ th { border: 1px solid black; text-align: center; }
 .end_row>td { text-align: center; }
 .end_row input { width: 340px; height: 50px; background-color: #224070; color: white; cursor:pointer; border: none; border-radius:5px; margin: 10px 20px;}
 </style>
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 	let form = document.loginForm;

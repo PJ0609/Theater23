@@ -150,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		location = "seats.jsp?scn_id=" + scn_id.value;
 	});
 	
-	
 	// 좌석 선택
 	let seatResult = document.getElementById("seatResult");
 	let infoViewer = document.querySelector(".infoViewer");

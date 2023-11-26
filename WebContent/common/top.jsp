@@ -25,7 +25,7 @@ a { text-decoration: none; color: black; }
 /* 검색 */
 .search { float: left; position: relative; top: 16px; }
 .search_drop { position: absolute; opacity: 0; visibility: hidden; transition:all 0.5s; left: 40px; top: -5px; text-align: center;
-			   vertical-align: center; width: 200px; height: 30px; background-color:lightblue; border-radius: 10px; padding: 0px 3px; }
+			   vertical-align: center; width: 240px; height: 30px; background-color:lightblue; border-radius: 10px; padding: 0px 3px; }
 #searchshowchk { display: none; }
 .closeImg { display: none; width: 18px; cursor: pointer; }
 .searchImg { display: inline-block; width: 20px; cursor: pointer; }
@@ -33,11 +33,12 @@ label:has(#searchshowchk:checked) +.search_drop { opacity: 1; visibility: visibl
 #searchshowchk:checked ~.closeImg { display: block; }
 #searchshowchk:checked ~.searchImg { display: none; }
 .search_drop .searchImg { position: relative; top: 5px; width: 15px;}
-.searchBox { width: 150px; line-height:15px; font-size: 15px; background-color: transparent; font-weight: bold;
+.searchBox { width: 190px; line-height:15px; font-size: 15px; background-color: transparent; font-weight: bold;
 			 position: relative; top:3px; outline: none; border: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+	// 예매내역 페이지 로그인 여부 검사
 	let m6 = document.querySelector(".m6");
 	let id = document.querySelector("#id");
 	m6.addEventListener("click", function() {
@@ -46,6 +47,34 @@ document.addEventListener("DOMContentLoaded", function() {
 			location.href = "../visitor/login.jsp";
 		} else {
 			location.href = "../visitor/visitorTicket.jsp";
+		}
+	});
+	
+	// 검색버튼 구현
+	let keyword = document.querySelector("#searchword");
+	let searchBtn = document.querySelector("#searchBtn");
+	function submitKeyword() {
+		if(keyword.value == "") {
+			alert("검색어를 입력해 주세요.");
+		} else {
+			location.href = "../theater/movieList.jsp?keyword=" + keyword.value;
+		}
+	}
+	searchBtn.addEventListener("click", function() {
+		submitKeyword();
+	});
+	// 엔터키로 검색
+	keyword.addEventListener("keyup", function(e) {
+		if(e.code === 'Enter') {
+			submitKeyword();
+		}
+	});
+	// 검색란으로 포커스 이동
+	let searchToggle = document.querySelector("#searchshowchk");
+	searchToggle.addEventListener("change", function() {
+		if(searchToggle.checked == true) {
+			// 애니메이션 시간을 기다린다.
+			setTimeout(function() { keyword.focus(); }, 300);
 		}
 	});
 });
@@ -66,8 +95,8 @@ String id = (String)session.getAttribute("id");
 			<img class="searchImg" src="../icons/search.png">
 		</label>
 		<div class="search_drop">
-			<input class="searchBox" type="text" placeholder="영화를 검색하세요">&nbsp;&nbsp;
-			<img class="searchImg" src="../icons/search.png" >
+			<input class="searchBox" type="text" placeholder="이름, 감독, 장르별 영화검색" id="searchword">&nbsp;&nbsp;
+			<img class="searchImg" src="../icons/search.png" id="searchBtn" >
 		</div>
 	</div>
 	<div class="usrInfo">

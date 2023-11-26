@@ -48,7 +48,7 @@
 .usr_rating_score { font-weight: bold; font-size: 1.2em;}
 
 .spoilerLabel { font-weight: bold; color: black; }
-.rev_content { float: right; width: 790px; margin-left: 10px; height: 60px; border-radius: 6px; resize: none; font-family: Malgun-Gothic; padding: 3px; }
+.rev_content { float: right; width: 790px; margin-left: 14px; height: 60px; border-radius: 6px; resize: none; font-family: Malgun-Gothic; padding: 3px; }
 .submitOption { float: right; }
 .rev_btns { width: 90px; height: 25px; line-height: 25px; background-color: #0250cc; color: white; border-radius: 10px; 
 			  font-weight: bold; border:none;  margin: 4px; cursor: pointer; }
@@ -60,20 +60,87 @@
 .mod_chkBox { display: none; }
 .review_modBox { display: none; }
 div:has(.mod_chkBox:checked)+.review_modBox { display: block; }
+.blurEffect { text-shadow: 0px 0px 10px black; color: transparent; position: absolute; }
+.blurTextarea { float: right; margin-left: 15px; border: none; border-radius: 6px; resize: none; padding: 3px; font-weight: bold; position: relative; z-index: 100000;
+ 				background-color: transparent; opacity:1; width: 743px; height:70px; display:inline-block; vertical-align: middle; font-family: Malgun-Gothic; }
+/* 페이징 처리 */
+.paging { clear: both; margin: 15px; text-align: center;}
+.pageBox { display: inline-block; width: 30px; height: 30px; line-height: 30px; vertical-align: middle; font-weight: bold; border-radius: 4px; }
+.pageBox:hover { background-color: lightblue; }
+.currentPagebox { background-color: lightblue; }
+.pageArrow { display: inline-block; width: 20px; height: 20px; line-height: 30px; vertical-align: middle; font-weight: bold; border-radius: 4px;  }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 	// 스포일러 여부 값 처리
 	let spoilerChks = document.querySelectorAll(".spoilerChk");
-	for(spoilerChk of spoilerChks) {
-		spoilerChk.addEventListener("change", function(){
-			if(spoilerChk.checked == true) {
-				spoilerChk.value = 1;
+	for(let i = 0; i < spoilerChks.length; i++) {
+		spoilerChks[i].addEventListener("change", function(){
+			if(spoilerChks[i].checked == true) {
+				spoilerChks[i].value = 1;
+				console.log(spoilerChks[i].value);
 			} else {
-				spoilerChk.value = 0;
+				spoilerChks[i].value = 0;
+				console.log(spoilerChks[i].value);
 			}
 		});
 	}
+	
+	// 스포일러 컨텐트 블러 처리
+	let blurEffects = document.querySelectorAll(".blurEffect");
+	let blurTextareas = document.querySelectorAll(".blurTextarea");
+	for(let i = 0; i < blurTextareas.length; i++){
+		blurTextareas[i].addEventListener("mouseover", function() {
+			blurTextareas[i].style.visibility = "hidden";
+			blurEffects[i].style.textShadow = "none";
+			blurEffects[i].style.color = "black";
+		});
+		blurEffects[i].addEventListener("mouseout", function() {
+			blurTextareas[i].style.visibility = "visible";
+			blurEffects[i].style.textShadow = "0px 0px 10px black";
+			blurEffects[i].style.color = "transparent";
+		});
+	}
+	
+	// 리뷰 작성 공란 검사
+	function chkNullSubmit(reviewForm) {
+		let isChecked = false;
+		for(let i in reviewForm.usr_rating){
+			if(reviewForm.usr_rating[i].checked) {
+				isChecked = true;
+			}
+		}
+		if(!isChecked) {
+			alert("별점을 체크해 주세요."); return;
+		} else if(!reviewForm.content.value) {
+			alert("내용을 작성해 주세요."); return;
+		} else {
+			reviewForm.submit();
+		}
+	}
+	let reviewForm = document.querySelector(".reviewForm");
+	let submitBtn = document.querySelector(".submitBtn");
+	submitBtn.addEventListener("click", function() {
+		chkNullSubmit(reviewForm);
+	});
+	let reviewModForms = document.querySelectorAll(".reviewModForm");
+	let submitModBtns = document.querySelectorAll(".submitModBtn");
+	for(let i=0; i<reviewModForms.length; i++) {
+		submitModBtns[i].addEventListener("click", function() {
+			chkNullSubmit(reviewModForms[i]);
+		});
+	}
+	// 삭제 버튼
+	let btnReviewDelete = document.querySelectorAll(".btnReviewDelete");
+	let reviewDeleteForms = document.querySelectorAll(".reviewDeleteForm");
+	for(let i=0; i<btnReviewDelete.length; i++) {
+		btnReviewDelete[i].addEventListener("click", function() {
+			if(confirm("관람평을 삭제하시겠습니까?")) {
+				reviewDeleteForms[i].submit();
+			}
+		});
+	}
+	
 });
 </script>
 </head>
@@ -84,9 +151,24 @@ String id = (String)session.getAttribute("id");
 int mov_id = Integer.parseInt(request.getParameter("mov_id"));
 MovieDAO moviePro = MovieDAO.getInstance();
 ReviewDAO reviewPro = ReviewDAO.getInstance();
-// 영화, 리뷰정보 가져오기
+// 영화 가져오기
 MovieDTO movie = moviePro.getMovie(mov_id);
-List<ReviewDTO> reviews = reviewPro.getRvwList(mov_id);
+
+//현재 페이지 가져오기
+int currentPage = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+int showCount = 5;
+int start = (currentPage - 1) * showCount;
+//리뷰 가져오기
+List<ReviewDTO> reviews = reviewPro.getRvwList(mov_id, start, showCount);
+
+//전체 페이지 수 설정
+int reviewCnt = reviewPro.getReviewCnt(mov_id);
+int totalPageCount = reviewCnt / showCount + (reviewCnt%showCount == 0 ? 0 : 1);
+//페이지 블럭 시작과 끝
+int showPageblockCnt = 5;
+int startPageblock = ((currentPage - 1) / showPageblockCnt) * showPageblockCnt + 1;
+int endPageblock = (startPageblock + showPageblockCnt - 1) > totalPageCount ? totalPageCount : (startPageblock + showPageblockCnt - 1);
+
 
 SimpleDateFormat sdf1 = new SimpleDateFormat("YYYY.MM.dd");
 SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format() : Date -> String
@@ -129,7 +211,7 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 		<label for="sw_trailer">
 			<div class="swDiv">트레일러</div>
 		</label>
-		<input type="radio" name="sw" value="sw_review" id="sw_review" class="sw">
+		<input type="radio" name="sw" value="sw_review" id="sw_review" class="sw" checked>
 		<label for="sw_review">
 			<div class="swDiv">영화 감상평</div>
 		</label>
@@ -162,9 +244,9 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 			    </div>
 				<textarea name="content" class="rev_content" placeholder="관람평을 입력해주세요."></textarea>
 				<div class="submitOption">
-				    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_new">
+			    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_new">
 				    <label for="spoiler_new" class="spoilerLabel">스포일러 포함</label>
-					<input type="submit" class="rev_btns" value="감상평 작성">
+					<input type="button" class="rev_btns submitBtn" value="감상평 작성">
 				</div>
 			</form>
 			</div>
@@ -173,31 +255,36 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 		int rev_id = review.getReview_id(); %>
 		<!-- 리뷰 보기 영역 -->
 		<div class="reviewBox clearfix">
-			<div class="stars" id="star_view">
-			    <fieldset>
-					<%int usr_rating = review.getUsr_rating(); %>
-			        <input type="radio" name="usr_rating_<%=rev_id%>" value="5" id="rate6<%=rev_id%>" <%if(usr_rating == 5) {%>checked<%}%>><label for="rate6<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating_<%=rev_id%>" value="4" id="rate7<%=rev_id%>" <%if(usr_rating == 4) {%>checked<%}%>><label for="rate7<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating_<%=rev_id%>" value="3" id="rate8<%=rev_id%>" <%if(usr_rating == 3) {%>checked<%}%>><label for="rate8<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating_<%=rev_id%>" value="2" id="rate9<%=rev_id%>" <%if(usr_rating == 2) {%>checked<%}%>><label for="rate9<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
-			        <input type="radio" name="usr_rating_<%=rev_id%>" value="1" id="rate10<%=rev_id%>" <%if(usr_rating == 1) {%>checked<%}%>><label for="rate10<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
-			    	<span class="usr_rating_score">5 / <%=usr_rating %></span>
-			    </fieldset>
-		    </div>
-			<textarea name="content" class="rev_content view_content" placeholder="관람평을 입력해주세요." readonly><%=review.getContent() %></textarea>
-			<div class="rev_info">
-				<span><%=review.getId() %></span> | 
-				<span><%=sdf2.format(review.getPost_time()) %></span>
-			</div>
-			<%if(review.getId().equals(id)) {%>
-				<div class="rev_change">
-					<label for="mod_toggle_<%=rev_id%>">
-					<div class="rev_btns" class="btnReviewUpdate" style="font-size: 0.8em; display: inline-block; text-align: center;">관람평 수정</div></label>
-					<a href="../review/reviewDeletePro.jsp?mov_id=<%=mov_id%>&review_id=<%=rev_id%>"><input type="button" class="rev_btns" value="관람평 삭제" class="btnReviewDelete"></a>
-					<input type="hidden" value="<%=rev_id %>" class="rev_id">
+			<%if(review.getId().equals(id)) {%><form action="../review/reviewDeletePro.jsp" method="post" class="reviewDeleteForm"><%}%>
+				<input type="hidden" name="mov_id" value="<%=mov_id%>">
+				<input type="hidden" name="review_id" value="<%=rev_id%>">
+				<div class="stars" id="star_view">
+				    <fieldset>
+						<%int usr_rating = review.getUsr_rating();%>
+				        <input type="radio" name="usr_rating_<%=rev_id%>" value="5" id="rate6<%=rev_id%>" <%if(usr_rating == 5) {%>checked<%}%>><label for="rate6<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+				        <input type="radio" name="usr_rating_<%=rev_id%>" value="4" id="rate7<%=rev_id%>" <%if(usr_rating == 4) {%>checked<%}%>><label for="rate7<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+				        <input type="radio" name="usr_rating_<%=rev_id%>" value="3" id="rate8<%=rev_id%>" <%if(usr_rating == 3) {%>checked<%}%>><label for="rate8<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+				        <input type="radio" name="usr_rating_<%=rev_id%>" value="2" id="rate9<%=rev_id%>" <%if(usr_rating == 2) {%>checked<%}%>><label for="rate9<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+				        <input type="radio" name="usr_rating_<%=rev_id%>" value="1" id="rate10<%=rev_id%>" <%if(usr_rating == 1) {%>checked<%}%>><label for="rate10<%=rev_id%>" class="rateLbl" onclick="return(false);">⭐</label>
+				    	<span class="usr_rating_score">5 / <%=usr_rating %></span>
+				    </fieldset>
+			    </div>
+				<textarea name="content" class="rev_content view_content <%if(review.getSpoiler() == 1) {%>blurEffect<%}%>" readonly><%=review.getContent() %></textarea>
+				<%if(review.getSpoiler() == 1) {%><textarea class="blurTextarea">스포일러가 포함된 관람평입니다. ▼</textarea><%}%>
+				<div class="rev_info">
+					<span><%=review.getId() %></span> | 
+					<span><%=sdf2.format(review.getPost_time()) %></span>
 				</div>
-				<input type="checkbox" id="mod_toggle_<%=rev_id%>" class="mod_chkBox">
-			<%} %>
+				<%if(review.getId().equals(id)) {%>
+					<div class="rev_change">
+						<label for="mod_toggle_<%=rev_id%>">
+						<div class="rev_btns" class="btnReviewUpdate" style="font-size: 0.8em; display: inline-block; text-align: center;">관람평 수정</div></label>
+						<input type="button" class="rev_btns btnReviewDelete" value="관람평 삭제" >
+						<input type="hidden" value="<%=rev_id %>" class="rev_id">
+					</div>
+					<input type="checkbox" id="mod_toggle_<%=rev_id%>" class="mod_chkBox">
+				<%} %>
+			</form>
 		</div>
 		<!-- 리뷰 수정 영역 -->
 		<div class="reviewBox clearfix review_modBox">
@@ -219,11 +306,36 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 			<div class="submitOption">
 			    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_<%=rev_id%>">
 			    <label for="spoiler_<%=rev_id%>" id="spoilerLabel">스포일러 포함</label>
-				<input type="submit" class="rev_btns" value="글 수정">
+				<input type="button" class="rev_btns submitModBtn" value="글 수정">
 			</div>
 		</form>
 		</div>
-		<%} %>
+		<%} 
+		if (reviewCnt != 0) {%>
+		<div class="paging">
+			<%if(currentPage != 1) {%>
+				<a href="movieInfo.jsp?mov_id=<%=mov_id%>&page=1#review"><img src="../icons/double-left-arrow.png" class="pageArrow"></a>
+			<%}
+			if(startPageblock != 1) { %>
+				<a href="movieInfo.jsp?mov_id=<%=mov_id%>&page=<%=startPageblock - 1 %>#review"><img src="../icons/left-arrow.png" class="pageArrow"></a>
+			<%} 
+			for(int i=startPageblock; i <= endPageblock; i++ )  {
+				if (currentPage == i) {%>
+				<div class="pageBox currentPagebox"><%=i%></div>
+				<%} else {%>
+				<a href="movieInfo.jsp?mov_id=<%=mov_id%>&page=<%=i%>"><div class="pageBox"><%=i%></div></a>
+				<%}
+			}
+			if(endPageblock != totalPageCount) { %>
+				<a href="movieInfo.jsp?mov_id=<%=mov_id%>&page=<%=endPageblock + 1%>"><img src="../icons/right-arrow.png" class="pageArrow"></a>
+			<%}
+			if (currentPage != totalPageCount) {%>
+				<a href="movieInfo.jsp?mov_id=<%=mov_id%>&page=<%=totalPageCount %>#review"><img src="../icons/double-right-arrow.png" class="pageArrow"></a>
+			<%}%>
+		</div>
+		<%} else {%>
+		 등록된 관람평이 없습니다.
+		<%}%>
 	</div>
 	</div>
 </div>

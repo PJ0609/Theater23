@@ -22,6 +22,7 @@ public class MovieDAO {
 	private ResultSet rs = null;
 	
 	private final String GET_MOVIE = "select * from movie where mov_id=?";
+	private final String GET_MOVIE_CNT = "select count(*) from movie";
 	private final String GET_MOVLIST = "select * from movie limit ?,?";
 	private final String INSERT_MOVIE = "insert into movie(mov_name, director, mov_img, genre, rating, synopsis, length, rel_date, trailer_link) values(?,?,?,?,?,?,?,?,?)";
 	private final String UPDATE_MOVIE = "update movie set mov_name=?, director=?, mov_img=?, genre=?, rating=?, synopsis=?, length=?, rel_date=?, trailer_link=? where mov_id=?";
@@ -55,7 +56,44 @@ public class MovieDAO {
 		return movie;
 	}
 	
-	// 영화 리스트 가져오기
+	// 전체 영화 개수 가져오기
+	public int getMovieCnt() {
+		int cnt = 0;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(GET_MOVIE_CNT);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return cnt;
+	}
+
+	// 검색된 영화 개수 가져오기
+	public int getMovieCnt(String keyword) {
+		int cnt = 0;
+		String getMovieCntKeyword = "select count(*) from movie where mov_name like '%" + keyword + "%' or director like '%"+ keyword +"%' or genre like '%" + keyword + "%'";
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(getMovieCntKeyword);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return cnt;
+	}
+	
+	// 모든 영화 리스트 가져오기
 	public List<MovieDTO> getMovList(int start, int cnt) {
 		MovieDTO movie = null;
 		List<MovieDTO> movies = new ArrayList<MovieDTO>();
@@ -97,6 +135,39 @@ public class MovieDAO {
 		try {
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				movie = new MovieDTO();
+				movie.setMov_id(rs.getInt("mov_id"));
+				movie.setMov_name(rs.getString("mov_name"));
+				movie.setDirector(rs.getString("director"));
+				movie.setMov_img(rs.getString("mov_img"));
+				movie.setGenre(rs.getString("genre"));
+				movie.setRating(rs.getString("rating"));
+				movie.setSynopsis(rs.getString("synopsis"));
+				movie.setLength(rs.getInt("length"));
+				movie.setRel_date(rs.getDate("rel_date"));
+				movie.setTrailer_link(rs.getString("trailer_link"));
+				movies.add(movie);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return movies;
+	}
+	// 키워드로 영화 리스트 가져오기
+	public List<MovieDTO> getMovList(int start, int cnt, String keyword) {
+		String getMovlistKeyword = "select * from movie where mov_name like '%" + keyword + "%' or director like '%"+ keyword +"%' or genre like '%" + keyword + "%' limit ?,?";
+		System.out.println(getMovlistKeyword);
+		MovieDTO movie = null;
+		List<MovieDTO> movies = new ArrayList<MovieDTO>();
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(getMovlistKeyword);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, cnt);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				movie = new MovieDTO();
