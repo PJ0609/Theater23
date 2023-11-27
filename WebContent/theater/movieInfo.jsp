@@ -304,7 +304,7 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일"); // .format(
 		    </div>
 			<textarea name="content" class="rev_content" placeholder="관람평을 입력해주세요."><%=review.getContent() %></textarea>
 			<div class="submitOption">
-			    <input type="checkbox" name="spoiler" value="0" class="spoilerChk" id="spoiler_<%=rev_id%>">
+			    <input type="checkbox" name="spoiler" value="<%=review.getSpoiler() %>" class="spoilerChk" id="spoiler_<%=rev_id%>" <%if(review.getSpoiler() == 1) {%>checked<%}%>>
 			    <label for="spoiler_<%=rev_id%>" id="spoilerLabel">스포일러 포함</label>
 				<input type="button" class="rev_btns submitModBtn" value="글 수정">
 			</div>
